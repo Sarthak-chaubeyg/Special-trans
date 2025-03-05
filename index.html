@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Advanced Special Language Translator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f0f0;
+      margin: 0;
+      padding: 20px;
+    }
+    .menu {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .menu button {
+      padding: 10px 20px;
+      margin: 0 5px;
+      border: none;
+      background: #007BFF;
+      color: #fff;
+      cursor: pointer;
+      font-size: 16px;
+      border-radius: 4px;
+    }
+    .menu button:hover {
+      background: #0056b3;
+    }
+    .section {
+      background: #fff;
+      max-width: 600px;
+      margin: 0 auto 20px;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      margin-top: 0;
+    }
+    textarea {
+      width: 100%;
+      height: 100px;
+      padding: 10px;
+      font-size: 16px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      resize: vertical;
+    }
+    button.action {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border: none;
+      background: #28a745;
+      color: #fff;
+      cursor: pointer;
+      border-radius: 4px;
+      margin-bottom: 10px;
+    }
+    button.action:hover {
+      background: #218838;
+    }
+    .instruction {
+      text-align: right;
+      font-size: 14px;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <div class="menu">
+    <button id="converterTab">Convertor</button>
+    <button id="translatorTab">Translator</button>
+  </div>
+
+  <!-- English to Special Language -->
+  <div id="converterSection" class="section">
+    <h2>English to Special Language</h2>
+    <textarea id="normalInput" placeholder="Enter English text..."></textarea>
+    <button id="convertButton" class="action">Convert</button>
+    <textarea id="specialOutput" placeholder="Special language output..." readonly></textarea>
+    <div class="instruction">Long press and copy it</div>
+  </div>
+
+  <!-- Special Language to English -->
+  <div id="translatorSection" class="section" style="display: none;">
+    <h2>Special Language to English</h2>
+    <textarea id="specialInput" placeholder="Enter special language text..."></textarea>
+    <button id="translateButton" class="action">Translate</button>
+    <textarea id="normalOutput" placeholder="English output..." readonly></textarea>
+    <div class="instruction">Long press and copy it</div>
+  </div>
+
+  <script>
+    // Custom alphabet combining digits, lowercase, uppercase, and advanced special symbols.
+    const customAlphabet = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ₹#@*\"':;!?+&-~`π÷¢©®[]✓=}{";
+
+    // Seeded random number generator (using a simple LCG)
+    function seededRandom(seed) {
+      var m = 0x80000000; // 2^31
+      var a = 1103515245;
+      var c = 12345;
+      var state = seed;
+      return function() {
+        state = (a * state + c) % m;
+        return state / (m - 1);
+      };
+    }
+    // Create a seeded RNG with a fixed seed for reproducibility.
+    const rng = seededRandom(123456789);
+
+    // We'll build a mapping for all printable ASCII characters (codes 32 to 126)
+    const mapping = {};
+    const reverseMapping = {};
+    const usedTokens = new Set();
+
+    // Function to generate a 5-character token using our custom alphabet.
+    function generateToken() {
+      let token = "";
+      for (let j = 0; j < 5; j++) {
+        token += customAlphabet[Math.floor(rng() * customAlphabet.length)];
+      }
+      return token;
+    }
+
+    // Generate a unique token for each printable character.
+    for (let code = 32; code <= 126; code++) {
+      let char = String.fromCharCode(code);
+      let token;
+      do {
+        token = generateToken();
+      } while (usedTokens.has(token));
+      usedTokens.add(token);
+      mapping[char] = token;
+      reverseMapping[token] = char;
+    }
+
+    // Advanced encryption: Replace each character with its 5-character token.
+    function advancedEncode(text) {
+      let encoded = "";
+      for (let i = 0; i < text.length; i++) {
+        let char = text[i];
+        // If the character exists in our mapping, encode it; otherwise, leave it as is.
+        encoded += mapping[char] !== undefined ? mapping[char] : char;
+      }
+      return encoded;
+    }
+
+    // Advanced decryption: Process the string in 5-character chunks.
+    function advancedDecode(text) {
+      let decoded = "";
+      for (let i = 0; i < text.length; i += 5) {
+        let token = text.substr(i, 5);
+        decoded += reverseMapping[token] !== undefined ? reverseMapping[token] : token;
+      }
+      return decoded;
+    }
+
+    // Event listeners for converting text.
+    document.getElementById("convertButton").addEventListener("click", function() {
+      const input = document.getElementById("normalInput").value;
+      const output = advancedEncode(input);
+      document.getElementById("specialOutput").value = output;
+    });
+
+    document.getElementById("translateButton").addEventListener("click", function() {
+      const input = document.getElementById("specialInput").value;
+      const output = advancedDecode(input);
+      document.getElementById("normalOutput").value = output;
+    });
+
+    // Tab switching between Convertor and Translator.
+    document.getElementById("converterTab").addEventListener("click", function() {
+      document.getElementById("converterSection").style.display = "block";
+      document.getElementById("translatorSection").style.display = "none";
+    });
+
+    document.getElementById("translatorTab").addEventListener("click", function() {
+      document.getElementById("translatorSection").style.display = "block";
+      document.getElementById("converterSection").style.display = "none";
+    });
+  </script>
+</body>
+</html>
