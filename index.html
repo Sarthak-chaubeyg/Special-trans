@@ -69,33 +69,109 @@
       font-size: 14px;
       color: #555;
     }
+    /* Login overlay styles */
+    #loginOverlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    #loginBox {
+      background: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      text-align: center;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      max-width: 300px;
+      width: 90%;
+    }
+    #loginBox input {
+      padding: 8px;
+      font-size: 16px;
+      width: 100%;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    #loginBox button {
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      background: #007BFF;
+      color: #fff;
+      cursor: pointer;
+      border-radius: 4px;
+      width: 100%;
+    }
+    #loginBox button:hover {
+      background: #0056b3;
+    }
+    #loginError {
+      color: red;
+      font-weight: bold;
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body>
-  <div class="menu">
-    <button id="converterTab">Convertor</button>
-    <button id="translatorTab">Translator</button>
+  <!-- Login Overlay -->
+  <div id="loginOverlay">
+    <div id="loginBox">
+      <h2>Please Login</h2>
+      <input type="password" id="loginPassword" placeholder="Enter password" />
+      <button id="loginSubmit">Login</button>
+      <p id="loginError"></p>
+    </div>
   </div>
 
-  <!-- English to Special Language -->
-  <div id="converterSection" class="section">
-    <h2>English to Special Language</h2>
-    <textarea id="normalInput" placeholder="Enter English text..."></textarea>
-    <button id="convertButton" class="action">Convert</button>
-    <textarea id="specialOutput" placeholder="Special language output..." readonly></textarea>
-    <div class="instruction">Long press and copy it</div>
-  </div>
+  <!-- Main Content -->
+  <div id="mainContent" style="display: none;">
+    <div class="menu">
+      <button id="converterTab">Convertor</button>
+      <button id="translatorTab">Translator</button>
+    </div>
 
-  <!-- Special Language to English -->
-  <div id="translatorSection" class="section" style="display: none;">
-    <h2>Special Language to English</h2>
-    <textarea id="specialInput" placeholder="Enter special language text..."></textarea>
-    <button id="translateButton" class="action">Translate</button>
-    <textarea id="normalOutput" placeholder="English output..." readonly></textarea>
-    <div class="instruction">Long press and copy it</div>
+    <!-- English to Special Language -->
+    <div id="converterSection" class="section">
+      <h2>English to Special Language</h2>
+      <textarea id="normalInput" placeholder="Enter English text..."></textarea>
+      <button id="convertButton" class="action">Convert</button>
+      <textarea id="specialOutput" placeholder="Special language output..." readonly></textarea>
+      <div class="instruction">Long press and copy it</div>
+    </div>
+
+    <!-- Special Language to English -->
+    <div id="translatorSection" class="section" style="display: none;">
+      <h2>Special Language to English</h2>
+      <textarea id="specialInput" placeholder="Enter special language text..."></textarea>
+      <button id="translateButton" class="action">Translate</button>
+      <textarea id="normalOutput" placeholder="English output..." readonly></textarea>
+      <div class="instruction">Long press and copy it</div>
+    </div>
   </div>
 
   <script>
+    // Set the correct password. Change this value as needed.
+    const correctPassword = "please";
+
+    // Handle login submission
+    document.getElementById("loginSubmit").addEventListener("click", function() {
+      const userPassword = document.getElementById("loginPassword").value;
+      if (userPassword === correctPassword) {
+        // Hide the login overlay and show the main content
+        document.getElementById("loginOverlay").style.display = "none";
+        document.getElementById("mainContent").style.display = "block";
+      } else {
+        document.getElementById("loginError").textContent = "Password is wrong";
+      }
+    });
+
     // Custom alphabet combining digits, lowercase, uppercase, and advanced special symbols.
     const customAlphabet = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ₹#@*\"':;!?+&-~`π÷¢©®[]✓=}{";
 
@@ -113,7 +189,7 @@
     // Create a seeded RNG with a fixed seed for reproducibility.
     const rng = seededRandom(123456789);
 
-    // We'll build a mapping for all printable ASCII characters (codes 32 to 126)
+    // Build a mapping for all printable ASCII characters (codes 32 to 126)
     const mapping = {};
     const reverseMapping = {};
     const usedTokens = new Set();
@@ -144,7 +220,6 @@
       let encoded = "";
       for (let i = 0; i < text.length; i++) {
         let char = text[i];
-        // If the character exists in our mapping, encode it; otherwise, leave it as is.
         encoded += mapping[char] !== undefined ? mapping[char] : char;
       }
       return encoded;
@@ -173,7 +248,7 @@
       document.getElementById("normalOutput").value = output;
     });
 
-    // Tab switching between Convertor and Translator.
+    // Tab switching between Converter and Translator.
     document.getElementById("converterTab").addEventListener("click", function() {
       document.getElementById("converterSection").style.display = "block";
       document.getElementById("translatorSection").style.display = "none";
