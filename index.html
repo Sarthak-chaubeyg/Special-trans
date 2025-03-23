@@ -2,13 +2,25 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Advanced Special Language Translator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Secure Special Language Translator (x2)</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f0f0f0;
+    /* Reset some basic elements */
+    * {
+      box-sizing: border-box;
       margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f7f7f7;
+      color: #333;
+      line-height: 1.6;
+      padding: 20px;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
       padding: 20px;
     }
     .menu {
@@ -16,49 +28,79 @@
       margin-bottom: 20px;
     }
     .menu button {
-      padding: 10px 20px;
-      margin: 0 5px;
+      padding: 12px 24px;
+      margin: 0 10px;
       border: none;
       background: #007BFF;
       color: #fff;
-      cursor: pointer;
       font-size: 16px;
       border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.3s ease;
     }
     .menu button:hover {
       background: #0056b3;
     }
     .section {
       background: #fff;
-      max-width: 600px;
-      margin: 0 auto 20px;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     }
     h2 {
       text-align: center;
-      margin-top: 0;
+      margin-bottom: 20px;
+      font-size: 24px;
+      color: #444;
     }
-    textarea {
+    textarea, input[type="password"] {
       width: 100%;
-      height: 100px;
-      padding: 10px;
+      padding: 12px;
       font-size: 16px;
-      margin-bottom: 10px;
+      margin-bottom: 15px;
       border: 1px solid #ccc;
       border-radius: 4px;
-      resize: vertical;
+      transition: border 0.3s ease;
+    }
+    textarea:focus, input[type="password"]:focus {
+      border-color: #007BFF;
+      outline: none;
+    }
+    .password-container {
+      position: relative;
+      margin-bottom: 15px;
+    }
+    .password-container input[type="password"] {
+      width: 100%;
+      padding-right: 50px; /* space for the save button */
+    }
+    .save-password {
+      position: absolute;
+      right: 5px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: #ffeb3b;
+      border: none;
+      padding: 6px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.3s ease;
+    }
+    .save-password:hover {
+      background: #ffd700;
     }
     button.action {
       width: 100%;
-      padding: 10px;
-      font-size: 16px;
+      padding: 12px;
+      font-size: 18px;
       border: none;
       background: #28a745;
       color: #fff;
       cursor: pointer;
       border-radius: 4px;
+      transition: background 0.3s ease;
       margin-bottom: 10px;
     }
     button.action:hover {
@@ -69,194 +111,251 @@
       font-size: 14px;
       color: #555;
     }
-    /* Login overlay styles */
-    #loginOverlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0,0,0,0.5);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
+    /* Loader styling */
+    .loader {
+      display: none; /* hidden by default */
+      margin: 0 auto;
+      width: 50px;
+      height: 50px;
     }
-    #loginBox {
-      background: #fff;
-      padding: 30px;
-      border-radius: 8px;
-      text-align: center;
-      box-shadow: 0 0 10px rgba(0,0,0,0.2);
-      max-width: 300px;
-      width: 90%;
-    }
-    #loginBox input {
-      padding: 8px;
-      font-size: 16px;
-      width: 100%;
-      margin-bottom: 10px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-    #loginBox button {
-      padding: 10px 20px;
-      font-size: 16px;
-      border: none;
-      background: #007BFF;
-      color: #fff;
-      cursor: pointer;
-      border-radius: 4px;
-      width: 100%;
-    }
-    #loginBox button:hover {
-      background: #0056b3;
-    }
-    #loginError {
-      color: red;
-      font-weight: bold;
-      margin-top: 10px;
+    @media (max-width: 600px) {
+      .menu button {
+        margin: 5px 0;
+        width: 100%;
+      }
+      button.action {
+        font-size: 16px;
+      }
     }
   </style>
 </head>
 <body>
-  <!-- Login Overlay -->
-  <div id="loginOverlay">
-    <div id="loginBox">
-      <h2>Please Login</h2>
-      <input type="password" id="loginPassword" placeholder="Enter password" />
-      <button id="loginSubmit">Login</button>
-      <p id="loginError"></p>
-    </div>
-  </div>
-
-  <!-- Main Content -->
-  <div id="mainContent" style="display: none;">
+  <div class="container">
     <div class="menu">
-      <button id="converterTab">Convertor</button>
-      <button id="translatorTab">Translator</button>
+      <button id="encryptorTab">Encryptor (x2)</button>
+      <button id="decryptorTab">Decryptor (x2)</button>
     </div>
 
-    <!-- English to Special Language -->
-    <div id="converterSection" class="section">
-      <h2>English to Special Language</h2>
-      <textarea id="normalInput" placeholder="Enter English text..."></textarea>
-      <button id="convertButton" class="action">Convert</button>
-      <textarea id="specialOutput" placeholder="Special language output..." readonly></textarea>
+    <!-- Encryption Section -->
+    <div id="encryptorSection" class="section">
+      <h2>4-Layer Encryption (English to Secure Ciphertext)</h2>
+      <textarea id="plaintextInput" placeholder="Enter text..."></textarea>
+      <div class="password-container">
+        <input type="password" id="passwordEncrypt" placeholder="Enter password..." />
+        <button class="save-password" id="savePasswordEncrypt" title="Save Password">💾</button>
+      </div>
+      <!-- Encryption Button and Loader -->
+      <button id="encryptButton" class="action">Encrypt</button>
+      <img src="loader.gif" alt="Encrypting..." id="loaderEncrypt" class="loader" />
+
+      <textarea id="ciphertextOutput" placeholder="Encrypted output..." readonly></textarea>
       <div class="instruction">Long press and copy it</div>
     </div>
 
-    <!-- Special Language to English -->
-    <div id="translatorSection" class="section" style="display: none;">
-      <h2>Special Language to English</h2>
-      <textarea id="specialInput" placeholder="Enter special language text..."></textarea>
-      <button id="translateButton" class="action">Translate</button>
-      <textarea id="normalOutput" placeholder="English output..." readonly></textarea>
+    <!-- Decryption Section -->
+    <div id="decryptorSection" class="section" style="display: none;">
+      <h2>4-Layer Decryption (Secure Ciphertext to English)</h2>
+      <textarea id="ciphertextInput" placeholder="Enter encrypted text..."></textarea>
+      <div class="password-container">
+        <input type="password" id="passwordDecrypt" placeholder="Enter password..." />
+        <button class="save-password" id="savePasswordDecrypt" title="Save Password">💾</button>
+      </div>
+      <!-- Decryption Button and Loader -->
+      <button id="decryptButton" class="action">Decrypt</button>
+      <img src="loader.gif" alt="Decrypting..." id="loaderDecrypt" class="loader" />
+
+      <textarea id="plaintextOutput" placeholder="Decrypted output..." readonly></textarea>
       <div class="instruction">Long press and copy it</div>
     </div>
   </div>
 
   <script>
-    // Set the correct password. Change this value as needed.
-    const correctPassword = "please";
-
-    // Handle login submission
-    document.getElementById("loginSubmit").addEventListener("click", function() {
-      const userPassword = document.getElementById("loginPassword").value;
-      if (userPassword === correctPassword) {
-        // Hide the login overlay and show the main content
-        document.getElementById("loginOverlay").style.display = "none";
-        document.getElementById("mainContent").style.display = "block";
-      } else {
-        document.getElementById("loginError").textContent = "Password is wrong";
+    // Utility functions for converting between strings, ArrayBuffers and Base64.
+    function str2ab(str) {
+      return new TextEncoder().encode(str);
+    }
+    function ab2str(buf) {
+      return new TextDecoder().decode(buf);
+    }
+    function arrayBufferToBase64(buffer) {
+      let binary = '';
+      const bytes = new Uint8Array(buffer);
+      for (let i = 0; i < bytes.byteLength; i++) {
+        binary += String.fromCharCode(bytes[i]);
       }
+      return window.btoa(binary);
+    }
+    function base64ToArrayBuffer(base64) {
+      const binary_string = window.atob(base64);
+      const len = binary_string.length;
+      const bytes = new Uint8Array(len);
+      for (let i = 0; i < len; i++) {
+        bytes[i] = binary_string.charCodeAt(i);
+      }
+      return bytes.buffer;
+    }
+
+    // Derive a key from the password and a given salt using PBKDF2.
+    async function deriveKey(password, salt, iterations) {
+      const keyMaterial = await window.crypto.subtle.importKey(
+        'raw',
+        str2ab(password),
+        'PBKDF2',
+        false,
+        ['deriveKey']
+      );
+      return window.crypto.subtle.deriveKey(
+        {
+          name: 'PBKDF2',
+          salt: salt,
+          iterations: iterations,
+          hash: 'SHA-256'
+        },
+        keyMaterial,
+        { name: 'AES-GCM', length: 256 },
+        false,
+        ['encrypt', 'decrypt']
+      );
+    }
+
+    // Encrypt one layer. 'data' is an ArrayBuffer.
+    async function encryptLayer(data, password, iterations) {
+      const salt = window.crypto.getRandomValues(new Uint8Array(16));
+      const iv = window.crypto.getRandomValues(new Uint8Array(12));
+      const key = await deriveKey(password, salt, iterations);
+      const ciphertextBuffer = await window.crypto.subtle.encrypt(
+        { name: 'AES-GCM', iv: iv },
+        key,
+        data
+      );
+      // Package: salt || iv || ciphertext.
+      const packaged = new Uint8Array(salt.byteLength + iv.byteLength + ciphertextBuffer.byteLength);
+      packaged.set(salt, 0);
+      packaged.set(iv, salt.byteLength);
+      packaged.set(new Uint8Array(ciphertextBuffer), salt.byteLength + iv.byteLength);
+      return packaged.buffer;
+    }
+
+    // Decrypt one layer.
+    async function decryptLayer(dataBuffer, password, iterations) {
+      const data = new Uint8Array(dataBuffer);
+      const salt = data.slice(0, 16);
+      const iv = data.slice(16, 28);
+      const ciphertext = data.slice(28);
+      const key = await deriveKey(password, salt, iterations);
+      return window.crypto.subtle.decrypt(
+        { name: 'AES-GCM', iv: iv },
+        key,
+        ciphertext
+      );
+    }
+
+    // x2 Encryption: Four sequential layers.
+    async function quadrupleEncrypt(plaintext, password) {
+      let data = str2ab(plaintext);
+      const iterations = 1200000; // 1,200,000 iterations per layer
+      for (let i = 0; i < 4; i++) {
+        data = await encryptLayer(data, password, iterations);
+      }
+      return arrayBufferToBase64(data);
+    }
+
+    // x2 Decryption: Four sequential layers in reverse.
+    async function quadrupleDecrypt(encryptedBase64, password) {
+      try {
+        let dataBuffer = base64ToArrayBuffer(encryptedBase64);
+        const iterations = 1200000;
+        for (let i = 0; i < 4; i++) {
+          dataBuffer = await decryptLayer(dataBuffer, password, iterations);
+        }
+        return ab2str(dataBuffer);
+      } catch (error) {
+        return 'Decryption failed. Check your password or the encrypted text.';
+      }
+    }
+
+    // Save and load password to/from localStorage.
+    function savePassword(fieldId) {
+      const pwdField = document.getElementById(fieldId);
+      // Save the password even if it's an empty string.
+      localStorage.setItem('savedPassword', pwdField.value);
+      alert('Password saved locally!');
+    }
+    function loadPassword() {
+      const saved = localStorage.getItem('savedPassword');
+      if (saved !== null) {
+        document.getElementById('passwordEncrypt').value = saved;
+        document.getElementById('passwordDecrypt').value = saved;
+      }
+    }
+    document.addEventListener('DOMContentLoaded', loadPassword);
+
+    // Event listeners for save buttons.
+    document.getElementById("savePasswordEncrypt").addEventListener("click", function() {
+      savePassword('passwordEncrypt');
+    });
+    document.getElementById("savePasswordDecrypt").addEventListener("click", function() {
+      savePassword('passwordDecrypt');
     });
 
-    // Custom alphabet combining digits, lowercase, uppercase, and advanced special symbols.
-    const customAlphabet = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ₹#@*\"':;!?+&-~`π÷¢©®[]✓=}{";
+    // Event listener for Encryption.
+    document.getElementById("encryptButton").addEventListener("click", async function() {
+      const plaintext = document.getElementById("plaintextInput").value;
+      const password = document.getElementById("passwordEncrypt").value;
+      const encryptButton = document.getElementById("encryptButton");
+      const loaderEncrypt = document.getElementById("loaderEncrypt");
 
-    // Seeded random number generator (using a simple LCG)
-    function seededRandom(seed) {
-      var m = 0x80000000; // 2^31
-      var a = 1103515245;
-      var c = 12345;
-      var state = seed;
-      return function() {
-        state = (a * state + c) % m;
-        return state / (m - 1);
-      };
-    }
-    // Create a seeded RNG with a fixed seed for reproducibility.
-    const rng = seededRandom(123456789);
-
-    // Build a mapping for all printable ASCII characters (codes 32 to 126)
-    const mapping = {};
-    const reverseMapping = {};
-    const usedTokens = new Set();
-
-    // Function to generate a 5-character token using our custom alphabet.
-    function generateToken() {
-      let token = "";
-      for (let j = 0; j < 5; j++) {
-        token += customAlphabet[Math.floor(rng() * customAlphabet.length)];
+      if (!plaintext || !password) {
+        alert("Please enter both text and password.");
+        return;
       }
-      return token;
-    }
 
-    // Generate a unique token for each printable character.
-    for (let code = 32; code <= 126; code++) {
-      let char = String.fromCharCode(code);
-      let token;
-      do {
-        token = generateToken();
-      } while (usedTokens.has(token));
-      usedTokens.add(token);
-      mapping[char] = token;
-      reverseMapping[token] = char;
-    }
+      // Show loader, hide button
+      encryptButton.style.display = "none";
+      loaderEncrypt.style.display = "block";
 
-    // Advanced encryption: Replace each character with its 5-character token.
-    function advancedEncode(text) {
-      let encoded = "";
-      for (let i = 0; i < text.length; i++) {
-        let char = text[i];
-        encoded += mapping[char] !== undefined ? mapping[char] : char;
-      }
-      return encoded;
-    }
+      // Perform encryption
+      const ciphertext = await quadrupleEncrypt(plaintext, password);
+      document.getElementById("ciphertextOutput").value = ciphertext;
 
-    // Advanced decryption: Process the string in 5-character chunks.
-    function advancedDecode(text) {
-      let decoded = "";
-      for (let i = 0; i < text.length; i += 5) {
-        let token = text.substr(i, 5);
-        decoded += reverseMapping[token] !== undefined ? reverseMapping[token] : token;
-      }
-      return decoded;
-    }
-
-    // Event listeners for converting text.
-    document.getElementById("convertButton").addEventListener("click", function() {
-      const input = document.getElementById("normalInput").value;
-      const output = advancedEncode(input);
-      document.getElementById("specialOutput").value = output;
+      // Hide loader, show button again
+      loaderEncrypt.style.display = "none";
+      encryptButton.style.display = "block";
     });
 
-    document.getElementById("translateButton").addEventListener("click", function() {
-      const input = document.getElementById("specialInput").value;
-      const output = advancedDecode(input);
-      document.getElementById("normalOutput").value = output;
+    // Event listener for Decryption.
+    document.getElementById("decryptButton").addEventListener("click", async function() {
+      const encryptedText = document.getElementById("ciphertextInput").value;
+      const password = document.getElementById("passwordDecrypt").value;
+      const decryptButton = document.getElementById("decryptButton");
+      const loaderDecrypt = document.getElementById("loaderDecrypt");
+
+      if (!encryptedText || !password) {
+        alert("Please enter both encrypted text and password.");
+        return;
+      }
+
+      // Show loader, hide button
+      decryptButton.style.display = "none";
+      loaderDecrypt.style.display = "block";
+
+      // Perform decryption
+      const plaintext = await quadrupleDecrypt(encryptedText, password);
+      document.getElementById("plaintextOutput").value = plaintext;
+
+      // Hide loader, show button again
+      loaderDecrypt.style.display = "none";
+      decryptButton.style.display = "block";
     });
 
-    // Tab switching between Converter and Translator.
-    document.getElementById("converterTab").addEventListener("click", function() {
-      document.getElementById("converterSection").style.display = "block";
-      document.getElementById("translatorSection").style.display = "none";
+    // Tab switching between Encryptor and Decryptor.
+    document.getElementById("encryptorTab").addEventListener("click", function() {
+      document.getElementById("encryptorSection").style.display = "block";
+      document.getElementById("decryptorSection").style.display = "none";
     });
-
-    document.getElementById("translatorTab").addEventListener("click", function() {
-      document.getElementById("translatorSection").style.display = "block";
-      document.getElementById("converterSection").style.display = "none";
+    document.getElementById("decryptorTab").addEventListener("click", function() {
+      document.getElementById("decryptorSection").style.display = "block";
+      document.getElementById("encryptorSection").style.display = "none";
     });
   </script>
 </body>
