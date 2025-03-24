@@ -2,12 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <!-- Content Security Policy to mitigate XSS risks -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline';">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Secure Special Language Translator (x4)</title>
+  <title>Secure Special Language Translator (x2)</title>
   <style>
-    /* Reset and basic styling */
+    /* Reset some basic elements */
     * {
       box-sizing: border-box;
       margin: 0;
@@ -69,6 +67,30 @@
       border-color: #007BFF;
       outline: none;
     }
+    .password-container {
+      position: relative;
+      margin-bottom: 15px;
+    }
+    .password-container input[type="password"] {
+      width: 100%;
+      padding-right: 50px; /* space for the save button */
+    }
+    .save-password {
+      position: absolute;
+      right: 5px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: #ffeb3b;
+      border: none;
+      padding: 6px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.3s ease;
+    }
+    .save-password:hover {
+      background: #ffd700;
+    }
     button.action {
       width: 100%;
       padding: 12px;
@@ -84,16 +106,17 @@
     button.action:hover {
       background: #218838;
     }
-    .status {
-      text-align: center;
-      margin-top: 10px;
-      font-size: 14px;
-      color: #555;
-    }
     .instruction {
       text-align: right;
       font-size: 14px;
       color: #555;
+    }
+    /* Loader styling */
+    .loader {
+      display: none; /* hidden by default */
+      margin: 0 auto;
+      width: 50px;
+      height: 50px;
     }
     @media (max-width: 600px) {
       .menu button {
@@ -109,32 +132,36 @@
 <body>
   <div class="container">
     <div class="menu">
-      <button id="encryptorTab">Encryptor (x4)</button>
-      <button id="decryptorTab">Decryptor (x4)</button>
+      <button id="encryptorTab">Encryptor (x2)</button>
+      <button id="decryptorTab">Decryptor (x2)</button>
     </div>
 
     <!-- Encryption Section -->
     <div id="encryptorSection" class="section">
-      <h2>8-Layer Encryption (English to Secure Ciphertext)</h2>
+      <h2>4-Layer Encryption (English to Secure Ciphertext)</h2>
       <textarea id="plaintextInput" placeholder="Enter text..."></textarea>
       <div class="password-container">
         <input type="password" id="passwordEncrypt" placeholder="Enter password..." />
+        <button class="save-password" id="savePasswordEncrypt" title="Save Password">💾</button>
       </div>
       <button id="encryptButton" class="action">Encrypt</button>
-      <div id="encryptStatus" class="status"></div>
+      <!-- Loader for encryption -->
+      <img src="loader.gif" alt="Encrypting..." id="loaderEncrypt" class="loader" />
       <textarea id="ciphertextOutput" placeholder="Encrypted output..." readonly></textarea>
       <div class="instruction">Long press and copy it</div>
     </div>
 
     <!-- Decryption Section -->
     <div id="decryptorSection" class="section" style="display: none;">
-      <h2>8-Layer Decryption (Secure Ciphertext to English)</h2>
+      <h2>4-Layer Decryption (Secure Ciphertext to English)</h2>
       <textarea id="ciphertextInput" placeholder="Enter encrypted text..."></textarea>
       <div class="password-container">
         <input type="password" id="passwordDecrypt" placeholder="Enter password..." />
+        <button class="save-password" id="savePasswordDecrypt" title="Save Password">💾</button>
       </div>
       <button id="decryptButton" class="action">Decrypt</button>
-      <div id="decryptStatus" class="status"></div>
+      <!-- Loader for decryption -->
+      <img src="loader.gif" alt="Decrypting..." id="loaderDecrypt" class="loader" />
       <textarea id="plaintextOutput" placeholder="Decrypted output..." readonly></textarea>
       <div class="instruction">Long press and copy it</div>
     </div>
@@ -166,13 +193,11 @@
       return bytes.buffer;
     }
 
-    // Derive a key from the (modified) password and a given salt using PBKDF2.
-    // We modify the password by appending a layer-specific identifier.
-    async function deriveKey(password, salt, iterations, layerIndex) {
-      const modifiedPassword = password + "-layer" + layerIndex;
+    // Derive a key from the password and a given salt using PBKDF2.
+    async function deriveKey(password, salt, iterations) {
       const keyMaterial = await window.crypto.subtle.importKey(
         'raw',
-        str2ab(modifiedPassword),
+        str2ab(password),
         'PBKDF2',
         false,
         ['deriveKey']
@@ -192,15 +217,16 @@
     }
 
     // Encrypt one layer. 'data' is an ArrayBuffer.
-    async function encryptLayer(data, password, iterations, layerIndex) {
+    async function encryptLayer(data, password, iterations) {
       const salt = window.crypto.getRandomValues(new Uint8Array(16));
       const iv = window.crypto.getRandomValues(new Uint8Array(12));
-      const key = await deriveKey(password, salt, iterations, layerIndex);
+      const key = await deriveKey(password, salt, iterations);
       const ciphertextBuffer = await window.crypto.subtle.encrypt(
         { name: 'AES-GCM', iv: iv },
         key,
         data
       );
+      // Package: salt || iv || ciphertext.
       const packaged = new Uint8Array(salt.byteLength + iv.byteLength + ciphertextBuffer.byteLength);
       packaged.set(salt, 0);
       packaged.set(iv, salt.byteLength);
@@ -209,12 +235,12 @@
     }
 
     // Decrypt one layer.
-    async function decryptLayer(dataBuffer, password, iterations, layerIndex) {
+    async function decryptLayer(dataBuffer, password, iterations) {
       const data = new Uint8Array(dataBuffer);
       const salt = data.slice(0, 16);
       const iv = data.slice(16, 28);
       const ciphertext = data.slice(28);
-      const key = await deriveKey(password, salt, iterations, layerIndex);
+      const key = await deriveKey(password, salt, iterations);
       return window.crypto.subtle.decrypt(
         { name: 'AES-GCM', iv: iv },
         key,
@@ -222,58 +248,106 @@
       );
     }
 
-    // x4 Encryption: Eight sequential layers.
-    async function octupleEncrypt(plaintext, password) {
+    // x2 Encryption: Four sequential layers.
+    async function quadrupleEncrypt(plaintext, password) {
       let data = str2ab(plaintext);
-      const iterations = 2400000; // 2,400,000 iterations per layer
-      for (let i = 0; i < 8; i++) {
-        console.log("Encrypting layer", i);
-        data = await encryptLayer(data, password, iterations, i);
+      const iterations = 1200000; // 1,200,000 iterations per layer
+      for (let i = 0; i < 4; i++) {
+        data = await encryptLayer(data, password, iterations);
       }
       return arrayBufferToBase64(data);
     }
 
-    // x4 Decryption: Eight sequential layers in reverse.
-    async function octupleDecrypt(encryptedBase64, password) {
+    // x2 Decryption: Four sequential layers in reverse.
+    async function quadrupleDecrypt(encryptedBase64, password) {
       try {
         let dataBuffer = base64ToArrayBuffer(encryptedBase64);
-        const iterations = 2400000;
-        for (let i = 7; i >= 0; i--) {
-          console.log("Decrypting layer", i);
-          dataBuffer = await decryptLayer(dataBuffer, password, iterations, i);
+        const iterations = 1200000;
+        for (let i = 0; i < 4; i++) {
+          dataBuffer = await decryptLayer(dataBuffer, password, iterations);
         }
         return ab2str(dataBuffer);
       } catch (error) {
-        console.error("Decryption error:", error);
         return 'Decryption failed. Check your password or the encrypted text.';
       }
     }
 
-    // Event listeners for encryption and decryption.
+    // Save and load password to/from localStorage.
+    // Now saves password even if it's an empty string.
+    function savePassword(fieldId) {
+      const pwdField = document.getElementById(fieldId);
+      localStorage.setItem('savedPassword', pwdField.value);
+      alert('Password saved locally!');
+    }
+    function loadPassword() {
+      const saved = localStorage.getItem('savedPassword');
+      if (saved !== null) {
+        document.getElementById('passwordEncrypt').value = saved;
+        document.getElementById('passwordDecrypt').value = saved;
+      }
+    }
+    document.addEventListener('DOMContentLoaded', loadPassword);
+
+    // Event listeners for save buttons.
+    document.getElementById("savePasswordEncrypt").addEventListener("click", function() {
+      savePassword('passwordEncrypt');
+    });
+    document.getElementById("savePasswordDecrypt").addEventListener("click", function() {
+      savePassword('passwordDecrypt');
+    });
+
+    // Event listener for encryption.
     document.getElementById("encryptButton").addEventListener("click", async function() {
       const plaintext = document.getElementById("plaintextInput").value;
       const password = document.getElementById("passwordEncrypt").value;
-      if (!plaintext || !password) {
-        alert("Please enter both text and password.");
+      
+      // Allow saving and encrypting even if password is empty.
+      if (!plaintext) {
+        alert("Please enter the text to encrypt.");
         return;
       }
-      document.getElementById("encryptStatus").innerText = "Encryption in progress. Please wait...";
-      const ciphertext = await octupleEncrypt(plaintext, password);
+      
+      const encryptButton = document.getElementById("encryptButton");
+      const loaderEncrypt = document.getElementById("loaderEncrypt");
+
+      // Show loader and hide button
+      encryptButton.style.display = "none";
+      loaderEncrypt.style.display = "block";
+
+      // Perform encryption
+      const ciphertext = await quadrupleEncrypt(plaintext, password);
       document.getElementById("ciphertextOutput").value = ciphertext;
-      document.getElementById("encryptStatus").innerText = "Encryption complete.";
+
+      // Hide loader and show button
+      loaderEncrypt.style.display = "none";
+      encryptButton.style.display = "block";
     });
 
+    // Event listener for decryption.
     document.getElementById("decryptButton").addEventListener("click", async function() {
       const encryptedText = document.getElementById("ciphertextInput").value;
       const password = document.getElementById("passwordDecrypt").value;
-      if (!encryptedText || !password) {
-        alert("Please enter both encrypted text and password.");
+      
+      // Allow decrypting even if password is empty.
+      if (!encryptedText) {
+        alert("Please enter the encrypted text.");
         return;
       }
-      document.getElementById("decryptStatus").innerText = "Decryption in progress. Please wait...";
-      const plaintext = await octupleDecrypt(encryptedText, password);
+      
+      const decryptButton = document.getElementById("decryptButton");
+      const loaderDecrypt = document.getElementById("loaderDecrypt");
+
+      // Show loader and hide button
+      decryptButton.style.display = "none";
+      loaderDecrypt.style.display = "block";
+
+      // Perform decryption
+      const plaintext = await quadrupleDecrypt(encryptedText, password);
       document.getElementById("plaintextOutput").value = plaintext;
-      document.getElementById("decryptStatus").innerText = "Decryption complete.";
+
+      // Hide loader and show button
+      loaderDecrypt.style.display = "none";
+      decryptButton.style.display = "block";
     });
 
     // Tab switching between Encryptor and Decryptor.
