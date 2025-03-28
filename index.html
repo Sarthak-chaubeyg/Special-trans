@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <!-- Strict CSP: Only allow scripts with the matching nonce and styles from self -->
+  <!-- Strict CSP: only allow scripts with the matching nonce and styles from self -->
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'nonce-abc123'; style-src 'self' 'unsafe-inline';">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Double-Layer Encryption Tool</title>
+  <title>x3pro Four-Layer Encryption Tool</title>
   <style>
     /* Reset and basic styling */
     * {
@@ -48,7 +48,7 @@
       margin-bottom: 20px;
       padding: 30px;
       border-radius: 10px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     }
     h2 {
       text-align: center;
@@ -89,14 +89,13 @@
       font-size: 14px;
       color: #555;
     }
-    /* Loader styling */
     .loader {
       display: none;
       margin: 0 auto;
       width: 50px;
       height: 50px;
     }
-    @media (max-width: 600px) {
+    @media (max-width:600px) {
       .menu button {
         margin: 5px 0;
         width: 100%;
@@ -116,8 +115,8 @@
 
     <!-- Encryption Section -->
     <div id="encryptorSection" class="section">
-      <h2>Double-Layer Encryption</h2>
-      <textarea id="plaintextInput" placeholder="Enter text..."></textarea>
+      <h2>x3 pro Four-Layer Encryption</h2>
+      <textarea id="plaintextInput" placeholder="Enter text to encrypt..."></textarea>
       <input type="password" id="passwordEncrypt1" placeholder="Enter first password..." />
       <input type="password" id="passwordEncrypt2" placeholder="Enter second password..." />
       <button id="encryptButton" class="action">Encrypt</button>
@@ -127,9 +126,9 @@
     </div>
 
     <!-- Decryption Section -->
-    <div id="decryptorSection" class="section" style="display: none;">
-      <h2>Double-Layer Decryption</h2>
-      <textarea id="ciphertextInput" placeholder="Enter encrypted text..."></textarea>
+    <div id="decryptorSection" class="section" style="display:none;">
+      <h2>x3+ Four-Layer Decryption</h2>
+      <textarea id="ciphertextInput" placeholder="Enter text to decrypt..."></textarea>
       <input type="password" id="passwordDecrypt1" placeholder="Enter first password..." />
       <input type="password" id="passwordDecrypt2" placeholder="Enter second password..." />
       <button id="decryptButton" class="action">Decrypt</button>
@@ -139,11 +138,14 @@
     </div>
   </div>
 
-  <!-- The nonce attribute in the script tag matches the one required by our CSP -->
+  <!-- Inline script with nonce as required by CSP -->
   <script nonce="abc123">
-    // Note: All cryptographic operations occur client-side. Ensure that your browser is secure and up-to-date.
+    // All cryptographic operations are done client-side.
+    // WARNING: Use only on trusted devices and browsers.
 
-    // Utility functions for conversions.
+    const ITERATIONS = 300000; // High iteration count for strong key derivation
+
+    // Utility conversion functions
     function str2ab(str) {
       return new TextEncoder().encode(str);
     }
@@ -167,40 +169,51 @@
       }
       return bytes.buffer;
     }
+    function arrayBufferToHex(buffer) {
+      const bytes = new Uint8Array(buffer);
+      return Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
 
-    // Derive a key from a given password using PBKDF2 with 150,000 iterations.
-    async function deriveKey(password, salt, iterations) {
-      const keyMaterial = await window.crypto.subtle.importKey(
-        'raw',
+    // Transform a password using SHA-256 with a given salt string.
+    async function transformPassword(password, saltStr) {
+      const data = str2ab(saltStr + password);
+      const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+      // Use hex representation as the transformed password.
+      return arrayBufferToHex(hashBuffer);
+    }
+
+    // Derive a key from a password using PBKDF2.
+    async function deriveKey(password, salt, iterations = ITERATIONS) {
+      const keyMaterial = await crypto.subtle.importKey(
+        "raw",
         str2ab(password),
-        'PBKDF2',
+        "PBKDF2",
         false,
-        ['deriveKey']
+        ["deriveKey"]
       );
-      return window.crypto.subtle.deriveKey(
+      return crypto.subtle.deriveKey(
         {
-          name: 'PBKDF2',
+          name: "PBKDF2",
           salt: salt,
           iterations: iterations,
-          hash: 'SHA-256'
+          hash: "SHA-256"
         },
         keyMaterial,
-        { name: 'AES-GCM', length: 256 },
+        { name: "AES-GCM", length: 256 },
         false,
-        ['encrypt', 'decrypt']
+        ["encrypt", "decrypt"]
       );
     }
 
-    // Single-layer encryption using AES-GCM.
-    async function encryptLayer(plaintextOrBuffer, password) {
-      const iterations = 150000;
-      const salt = window.crypto.getRandomValues(new Uint8Array(16));
-      const iv = window.crypto.getRandomValues(new Uint8Array(12));
-      const key = await deriveKey(password, salt, iterations);
-      // Determine if input is a string or an ArrayBuffer.
-      const data = (plaintextOrBuffer instanceof ArrayBuffer) ? new Uint8Array(plaintextOrBuffer) : str2ab(plaintextOrBuffer);
-      const ciphertextBuffer = await window.crypto.subtle.encrypt(
-        { name: 'AES-GCM', iv: iv },
+    // Single-layer encryption with AES-GCM.
+    async function encryptLayer(dataInput, password) {
+      const salt = crypto.getRandomValues(new Uint8Array(16));
+      const iv = crypto.getRandomValues(new Uint8Array(12));
+      const key = await deriveKey(password, salt);
+      // Determine whether dataInput is a string or ArrayBuffer.
+      const data = (dataInput instanceof ArrayBuffer) ? new Uint8Array(dataInput) : str2ab(dataInput);
+      const ciphertextBuffer = await crypto.subtle.encrypt(
+        { name: "AES-GCM", iv: iv },
         key,
         data
       );
@@ -212,55 +225,68 @@
       return packaged.buffer;
     }
 
-    // Single-layer decryption using AES-GCM.
+    // Single-layer decryption with AES-GCM.
     async function decryptLayer(encryptedBuffer, password) {
       try {
-        const iterations = 150000;
         const data = new Uint8Array(encryptedBuffer);
         const salt = data.slice(0, 16);
         const iv = data.slice(16, 28);
         const ciphertext = data.slice(28);
-        const key = await deriveKey(password, salt, iterations);
-        return await window.crypto.subtle.decrypt(
-          { name: 'AES-GCM', iv: iv },
+        const key = await deriveKey(password, salt);
+        return await crypto.subtle.decrypt(
+          { name: "AES-GCM", iv: iv },
           key,
           ciphertext
         );
       } catch (error) {
-        throw new Error('Layer decryption failed.');
+        throw new Error("Layer decryption failed.");
       }
     }
 
-    // Double-layer encryption: First layer with password1, then second layer with password2.
-    async function doubleEncryptData(plaintext, password1, password2) {
-      // First layer encryption.
-      const firstLayerBuffer = await encryptLayer(plaintext, password1);
-      // Second layer encryption (encrypting the output of the first layer).
-      const secondLayerBuffer = await encryptLayer(firstLayerBuffer, password2);
+    // Four-layer encryption:
+    // Layer 1: Encrypt with password1.
+    // Layer 2: Encrypt the output of layer 1 with transformed(password1, "layer2").
+    // Layer 3: Encrypt with password2.
+    // Layer 4: Encrypt the output of layer 3 with transformed(password2, "layer4").
+    async function quadEncryptData(plaintext, password1, password2) {
+      // Layer 1
+      let layerData = await encryptLayer(plaintext, password1);
+      // Layer 2: use transformed version of password1.
+      const transformed1 = await transformPassword(password1, "layer2");
+      layerData = await encryptLayer(layerData, transformed1);
+      // Layer 3
+      layerData = await encryptLayer(layerData, password2);
+      // Layer 4: use transformed version of password2.
+      const transformed2 = await transformPassword(password2, "layer4");
+      layerData = await encryptLayer(layerData, transformed2);
       // Clear password variables.
-      password1 = null;
-      password2 = null;
-      return secondLayerBuffer;
+      password1 = password2 = null;
+      return layerData;
     }
 
-    // Double-layer decryption: Reverse order.
-    async function doubleDecryptData(encryptedBase64, password1, password2) {
+    // Four-layer decryption (reverse order).
+    async function quadDecryptData(encryptedBase64, password1, password2) {
       try {
-        const encryptedBuffer = base64ToArrayBuffer(encryptedBase64);
-        // First, decrypt the second (outer) layer with password2.
-        const firstDecryption = await decryptLayer(encryptedBuffer, password2);
-        // Then, decrypt the first (inner) layer with password1.
-        const decryptedBuffer = await decryptLayer(firstDecryption, password1);
+        let layerData = base64ToArrayBuffer(encryptedBase64);
+        // Layer 4: decrypt using transformed(password2, "layer4").
+        const transformed2 = await transformPassword(password2, "layer4");
+        layerData = await decryptLayer(layerData, transformed2);
+        // Layer 3: decrypt using password2.
+        layerData = await decryptLayer(layerData, password2);
+        // Layer 2: decrypt using transformed(password1, "layer2").
+        const transformed1 = await transformPassword(password1, "layer2");
+        layerData = await decryptLayer(layerData, transformed1);
+        // Layer 1: decrypt using password1.
+        layerData = await decryptLayer(layerData, password1);
         // Clear password variables.
-        password1 = null;
-        password2 = null;
-        return ab2str(decryptedBuffer);
+        password1 = password2 = null;
+        return ab2str(layerData);
       } catch (error) {
-        return 'Decryption failed. Check your passwords or the encrypted text.';
+        return "Decryption failed. Check your passwords or the encrypted text.";
       }
     }
 
-    // Event listener for encryption.
+    // Event listeners for encryption and decryption.
     document.getElementById("encryptButton").addEventListener("click", async function() {
       const plaintext = document.getElementById("plaintextInput").value;
       const password1 = document.getElementById("passwordEncrypt1").value;
@@ -275,7 +301,7 @@
       encryptButton.style.display = "none";
       loaderEncrypt.style.display = "block";
 
-      const encryptedBuffer = await doubleEncryptData(plaintext, password1, password2);
+      const encryptedBuffer = await quadEncryptData(plaintext, password1, password2);
       const ciphertext = arrayBufferToBase64(encryptedBuffer);
       document.getElementById("ciphertextOutput").value = ciphertext;
 
@@ -283,7 +309,6 @@
       encryptButton.style.display = "block";
     });
 
-    // Event listener for decryption.
     document.getElementById("decryptButton").addEventListener("click", async function() {
       const encryptedText = document.getElementById("ciphertextInput").value;
       const password1 = document.getElementById("passwordDecrypt1").value;
@@ -298,14 +323,14 @@
       decryptButton.style.display = "none";
       loaderDecrypt.style.display = "block";
 
-      const plaintext = await doubleDecryptData(encryptedText, password1, password2);
+      const plaintext = await quadDecryptData(encryptedText, password1, password2);
       document.getElementById("plaintextOutput").value = plaintext;
 
       loaderDecrypt.style.display = "none";
       decryptButton.style.display = "block";
     });
 
-    // Tab switching between Encryptor and Decryptor sections.
+    // Tab switching for Encryptor/Decryptor.
     document.getElementById("encryptorTab").addEventListener("click", function() {
       document.getElementById("encryptorSection").style.display = "block";
       document.getElementById("decryptorSection").style.display = "none";
