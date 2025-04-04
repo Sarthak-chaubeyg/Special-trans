@@ -2,139 +2,305 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <!-- Strict CSP: only allow scripts with the matching nonce and styles from self -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'nonce-abc123'; style-src 'self' 'unsafe-inline';">
+  <!-- Strict CSP: only allow scripts with the matching nonce and styles from self plus CDN resources -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'nonce-abc123' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; font-src 'self' https://cdnjs.cloudflare.com;">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>x3pro Four-Layer Encryption Tool</title>
+  <!-- Modern UI Libraries -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <!-- Custom Styles -->
   <style>
-    /* Reset and basic styling */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+    :root {
+      --primary-color: #5e72e4;
+      --primary-dark: #324cdd;
+      --secondary-color: #11cdef;
+      --success-color: #2dce89;
+      --warning-color: #fb6340;
+      --light-gray: #f7fafc;
+      --card-shadow: 0 15px 35px rgba(50, 50, 93, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07);
     }
+    
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #f7f7f7;
-      color: #333;
-      line-height: 1.6;
-      padding: 20px;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(to right, #f7fafc, #ebf4ff);
+      min-height: 100vh;
     }
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 20px;
+    
+    .glass-morphism {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
     }
-    .menu {
-      text-align: center;
-      margin-bottom: 20px;
+    
+    .card {
+      transition: all 0.3s ease;
+      box-shadow: var(--card-shadow);
     }
-    .menu button {
-      padding: 12px 24px;
-      margin: 0 10px;
-      border: none;
-      background: #007BFF;
-      color: #fff;
-      font-size: 16px;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: background 0.3s ease;
+    
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(50, 50, 93, 0.15), 0 10px 20px rgba(0, 0, 0, 0.1);
     }
-    .menu button:hover {
-      background: #0056b3;
+    
+    .tab-button {
+      position: relative;
+      transition: all 0.3s ease;
+      overflow: hidden;
     }
-    .section {
-      background: #fff;
-      margin-bottom: 20px;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    
+    .tab-button:after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 3px;
+      background: var(--primary-color);
+      transition: width 0.3s ease;
     }
-    h2 {
-      text-align: center;
-      margin-bottom: 20px;
-      font-size: 24px;
-      color: #444;
+    
+    .tab-button.active:after {
+      width: 80%;
     }
-    textarea, input[type="password"] {
-      width: 100%;
-      padding: 12px;
-      font-size: 16px;
-      margin-bottom: 15px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      transition: border 0.3s ease;
+    
+    .tab-button.active {
+      color: var(--primary-color);
+      font-weight: 600;
     }
-    textarea:focus, input[type="password"]:focus {
-      border-color: #007BFF;
-      outline: none;
+    
+    .action-btn {
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s ease;
     }
-    button.action {
-      width: 100%;
-      padding: 12px;
-      font-size: 18px;
-      border: none;
-      background: #28a745;
-      color: #fff;
-      cursor: pointer;
-      border-radius: 4px;
-      transition: background 0.3s ease;
-      margin-bottom: 10px;
+    
+    .action-btn::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 300px;
+      height: 300px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      transition: transform 0.5s ease;
     }
-    button.action:hover {
-      background: #218838;
+    
+    .action-btn:active::before {
+      transform: translate(-50%, -50%) scale(1);
     }
-    .instruction {
-      text-align: right;
-      font-size: 14px;
-      color: #555;
+    
+    .input-focused {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(94, 114, 228, 0.15);
     }
+    
     .loader {
+      width: 48px;
+      height: 48px;
       display: none;
       margin: 0 auto;
-      width: 50px;
-      height: 50px;
+      position: relative;
     }
-    @media (max-width:600px) {
-      .menu button {
-        margin: 5px 0;
-        width: 100%;
+    
+    .loader:before, .loader:after {
+      content: '';
+      position: absolute;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--primary-color);
+      opacity: 0.7;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    
+    .loader:after {
+      animation-delay: -1s;
+    }
+    
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(0);
+        opacity: 0.7;
       }
-      button.action {
-        font-size: 16px;
+      50% {
+        transform: scale(1);
+        opacity: 0;
       }
+    }
+    
+    .floating-bg {
+      position: fixed;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+      filter: blur(150px);
+      opacity: 0.3;
+      z-index: -1;
+    }
+    
+    .bg-1 {
+      top: -100px;
+      left: -100px;
+    }
+    
+    .bg-2 {
+      bottom: -100px;
+      right: -100px;
+      background: linear-gradient(to right, var(--secondary-color), var(--success-color));
+    }
+    
+    .copy-tooltip {
+      position: absolute;
+      right: 15px;
+      bottom: 15px;
+      padding: 5px 15px;
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      border-radius: 4px;
+      font-size: 12px;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.3s ease;
+    }
+    
+    .copy-tooltip.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .output-container {
+      position: relative;
+    }
+    
+    .password-toggle {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: #718096;
+    }
+    
+    .fancy-input {
+      transition: all 0.3s ease;
+    }
+    
+    .fancy-input:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(94, 114, 228, 0.15);
     }
   </style>
 </head>
-<body>
-  <div class="container">
-    <div class="menu">
-      <button id="encryptorTab">Encryptor</button>
-      <button id="decryptorTab">Decryptor</button>
+<body class="py-8 px-4">
+  <!-- Background elements -->
+  <div class="floating-bg bg-1"></div>
+  <div class="floating-bg bg-2"></div>
+
+  <div class="max-w-4xl mx-auto">
+    <div class="text-center mb-8 animate__animated animate__fadeIn">
+      <h1 class="text-4xl font-bold text-gray-800 mb-2">x3pro Four-Layer Encryption</h1>
+      <p class="text-gray-600">Secure your sensitive information with advanced encryption</p>
+    </div>
+    
+    <!-- Tab Navigation -->
+    <div class="flex justify-center mb-8 animate__animated animate__fadeIn">
+      <div class="glass-morphism p-2 rounded-full shadow-md">
+        <button id="encryptorTab" class="tab-button active px-8 py-2 rounded-full text-gray-700 focus:outline-none">Encrypt</button>
+        <button id="decryptorTab" class="tab-button px-8 py-2 rounded-full text-gray-700 focus:outline-none">Decrypt</button>
+      </div>
     </div>
 
     <!-- Encryption Section -->
-    <div id="encryptorSection" class="section">
-      <h2>x3 pro Four-Layer Encryption</h2>
-      <textarea id="plaintextInput" placeholder="Enter text to encrypt..."></textarea>
-      <input type="password" id="passwordEncrypt1" placeholder="Enter first password..." />
-      <input type="password" id="passwordEncrypt2" placeholder="Enter second password..." />
-      <button id="encryptButton" class="action">Encrypt</button>
-      <img src="loader.gif" alt="Encrypting..." id="loaderEncrypt" class="loader" />
-      <textarea id="ciphertextOutput" placeholder="Encrypted output..." readonly></textarea>
-      <div class="instruction">Long press and copy it</div>
+    <div id="encryptorSection" class="animate__animated animate__fadeIn">
+      <div class="card glass-morphism p-8 mb-8">
+        <h2 class="text-2xl font-semibold text-center text-gray-800 mb-6">
+          <span class="text-primary">Encrypt</span> Your Message
+        </h2>
+        
+        <div class="mb-6">
+          <label class="block text-sm font-medium text-gray-700 mb-2">Message</label>
+          <textarea id="plaintextInput" class="fancy-input w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:outline-none" rows="5" placeholder="Enter text to encrypt..."></textarea>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+          <div class="relative">
+            <label class="block text-sm font-medium text-gray-700 mb-2">First Password</label>
+            <input type="password" id="passwordEncrypt1" class="fancy-input w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:outline-none" placeholder="Enter first password..." />
+            <span class="password-toggle" data-for="passwordEncrypt1">👁️</span>
+          </div>
+          
+          <div class="relative">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Second Password</label>
+            <input type="password" id="passwordEncrypt2" class="fancy-input w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:outline-none" placeholder="Enter second password..." />
+            <span class="password-toggle" data-for="passwordEncrypt2">👁️</span>
+          </div>
+        </div>
+        
+        <button id="encryptButton" class="action-btn w-full py-3 px-6 bg-gradient-to-r from-primary-dark to-primary-color text-white font-medium rounded-lg shadow-md hover:shadow-lg focus:outline-none" style="background: linear-gradient(to right, var(--primary-dark), var(--primary-color));">
+          Encrypt Message
+        </button>
+        
+        <div id="loaderEncrypt" class="loader my-4"></div>
+        
+        <div class="mt-6 output-container">
+          <label class="block text-sm font-medium text-gray-700 mb-2">Encrypted Result</label>
+          <textarea id="ciphertextOutput" class="fancy-input w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:outline-none" rows="5" placeholder="Encrypted output will appear here..." readonly></textarea>
+          <button id="copyEncrypted" class="mt-2 px-4 py-2 text-sm bg-gray-100 hover:bg-gray-200 rounded-lg text-gray-700 focus:outline-none transition">Copy to Clipboard</button>
+          <div id="copyEncryptedTooltip" class="copy-tooltip">Copied!</div>
+        </div>
+      </div>
     </div>
 
     <!-- Decryption Section -->
-    <div id="decryptorSection" class="section" style="display:none;">
-      <h2>x3 pro Four-Layer Decryption</h2>
-      <textarea id="ciphertextInput" placeholder="Enter text to decrypt..."></textarea>
-      <input type="password" id="passwordDecrypt1" placeholder="Enter first password..." />
-      <input type="password" id="passwordDecrypt2" placeholder="Enter second password..." />
-      <button id="decryptButton" class="action">Decrypt</button>
-      <img src="loader.gif" alt="Decrypting..." id="loaderDecrypt" class="loader" />
-      <textarea id="plaintextOutput" placeholder="Decrypted output..." readonly></textarea>
-      <div class="instruction">Long press and copy it</div>
+    <div id="decryptorSection" class="animate__animated animate__fadeIn" style="display:none;">
+      <div class="card glass-morphism p-8 mb-8">
+        <h2 class="text-2xl font-semibold text-center text-gray-800 mb-6">
+          <span class="text-primary">Decrypt</span> Your Message
+        </h2>
+        
+        <div class="mb-6">
+          <label class="block text-sm font-medium text-gray-700 mb-2">Encrypted Message</label>
+          <textarea id="ciphertextInput" class="fancy-input w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:outline-none" rows="5" placeholder="Enter text to decrypt..."></textarea>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+          <div class="relative">
+            <label class="block text-sm font-medium text-gray-700 mb-2">First Password</label>
+            <input type="password" id="passwordDecrypt1" class="fancy-input w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:outline-none" placeholder="Enter first password..." />
+            <span class="password-toggle" data-for="passwordDecrypt1">👁️</span>
+          </div>
+          
+          <div class="relative">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Second Password</label>
+            <input type="password" id="passwordDecrypt2" class="fancy-input w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:outline-none" placeholder="Enter second password..." />
+            <span class="password-toggle" data-for="passwordDecrypt2">👁️</span>
+          </div>
+        </div>
+        
+        <button id="decryptButton" class="action-btn w-full py-3 px-6 bg-gradient-to-r from-secondary-color to-success-color text-white font-medium rounded-lg shadow-md hover:shadow-lg focus:outline-none" style="background: linear-gradient(to right, var(--secondary-color), var(--success-color));">
+          Decrypt Message
+        </button>
+        
+        <div id="loaderDecrypt" class="loader my-4"></div>
+        
+        <div class="mt-6 output-container">
+          <label class="block text-sm font-medium text-gray-700 mb-2">Decrypted Result</label>
+          <textarea id="plaintextOutput" class="fancy-input w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:outline-none" rows="5" placeholder="Decrypted output will appear here..." readonly></textarea>
+          <button id="copyDecrypted" class="mt-2 px-4 py-2 text-sm bg-gray-100 hover:bg-gray-200 rounded-lg text-gray-700 focus:outline-none transition">Copy to Clipboard</button>
+          <div id="copyDecryptedTooltip" class="copy-tooltip">Copied!</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Footer -->
+    <div class="text-center text-gray-500 text-sm animate__animated animate__fadeIn">
+      <p>x3pro Four-Layer Encryption Tool • <span class="text-gray-400">Client-side encryption for your privacy</span></p>
     </div>
   </div>
 
@@ -286,7 +452,108 @@
       }
     }
 
-    // Event listeners for encryption and decryption.
+    // UI Event Handlers and Animation
+    document.addEventListener('DOMContentLoaded', function() {
+      // Tab switching
+      const encryptorTab = document.getElementById('encryptorTab');
+      const decryptorTab = document.getElementById('decryptorTab');
+      const encryptorSection = document.getElementById('encryptorSection');
+      const decryptorSection = document.getElementById('decryptorSection');
+      
+      encryptorTab.addEventListener('click', function() {
+        encryptorTab.classList.add('active');
+        decryptorTab.classList.remove('active');
+        
+        encryptorSection.style.display = 'block';
+        encryptorSection.classList.add('animate__fadeIn');
+        
+        decryptorSection.classList.add('animate__fadeOut');
+        setTimeout(() => {
+          decryptorSection.style.display = 'none';
+          decryptorSection.classList.remove('animate__fadeOut');
+          encryptorSection.classList.remove('animate__fadeIn');
+        }, 500);
+      });
+      
+      decryptorTab.addEventListener('click', function() {
+        decryptorTab.classList.add('active');
+        encryptorTab.classList.remove('active');
+        
+        decryptorSection.style.display = 'block';
+        decryptorSection.classList.add('animate__fadeIn');
+        
+        encryptorSection.classList.add('animate__fadeOut');
+        setTimeout(() => {
+          encryptorSection.style.display = 'none';
+          encryptorSection.classList.remove('animate__fadeOut');
+          decryptorSection.classList.remove('animate__fadeIn');
+        }, 500);
+      });
+      
+      // Password visibility toggle
+      document.querySelectorAll('.password-toggle').forEach(toggle => {
+        toggle.addEventListener('click', function() {
+          const inputId = this.getAttribute('data-for');
+          const input = document.getElementById(inputId);
+          
+          if (input.type === 'password') {
+            input.type = 'text';
+            this.textContent = '👁️‍🗨️';
+          } else {
+            input.type = 'password';
+            this.textContent = '👁️';
+          }
+        });
+      });
+      
+      // Copy to clipboard functionality
+      function setupCopyButton(buttonId, textareaId, tooltipId) {
+        const button = document.getElementById(buttonId);
+        const textarea = document.getElementById(textareaId);
+        const tooltip = document.getElementById(tooltipId);
+        
+        button.addEventListener('click', function() {
+          if (textarea.value) {
+            navigator.clipboard.writeText(textarea.value)
+              .then(() => {
+                tooltip.classList.add('visible');
+                setTimeout(() => {
+                  tooltip.classList.remove('visible');
+                }, 1500);
+              })
+              .catch(err => {
+                console.error('Could not copy text: ', err);
+              });
+          }
+        });
+      }
+      
+      setupCopyButton('copyEncrypted', 'ciphertextOutput', 'copyEncryptedTooltip');
+      setupCopyButton('copyDecrypted', 'plaintextOutput', 'copyDecryptedTooltip');
+      
+      // Input focus animation
+      document.querySelectorAll('.fancy-input').forEach(input => {
+        input.addEventListener('focus', function() {
+          this.classList.add('input-focused');
+        });
+        
+        input.addEventListener('blur', function() {
+          this.classList.remove('input-focused');
+        });
+      });
+      
+      // Button animation
+      document.querySelectorAll('.action-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          this.classList.add('animate__animated', 'animate__pulse');
+          setTimeout(() => {
+            this.classList.remove('animate__animated', 'animate__pulse');
+          }, 800);
+        });
+      });
+    });
+
+    // Encrypt button handler
     document.getElementById("encryptButton").addEventListener("click", async function() {
       const plaintext = document.getElementById("plaintextInput").value;
       const password1 = document.getElementById("passwordEncrypt1").value;
@@ -295,20 +562,46 @@
       const loaderEncrypt = document.getElementById("loaderEncrypt");
 
       if (!plaintext || !password1 || !password2) {
-        alert("Please enter text and both passwords.");
+        // Add animation to highlight missing fields
+        if (!plaintext) {
+          const input = document.getElementById("plaintextInput");
+          input.classList.add('animate__animated', 'animate__shakeX', 'border-red-500');
+          setTimeout(() => input.classList.remove('animate__animated', 'animate__shakeX', 'border-red-500'), 1000);
+        }
+        if (!password1) {
+          const input = document.getElementById("passwordEncrypt1");
+          input.classList.add('animate__animated', 'animate__shakeX', 'border-red-500');
+          setTimeout(() => input.classList.remove('animate__animated', 'animate__shakeX', 'border-red-500'), 1000);
+        }
+        if (!password2) {
+          const input = document.getElementById("passwordEncrypt2");
+          input.classList.add('animate__animated', 'animate__shakeX', 'border-red-500');
+          setTimeout(() => input.classList.remove('animate__animated', 'animate__shakeX', 'border-red-500'), 1000);
+        }
         return;
       }
+      
       encryptButton.style.display = "none";
       loaderEncrypt.style.display = "block";
 
-      const encryptedBuffer = await quadEncryptData(plaintext, password1, password2);
-      const ciphertext = arrayBufferToBase64(encryptedBuffer);
-      document.getElementById("ciphertextOutput").value = ciphertext;
+      try {
+        const encryptedBuffer = await quadEncryptData(plaintext, password1, password2);
+        const ciphertext = arrayBufferToBase64(encryptedBuffer);
+        const outputField = document.getElementById("ciphertextOutput");
+        outputField.value = ciphertext;
+        
+        // Animate the result appearance
+        outputField.classList.add('animate__animated', 'animate__fadeIn');
+        setTimeout(() => outputField.classList.remove('animate__animated', 'animate__fadeIn'), 1000);
+      } catch (error) {
+        console.error("Encryption failed:", error);
+      }
 
       loaderEncrypt.style.display = "none";
       encryptButton.style.display = "block";
     });
 
+    // Decrypt button handler
     document.getElementById("decryptButton").addEventListener("click", async function() {
       const encryptedText = document.getElementById("ciphertextInput").value;
       const password1 = document.getElementById("passwordDecrypt1").value;
@@ -317,27 +610,51 @@
       const loaderDecrypt = document.getElementById("loaderDecrypt");
 
       if (!encryptedText || !password1 || !password2) {
-        alert("Please enter encrypted text and both passwords.");
+        // Add animation to highlight missing fields
+        if (!encryptedText) {
+          const input = document.getElementById("ciphertextInput");
+          input.classList.add('animate__animated', 'animate__shakeX', 'border-red-500');
+          setTimeout(() => input.classList.remove('animate__animated', 'animate__shakeX', 'border-red-500'), 1000);
+        }
+        if (!password1) {
+          const input = document.getElementById("passwordDecrypt1");
+          input.classList.add('animate__animated', 'animate__shakeX', 'border-red-500');
+          setTimeout(() => input.classList.remove('animate__animated', 'animate__shakeX', 'border-red-500'), 1000);
+        }
+        if (!password2) {
+          const input = document.getElementById("passwordDecrypt2");
+          input.classList.add('animate__animated', 'animate__shakeX', 'border-red-500');
+          setTimeout(() => input.classList.remove('animate__animated', 'animate__shakeX', 'border-red-500'), 1000);
+        }
         return;
       }
+      
       decryptButton.style.display = "none";
       loaderDecrypt.style.display = "block";
 
-      const plaintext = await quadDecryptData(encryptedText, password1, password2);
-      document.getElementById("plaintextOutput").value = plaintext;
+      try {
+        const plaintext = await quadDecryptData(encryptedText, password1, password2);
+        const outputField = document.getElementById("plaintextOutput");
+        outputField.value = plaintext;
+        
+        // Animate the result appearance
+        outputField.classList.add('animate__animated', 'animate__fadeIn');
+        setTimeout(() => outputField.classList.remove('animate__animated', 'animate__fadeIn'), 1000);
+        
+        // Add animation for success or failure
+        if (plaintext.includes("Decryption failed")) {
+          outputField.classList.add('border-red-500');
+          setTimeout(() => outputField.classList.remove('border-red-500'), 3000);
+        } else {
+          outputField.classList.add('border-green-500');
+          setTimeout(() => outputField.classList.remove('border-green-500'), 3000);
+        }
+      } catch (error) {
+        console.error("Decryption failed:", error);
+      }
 
       loaderDecrypt.style.display = "none";
       decryptButton.style.display = "block";
-    });
-
-    // Tab switching for Encryptor/Decryptor.
-    document.getElementById("encryptorTab").addEventListener("click", function() {
-      document.getElementById("encryptorSection").style.display = "block";
-      document.getElementById("decryptorSection").style.display = "none";
-    });
-    document.getElementById("decryptorTab").addEventListener("click", function() {
-      document.getElementById("decryptorSection").style.display = "block";
-      document.getElementById("encryptorSection").style.display = "none";
     });
   </script>
 </body>
