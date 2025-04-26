@@ -1,5 +1,8 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
   <head>
+    <meta charset="UTF-8">
+    <title>Maintenance</title>
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -16,38 +19,65 @@
       .volume-control {
         margin-top: 20px;
       }
+      input[type="range"] {
+        vertical-align: middle;
+      }
     </style>
   </head>
   <body>
-    <p>Website under maintenance. We are working with our new model and making it more secure. Here are some images from our team while doing some tests.</p>
+    <p>
+      Website under maintenance. We are working on our new model and making it more secure.
+      Here are some images from our team while doing some tests.
+    </p>
     
-    <img src="img1.png" alt="Team test 1" height="400px" width="460px">
-    <img src="img2.jpg" alt="Team test 2" height="400px" width="460px">
+    <img src="img1.png" alt="Team test 1" height="400" width="460">
+    <img src="img2.jpg" alt="Team test 2" height="400" width="460">
     
-    <!-- Audio element to play background music -->
-    <audio id="background-audio" loop>
+    <!-- Audio: start muted so autoplay is allowed, then unmute on slider interaction -->
+    <audio
+      id="background-audio"
+      autoplay
+      loop
+      muted
+      playsinline
+    >
       <source src="theme.mp3" type="audio/mp3">
       Your browser does not support the audio element.
     </audio>
     
-    <!-- Volume Control -->
     <div class="volume-control">
       <label for="volume">Background Sound:</label>
-      <input type="range" id="volume" name="volume" min="0" max="1" step="0.01" value="0.5" oninput="changeVolume()">
+      <input
+        type="range"
+        id="volume"
+        name="volume"
+        min="0"
+        max="1"
+        step="0.01"
+        value="0.5"
+        oninput="changeVolume()"
+      >
       <span id="volume-label">50%</span>
     </div>
 
     <script>
-      // Function to start audio on page load (bypassing autoplay restrictions)
-      window.onload = function() {
+      // On load, set audio volume to match the slider
+      document.addEventListener('DOMContentLoaded', function() {
         var audio = document.getElementById("background-audio");
-        audio.play(); // Play the audio when the page is loaded
-      };
+        var slider = document.getElementById("volume");
+        audio.volume = parseFloat(slider.value);
+      });
 
-      // Function to change the volume of the audio
+      // When the user moves the slider, actually unmute and adjust volume
       function changeVolume() {
         var audio = document.getElementById("background-audio");
-        var volume = document.getElementById("volume").value;
+        var volume = parseFloat(document.getElementById("volume").value);
+        
+        // Unmute if it was muted (user gesture)
+        if (audio.muted) {
+          audio.muted = false;
+        }
+        
         audio.volume = volume;
         document.getElementById("volume-label").innerText = Math.round(volume * 100) + "%";
       }
