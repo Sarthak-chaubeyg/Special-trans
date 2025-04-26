@@ -20,72 +20,38 @@
         max-width: 90%;
         height: auto;
       }
-      .volume-control {
-        margin-top: 20px;
-        display: inline-flex;
-        align-items: center;
-      }
-      .volume-control label {
-        margin-right: 8px;
-        font-size: 16px;
-        color: #555;
-      }
-      input[type="range"] {
-        vertical-align: middle;
-        cursor: pointer;
+      /* hide the audio element completely */
+      #bg-audio {
+        display: none;
       }
     </style>
   </head>
   <body>
     <p>
-      Website under maintenance.  
-      We’re working on our new model and tightening up security.
-      Here are some behind-the-scenes shots from our testing lab.
+      Website under maintenance.<br>
+      We’re upgrading our model and tightening security.  
+      Enjoy a little background tune while you wait!
     </p>
     
-    <img src="img1.png" alt="Team performing security tests" width="460" height="400">
-    <img src="img2.jpg" alt="Engineers running diagnostics" width="460" height="400">
+    <img src="img1.png" alt="Team test 1" width="460" height="400">
+    <img src="img2.jpg" alt="Team test 2" width="460" height="400">
     
-    <!-- Audio: autoplay muted, then unmute on slider interaction -->
+    <!-- invisible audio -->
     <audio
       id="bg-audio"
       src="theme.mp3"
-      controls
       autoplay
-      muted
-    >
-      Your browser does not support the audio element.
-    </audio>
-    
-    <div class="volume-control">
-      <label for="volume-slider">Volume</label>
-      <input
-        type="range"
-        id="volume-slider"
-        min="0"
-        max="1"
-        step="0.01"
-        value="0.5"
-        aria-labelledby="volume-slider"
-      >
-    </div>
+      loop
+    ></audio>
     
     <script>
-      (function() {
+      document.addEventListener('DOMContentLoaded', () => {
         const audio = document.getElementById('bg-audio');
-        const slider = document.getElementById('volume-slider');
-        
-        // Initialize audio volume
-        audio.volume = slider.value;
-        
-        slider.addEventListener('input', () => {
-          // First slide unmutes
-          if (audio.muted) {
-            audio.muted = false;
-          }
-          audio.volume = slider.value;
+        // try to force-play in case some browsers still block autoplay
+        audio.play().catch(err => {
+          console.warn('Autoplay was blocked:', err);
         });
-      })();
+      });
     </script>
   </body>
 </html>
