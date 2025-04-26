@@ -1,7 +1,50 @@
 <html>
+  <head>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+      }
+      p {
+        font-size: 22px;
+        color: #333;
+      }
+      img {
+        margin: 20px;
+        border: 2px solid #ccc;
+      }
+      .volume-control {
+        margin-top: 20px;
+      }
+    </style>
+  </head>
   <body>
-    <p style="font-size:22px;">Website under maintenance. We are working with our new model and making it more secure. Here are some images from our team while doing some tests. </p>
-    <img src="img1.png" height="400px" width="460px">
-    <img src="img2.jpg" height="400px" width="460px">
+    <p>Website under maintenance. We are working with our new model and making it more secure. Here are some images from our team while doing some tests.</p>
+    
+    <img src="img1.png" alt="Team test 1" height="400px" width="460px">
+    <img src="img2.jpg" alt="Team test 2" height="400px" width="460px">
+    
+    <!-- Audio element to play background music -->
+    <audio id="background-audio" autoplay loop>
+      <source src="theme.mp3" type="audio/mp3">
+      Your browser does not support the audio element.
+    </audio>
+    
+    <!-- Volume Control -->
+    <div class="volume-control">
+      <label for="volume">Background Sound:</label>
+      <input type="range" id="volume" name="volume" min="0" max="1" step="0.01" value="0.5" oninput="changeVolume()">
+      <span id="volume-label">50%</span>
+    </div>
+
+    <script>
+      // Function to change the volume of the audio
+      function changeVolume() {
+        var audio = document.getElementById("background-audio");
+        var volume = document.getElementById("volume").value;
+        audio.volume = volume;
+        document.getElementById("volume-label").innerText = Math.round(volume * 100) + "%";
+      }
+    </script>
   </body>
 </html>
