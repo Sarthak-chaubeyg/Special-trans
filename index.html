@@ -7,6 +7,8 @@
       body {
         font-family: Arial, sans-serif;
         text-align: center;
+        padding: 40px;
+        background: #f9f9f9;
       }
       p {
         font-size: 22px;
@@ -15,31 +17,75 @@
       img {
         margin: 20px;
         border: 2px solid #ccc;
+        max-width: 90%;
+        height: auto;
       }
       .volume-control {
         margin-top: 20px;
+        display: inline-flex;
+        align-items: center;
+      }
+      .volume-control label {
+        margin-right: 8px;
+        font-size: 16px;
+        color: #555;
       }
       input[type="range"] {
         vertical-align: middle;
+        cursor: pointer;
       }
     </style>
   </head>
   <body>
     <p>
-      Website under maintenance. We are working on our new model and making it more secure.
-      Here are some images from our team while doing some tests.
+      Website under maintenance.  
+      We’re working on our new model and tightening up security.
+      Here are some behind-the-scenes shots from our testing lab.
     </p>
     
-    <img src="img1.png" alt="Team test 1" height="400" width="460">
-    <img src="img2.jpg" alt="Team test 2" height="400" width="460">
+    <img src="img1.png" alt="Team performing security tests" width="460" height="400">
+    <img src="img2.jpg" alt="Engineers running diagnostics" width="460" height="400">
     
-    <!-- Audio: start muted so autoplay is allowed, then unmute on slider interaction -->
-    
-      <audio src="theme.mp3" controls>
+    <!-- Audio: autoplay muted, then unmute on slider interaction -->
+    <audio
+      id="bg-audio"
+      src="theme.mp3"
+      controls
+      autoplay
+      muted
+    >
       Your browser does not support the audio element.
     </audio>
+    
+    <div class="volume-control">
+      <label for="volume-slider">Volume</label>
+      <input
+        type="range"
+        id="volume-slider"
+        min="0"
+        max="1"
+        step="0.01"
+        value="0.5"
+        aria-labelledby="volume-slider"
+      >
+    </div>
+    
     <script>
-      
+      (function() {
+        const audio = document.getElementById('bg-audio');
+        const slider = document.getElementById('volume-slider');
+        
+        // Initialize audio volume
+        audio.volume = slider.value;
+        
+        slider.addEventListener('input', () => {
+          // First slide unmutes
+          if (audio.muted) {
+            audio.muted = false;
+          }
+          audio.volume = slider.value;
+        });
+      })();
     </script>
   </body>
 </html>
