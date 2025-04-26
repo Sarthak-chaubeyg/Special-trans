@@ -20,9 +20,8 @@
         max-width: 90%;
         height: auto;
       }
-      /* hide the audio element completely */
-      #bg-audio {
-        display: none;
+      .audio-container {
+        margin-top: 20px;
       }
     </style>
   </head>
@@ -36,22 +35,17 @@
     <img src="img1.png" alt="Team test 1" width="460" height="400">
     <img src="img2.jpg" alt="Team test 2" width="460" height="400">
     
-    <!-- invisible audio -->
-    <audio
-      id="bg-audio"
-      src="theme.mp3"
-      autoplay
-      loop
-    ></audio>
+    <!-- Audio with controls below the images -->
+    <div class="audio-container">
+      <audio
+        src="theme.mp3"
+        controls
+        autoplay
+        loop
+      >
+        Your browser does not support the audio element.
+      </audio>
+    </div>
     
-    <script>
-      document.addEventListener('DOMContentLoaded', () => {
-        const audio = document.getElementById('bg-audio');
-        // try to force-play in case some browsers still block autoplay
-        audio.play().catch(err => {
-          console.warn('Autoplay was blocked:', err);
-        });
-      });
-    </script>
   </body>
 </html>
