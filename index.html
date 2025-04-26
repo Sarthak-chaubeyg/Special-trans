@@ -34,53 +34,12 @@
     <img src="img2.jpg" alt="Team test 2" height="400" width="460">
     
     <!-- Audio: start muted so autoplay is allowed, then unmute on slider interaction -->
-    <audio
-      id="background-audio"
-      autoplay
-      loop
-      muted
-      playsinline
-    >
-      <source src="theme.mp3" type="audio/mp3">
+    
+      <audio src="theme.mp3" controls>
       Your browser does not support the audio element.
     </audio>
-    
-    <div class="volume-control">
-      <label for="volume">Background Sound:</label>
-      <input
-        type="range"
-        id="volume"
-        name="volume"
-        min="0"
-        max="1"
-        step="0.01"
-        value="0.5"
-        oninput="changeVolume()"
-      >
-      <span id="volume-label">50%</span>
-    </div>
-
     <script>
-      // On load, set audio volume to match the slider
-      document.addEventListener('DOMContentLoaded', function() {
-        var audio = document.getElementById("background-audio");
-        var slider = document.getElementById("volume");
-        audio.volume = parseFloat(slider.value);
-      });
-
-      // When the user moves the slider, actually unmute and adjust volume
-      function changeVolume() {
-        var audio = document.getElementById("background-audio");
-        var volume = parseFloat(document.getElementById("volume").value);
-        
-        // Unmute if it was muted (user gesture)
-        if (audio.muted) {
-          audio.muted = false;
-        }
-        
-        audio.volume = volume;
-        document.getElementById("volume-label").innerText = Math.round(volume * 100) + "%";
-      }
+      
     </script>
   </body>
 </html>
