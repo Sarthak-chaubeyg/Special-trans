@@ -1,67 +1,919 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maintenance</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        text-align: center;
-        padding: 40px;
-        background: #f9f9f9;
-      }
-      p {
-        font-size: 18px;
-        color: #333;
-      }
-      img {
-        margin: 20px;
-        border: 2px solid #ccc;
-        max-width: 90%;
-        height: auto;
-      }
-      .audio-container {
-        margin-top: 20px;
-      }
-    </style>
-  </head>
-  <body>
-    <p>
-      Website Under Maintenance<br><br>
-      We are currently upgrading our systems and enhancing security protocols.<br>
-      Our upcoming <b>X4 model</b> is in the final stages of testing and will be officially launched soon.<br>
-      <b>Stay tuned for exciting updates!</b><br><br>
-      In the meantime, below you’ll find preliminary test results conducted by our developer team.<br>
-      These images showcase data comparisons between the upcoming <b>X4 model</b> and the previous <b>X3 Pro+</b> model, highlighting key improvements and performance enhancements.
-    </p>
+    <title>x4 vs x3pro+ | Advanced Encryption Comparison</title>
     
-    <img src="img1.png" alt="Team test 1" width="460" height="400">
-    <img src="img2.jpg" alt="Team test 2" width="460" height="400">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Audio with one player and two tracks -->
-    <div class="audio-container">
-      <audio id="audioPlayer" controls autoplay>
-        <source src="theme.mp3" type="audio/mp3">
-        Your browser does not support the audio element.
-      </audio>
-    </div>
-
+    <!-- AOS Animation Library -->
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <script>
-      const audio = document.getElementById('audioPlayer');
-      let isFirstTrack = true;
-
-      audio.addEventListener('ended', function() {
-        if (isFirstTrack) {
-          audio.src = 'theme2.mp3'; // switch to second song
-          audio.play();
-          isFirstTrack = false;
-        } else {
-          // Optionally loop the second song if you want
-          audio.play(); 
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        },
+                        accent: {
+                            50: '#ecfdf5',
+                            100: '#d1fae5',
+                            200: '#a7f3d0',
+                            300: '#6ee7b7',
+                            400: '#34d399',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                            800: '#065f46',
+                            900: '#064e3b',
+                        },
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    animation: {
+                        'gradient': 'gradient 8s ease infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        gradient: {
+                            '0%, 100%': { backgroundPosition: '0% 50%' },
+                            '50%': { backgroundPosition: '100% 50%' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    },
+                }
+            }
         }
-      });
     </script>
     
-  </body>
+    <style>
+        /* Custom styles */
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .animated-gradient {
+            background: linear-gradient(-45deg, #0ea5e9, #0c4a6e, #10b981, #065f46);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
+        
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+        
+        .ripple {
+            position: relative;
+            overflow: hidden;
+            transform: translate3d(0, 0, 0);
+        }
+        
+        .ripple:after {
+            content: "";
+            display: block;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            background-image: radial-gradient(circle, #fff 10%, transparent 10.01%);
+            background-repeat: no-repeat;
+            background-position: 50%;
+            transform: scale(10, 10);
+            opacity: 0;
+            transition: transform .5s, opacity 1s;
+        }
+        
+        .ripple:active:after {
+            transform: scale(0, 0);
+            opacity: .3;
+            transition: 0s;
+        }
+        
+        .feature-card {
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .image-placeholder {
+            background: linear-gradient(135deg, #e0f2fe 25%, #bae6fd 25%, #bae6fd 50%, #e0f2fe 50%, #e0f2fe 75%, #bae6fd 75%, #bae6fd 100%);
+            background-size: 20px 20px;
+        }
+        
+        /* Preloader */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0c4a6e;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+        }
+        
+        .preloader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .loader {
+            width: 80px;
+            height: 80px;
+            position: relative;
+        }
+        
+        .loader:before, .loader:after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background-color: #10b981;
+            opacity: 0.6;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        .loader:after {
+            animation-delay: -1s;
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(0);
+            }
+            50% {
+                transform: scale(1.0);
+            }
+        }
+        
+        /* Hexagon pattern */
+        .hex-pattern {
+            background-color: #f8fafc;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%230ea5e9' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        
+        /* Floating elements */
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .floating-delay-1 {
+            animation-delay: 1s;
+        }
+        
+        .floating-delay-2 {
+            animation-delay: 2s;
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+        
+        /* Shake animation */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        
+        .shake {
+            animation: shake 0.8s cubic-bezier(.36,.07,.19,.97) both;
+        }
+
+    </style>
+</head>
+<body class="font-sans bg-gray-50 text-gray-800 overflow-x-hidden">
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Hero Section -->
+    <header class="animated-gradient text-white">
+        <div class="container mx-auto px-6 py-16 md:py-24">
+            <div class="text-center" data-aos="fade-up" data-aos-duration="1000">
+                <div class="mb-6 inline-block">
+                    <div class="relative">
+                        <div class="absolute -inset-0.5 bg-gradient-to-r from-primary-400 to-accent-400 rounded-lg blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-pulse-slow"></div>
+                        <div class="relative bg-white bg-opacity-10 rounded-lg p-2">
+                            <h1 class="text-4xl md:text-6xl font-bold">x4 vs x3pro+</h1>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">Comparing our next-generation encryption technology with our previous flagship model</p>
+                <div class="inline-block">
+                    <button class="ripple bg-white text-primary-700 font-semibold py-3 px-8 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
+                        Learn below about x4 Launch
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Floating elements -->
+            <div class="relative h-32 mt-12 overflow-hidden">
+                <div class="absolute left-1/4 top-0 w-16 h-16 bg-white bg-opacity-10 rounded-lg floating">
+                    <div class="w-full h-full flex items-center justify-center text-white">
+                        <i class="fas fa-shield-alt text-2xl"></i>
+                    </div>
+                </div>
+                <div class="absolute left-1/2 top-8 w-12 h-12 bg-white bg-opacity-10 rounded-lg floating floating-delay-1">
+                    <div class="w-full h-full flex items-center justify-center text-white">
+                        <i class="fas fa-lock text-xl"></i>
+                    </div>
+                </div>
+                <div class="absolute right-1/4 top-4 w-14 h-14 bg-white bg-opacity-10 rounded-lg floating floating-delay-2">
+                    <div class="w-full h-full flex items-center justify-center text-white">
+                        <i class="fas fa-key text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="h-16 bg-gradient-to-b from-transparent to-gray-50"></div>
+    </header>
+
+    <!-- Developer Tests Section -->
+    <section class="py-16 container mx-auto px-6 hex-pattern">
+        <div class="text-center mb-16" data-aos="fade-up">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">Developer Team Tests</h2>
+            <p class="text-lg text-gray-600 max-w-3xl mx-auto">Our development team has conducted extensive testing to compare the performance, security, and user experience of both encryption models.</p>
+        </div>
+        
+        <div class="grid md:grid-cols-2 gap-12">
+            <!-- Test Results Image Placeholder 1 -->
+            <div data-aos="fade-right" data-aos-delay="100">
+                <div class="glass rounded-xl overflow-hidden shadow-xl">
+                    <div class="image-placeholder h-64 md:h-80 w-full flex items-center justify-center">
+                            <img src="img1.png" height="auto">
+                    </div>
+                    <div class="p-6 bg-white">
+                        <h3 class="text-2xl font-bold mb-2">What's New in x4</h3>
+                        <ul class="space-y-2 text-gray-600">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-accent-500 mt-1 mr-2"></i>
+                                <span>Consistent HKDF key derivation across all four layers</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-accent-500 mt-1 mr-2"></i>
+                                <span>Stricter Content Security Policy with no 'unsafe-inline'</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-accent-500 mt-1 mr-2"></i>
+                                <span>Automatic session storage clearing for enhanced security</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Test Results Image Placeholder 2 -->
+            <div data-aos="fade-left" data-aos-delay="200">
+                <div class="glass rounded-xl overflow-hidden shadow-xl">
+                    <div class="image-placeholder h-64 md:h-80 w-full flex items-center justify-center">
+                    <img src="img2.jpeg" height="auto">
+                    </div>
+                    <div class="p-6 bg-white">
+                        <h3 class="text-2xl font-bold mb-2">Key Improvements</h3>
+                        <ul class="space-y-2 text-gray-600">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-accent-500 mt-1 mr-2"></i>
+                                <span>Leaner codebase with minimal helper functions</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-accent-500 mt-1 mr-2"></i>
+                                <span>Smaller CSS/JS bundles for faster initial load</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-accent-500 mt-1 mr-2"></i>
+                                <span>Improved extensibility for future cryptographic layers</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Encryption Layers Comparison -->
+    <section class="py-16 bg-gray-100">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Encryption Layers</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Compare the encryption architecture between our models.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- x4 Encryption -->
+                <div class="feature-card glass rounded-xl p-6 bg-white shadow-lg" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="flex items-start mb-4">
+                        <div class="bg-primary-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-shield-alt text-primary-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-2">x4 Encryption Layers</h3>
+                            <ul class="space-y-2 text-gray-600">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-primary-500 mt-1 mr-2"></i>
+                                    <span>Four successive AES-GCM layers, all derived via HKDF with SHA-256</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-primary-500 mt-1 mr-2"></i>
+                                    <span>Consistent use of HKDF ensures uniform key derivation</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-primary-500 mt-1 mr-2"></i>
+                                    <span>Streamlined encryption pipeline with linear flow</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="mt-4 pl-16">
+                        <div class="bg-gray-100 p-4 rounded-lg">
+                            <div class="flex flex-col space-y-2">
+                                <div class="bg-primary-100 p-2 rounded text-center">HKDF (SHA-256)</div>
+                                <i class="fas fa-arrow-down text-center text-gray-400"></i>
+                                <div class="bg-primary-100 p-2 rounded text-center">AES-GCM Layer 1</div>
+                                <i class="fas fa-arrow-down text-center text-gray-400"></i>
+                                <div class="bg-primary-100 p-2 rounded text-center">HKDF (SHA-256)</div>
+                                <i class="fas fa-arrow-down text-center text-gray-400"></i>
+                                <div class="bg-primary-100 p-2 rounded text-center">AES-GCM Layer 2</div>
+                                <i class="fas fa-arrow-down text-center text-gray-400"></i>
+                                <div class="bg-primary-100 p-2 rounded text-center">HKDF (SHA-256)</div>
+                                <i class="fas fa-arrow-down text-center text-gray-400"></i>
+                                <div class="bg-primary-100 p-2 rounded text-center">AES-GCM Layer 3</div>
+                                <i class="fas fa-arrow-down text-center text-gray-400"></i>
+                                <div class="bg-primary-100 p-2 rounded text-center">HKDF (SHA-256)</div>
+                                <i class="fas fa-arrow-down text-center text-gray-400"></i>
+                                <div class="bg-primary-100 p-2 rounded text-center">AES-GCM Layer 4</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- x3pro+ Encryption -->
+                <div class="feature-card glass rounded-xl p-6 bg-white shadow-lg" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="flex items-start mb-4">
+                        <div class="bg-accent-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-shield-alt text-accent-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-2">x3pro+ Encryption Layers</h3>
+                            <ul class="space-y-2 text-gray-600">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-accent-500 mt-1 mr-2"></i>
+                                    <span>Mix of Argon2-style (PBKDF2 fallback) and HKDF key derivations</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-accent-500 mt-1 mr-2"></i>
+                                    <span>Four layers with mixed derivation approach</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-accent-500 mt-1 mr-2"></i>
+                                    <span>Complex salt-packing logic between layers</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="mt-4 pl-16">
+                        <div class="bg-gray-100 p-4 rounded-lg">
+                            <div class="flex flex-col space-y-2">
+                                <div class="bg-accent-100 p-2 rounded text-center">Argon2 (PBKDF2 fallback)</div>
+                                <i class="fas fa-arrow-down text-center text-gray-400"></i>
+                                <div class="bg-accent-100 p-2 rounded text-center">AES-GCM Layer 1</div>
+                                <i class="fas fa-arrow-down text-center text-gray-400"></i>
+                                <div class="bg-accent-100 p-2 rounded text-center">HKDF</div>
+                                <i class="fas fa-arrow-down text-center text-gray-400"></i>
+                                <div class="bg-accent-100 p-2 rounded text-center">AES-GCM Layer 2</div>
+                                <i class="fas fa-arrow-down text-center text-gray-400"></i>
+                                <div class="bg-accent-100 p-2 rounded text-center">Argon2 (PBKDF2 fallback)</div>
+                                <i class="fas fa-arrow-down text-center text-gray-400"></i>
+                                <div class="bg-accent-100 p-2 rounded text-center">AES-GCM Layer 3</div>
+                                <i class="fas fa-arrow-down text-center text-gray-400"></i>
+                                <div class="bg-accent-100 p-2 rounded text-center">HKDF</div>
+                                <i class="fas fa-arrow-down text-center text-gray-400"></i>
+                                <div class="bg-accent-100 p-2 rounded text-center">AES-GCM Layer 4</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Security & Code Comparison -->
+    <section class="py-16 container mx-auto px-6">
+        <div class="text-center mb-16" data-aos="fade-up">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">Security & Code Quality</h2>
+            <p class="text-lg text-gray-600 max-w-3xl mx-auto">Comparing security features and code architecture between models.</p>
+        </div>
+        
+        <div class="grid md:grid-cols-2 gap-8">
+            <!-- Security -->
+            <div class="feature-card glass rounded-xl p-6 bg-white shadow-lg" data-aos="fade-right" data-aos-delay="100">
+                <h3 class="text-xl font-bold mb-4 flex items-center">
+                    <i class="fas fa-lock text-primary-500 mr-2"></i>
+                    Security & CSP
+                </h3>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <h4 class="font-bold text-primary-700 mb-2">x4 Model</h4>
+                        <ul class="space-y-2 text-sm">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-primary-500 mt-0.5 mr-2"></i>
+                                <span>Strict CSP: no 'unsafe-inline'</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-primary-500 mt-0.5 mr-2"></i>
+                                <span>Only nonce-protected scripts</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-primary-500 mt-0.5 mr-2"></i>
+                                <span>Session storage auto-cleared</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-primary-500 mt-0.5 mr-2"></i>
+                                <span>Trusted CDNs only</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <h4 class="font-bold text-accent-700 mb-2">x3pro+ Model</h4>
+                        <ul class="space-y-2 text-sm">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-accent-500 mt-0.5 mr-2"></i>
+                                <span>CSP allows 'unsafe-inline' styles</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-accent-500 mt-0.5 mr-2"></i>
+                                <span>Nonce-protected scripts</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-accent-500 mt-0.5 mr-2"></i>
+                                <span>Manual session clearing</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-accent-500 mt-0.5 mr-2"></i>
+                                <span>Same client-side encryption</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Code Quality -->
+            <div class="feature-card glass rounded-xl p-6 bg-white shadow-lg" data-aos="fade-left" data-aos-delay="200">
+                <h3 class="text-xl font-bold mb-4 flex items-center">
+                    <i class="fas fa-code text-primary-500 mr-2"></i>
+                    Code Simplicity
+                </h3>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <h4 class="font-bold text-primary-700 mb-2">x4 Model</h4>
+                        <ul class="space-y-2 text-sm">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-primary-500 mt-0.5 mr-2"></i>
+                                <span>~400 lines of code</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-primary-500 mt-0.5 mr-2"></i>
+                                <span>Lean helper functions</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-primary-500 mt-0.5 mr-2"></i>
+                                <span>Minimal branching logic</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-primary-500 mt-0.5 mr-2"></i>
+                                <span>Clear separation of concerns</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <h4 class="font-bold text-accent-700 mb-2">x3pro+ Model</h4>
+                        <ul class="space-y-2 text-sm">
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-accent-500 mt-0.5 mr-2"></i>
+                                <span>~1000 lines of code</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-accent-500 mt-0.5 mr-2"></i>
+                                <span>More helper functions</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-accent-500 mt-0.5 mr-2"></i>
+                                <span>Additional branching logic</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check-circle text-accent-500 mt-0.5 mr-2"></i>
+                                <span>Complex salt-packing logic</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dependencies & UX -->
+    <section class="py-16 bg-gray-100">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Dependencies & User Experience</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Comparing load times, dependencies, and user interface elements.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Dependencies -->
+                <div class="feature-card glass rounded-xl p-6 bg-white shadow-lg" data-aos="fade-right" data-aos-delay="100">
+                    <h3 class="text-xl font-bold mb-4 flex items-center">
+                        <i class="fas fa-cubes text-primary-500 mr-2"></i>
+                        Dependencies & Load
+                    </h3>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h4 class="font-bold text-primary-700 mb-2">x4 Model</h4>
+                            <ul class="space-y-2 text-sm">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-primary-500 mt-0.5 mr-2"></i>
+                                    <span>Tailwind CSS, Animate.css</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-primary-500 mt-0.5 mr-2"></i>
+                                    <span>Font Awesome, AOS</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-primary-500 mt-0.5 mr-2"></i>
+                                    <span>Loaded only when needed</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-primary-500 mt-0.5 mr-2"></i>
+                                    <span>Smaller CSS/JS bundles</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-primary-500 mt-0.5 mr-2"></i>
+                                    <span>Faster initial load</span>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h4 class="font-bold text-accent-700 mb-2">x3pro+ Model</h4>
+                            <ul class="space-y-2 text-sm">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-accent-500 mt-0.5 mr-2"></i>
+                                    <span>Same core dependencies</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-accent-500 mt-0.5 mr-2"></i>
+                                    <span>Plus inline ripple CSS</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-accent-500 mt-0.5 mr-2"></i>
+                                    <span>PBKDF2 fallback code</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-accent-500 mt-0.5 mr-2"></i>
+                                    <span>Larger script footprint</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-accent-500 mt-0.5 mr-2"></i>
+                                    <span>Slightly slower load time</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- UX & Styling -->
+                <div class="feature-card glass rounded-xl p-6 bg-white shadow-lg" data-aos="fade-left" data-aos-delay="200">
+                    <h3 class="text-xl font-bold mb-4 flex items-center">
+                        <i class="fas fa-paint-brush text-primary-500 mr-2"></i>
+                        UX & Styling
+                    </h3>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h4 class="font-bold text-primary-700 mb-2">x4 Model</h4>
+                            <ul class="space-y-2 text-sm">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-primary-500 mt-0.5 mr-2"></i>
+                                    <span>Basic fade-in animations</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-primary-500 mt-0.5 mr-2"></i>
+                                    <span>Eye-toggle for passwords</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-primary-500 mt-0.5 mr-2"></i>
+                                    <span>Loader spinners</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-primary-500 mt-0.5 mr-2"></i>
+                                    <span>Simple copy-to-clipboard</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-primary-500 mt-0.5 mr-2"></i>
+                                    <span>Clean, functional UI</span>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h4 class="font-bold text-accent-700 mb-2">x3pro+ Model</h4>
+                            <ul class="space-y-2 text-sm">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-accent-500 mt-0.5 mr-2"></i>
+                                    <span>Glass-blur "frosted" cards</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-accent-500 mt-0.5 mr-2"></i>
+                                    <span>Animated gradient blobs</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-accent-500 mt-0.5 mr-2"></i>
+                                    <span>Ripple-effect on buttons</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-accent-500 mt-0.5 mr-2"></i>
+                                    <span>Bounce animations</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-accent-500 mt-0.5 mr-2"></i>
+                                    <span>Elaborate tab styling</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Detailed Comparison Table -->
+    <section class="py-16 container mx-auto px-6">
+        <div class="text-center mb-16" data-aos="fade-up">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">Detailed Comparison</h2>
+            <p class="text-lg text-gray-600 max-w-3xl mx-auto">A comprehensive technical comparison between our models.</p>
+        </div>
+        
+        <div class="overflow-hidden rounded-xl shadow-lg" data-aos="fade-up">
+            <table class="w-full bg-white">
+                <thead>
+                    <tr class="bg-gray-800 text-white">
+                        <th class="py-4 px-6 text-left">Aspect</th>
+                        <th class="py-4 px-6 text-center">x4 Model</th>
+                        <th class="py-4 px-6 text-center">x3pro+ Model</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="border-b border-gray-200">
+                        <td class="py-4 px-6 font-medium">Encryption Pipeline</td>
+                        <td class="py-4 px-6 text-center bg-green-50">Uniform HKDF-based AES-GCM layers (SHA-256)</td>
+                        <td class="py-4 px-6 text-center">Hybrid Argon2/PBKDF2 + HKDF approach; more complexity in flows</td>
+                    </tr>
+                    <tr class="border-b border-gray-200 bg-gray-50">
+                        <td class="py-4 px-6 font-medium">Key Derivation</td>
+                        <td class="py-4 px-6 text-center bg-green-50">Single strategy (HKDF)</td>
+                        <td class="py-4 px-6 text-center">Two strategies (Argon2‐style PBKDF2 + HKDF)</td>
+                    </tr>
+                    <tr class="border-b border-gray-200">
+                        <td class="py-4 px-6 font-medium">CSP Strictness</td>
+                        <td class="py-4 px-6 text-center bg-green-50">No 'unsafe-inline'; scripts only via nonce</td>
+                        <td class="py-4 px-6 text-center">Styles allow 'unsafe-inline'; scripts still nonce-protected</td>
+                    </tr>
+                    <tr class="border-b border-gray-200 bg-gray-50">
+                        <td class="py-4 px-6 font-medium">Code Simplicity</td>
+                        <td class="py-4 px-6 text-center bg-green-50">~400 lines, minimal helpers, linear flows</td>
+                        <td class="py-4 px-6 text-center">~1000 lines, many helpers, nested salt-packing logic</td>
+                    </tr>
+                    <tr class="border-b border-gray-200">
+                        <td class="py-4 px-6 font-medium">Bundle Size & Load</td>
+                        <td class="py-4 px-6 text-center bg-green-50">Lean CSS/JS; faster load times</td>
+                        <td class="py-4 px-6 text-center">Larger footprint (ripple CSS injection, Argon2 fallback)</td>
+                    </tr>
+                    <tr class="border-b border-gray-200 bg-gray-50">
+                        <td class="py-4 px-6 font-medium">UI & Styling</td>
+                        <td class="py-4 px-6 text-center">Functional animations (fade, focus rings)</td>
+                        <td class="py-4 px-6 text-center bg-green-50">Highly polished: glass cards, gradient blobs, ripple & bounce</td>
+                    </tr>
+                    <tr class="border-b border-gray-200">
+                        <td class="py-4 px-6 font-medium">UX Enhancements</td>
+                        <td class="py-4 px-6 text-center">Basic loader, copy tooltip, eye-toggle</td>
+                        <td class="py-4 px-6 text-center bg-green-50">Extra: shake validation, advanced tooltips, mobile tweaks</td>
+                    </tr>
+                    <tr class="border-b border-gray-200 bg-gray-50">
+                        <td class="py-4 px-6 font-medium">Maintainability</td>
+                        <td class="py-4 px-6 text-center bg-green-50">Easier to read, fewer dependencies</td>
+                        <td class="py-4 px-6 text-center">More moving parts—higher maintenance overhead</td>
+                    </tr>
+                    <tr class="bg-gray-50">
+                        <td class="py-4 px-6 font-medium">Extensibility</td>
+                        <td class="py-4 px-6 text-center bg-green-50">Clear architecture for adding layers/features</td>
+                        <td class="py-4 px-6 text-center">Heavier architecture; adding new crypto methods requires more refactoring</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Key Differences -->
+    <section class="py-16 bg-gray-900 text-white">
+        <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto" data-aos="fade-up">
+                <h2 class="text-3xl md:text-4xl font-bold mb-8 text-center">Key Differences</h2>
+                
+                <div class="space-y-8">
+                    <!-- Security & Best Practices -->
+                    <div class="glass p-6 rounded-xl">
+                        <h3 class="text-xl font-bold mb-4 flex items-center">
+                            <div class="bg-primary-700 p-2 rounded-lg mr-3">
+                                <i class="fas fa-shield-alt text-white"></i>
+                            </div>
+                            Security & Best Practices
+                        </h3>
+                        <p class="text-gray-300">
+                            x4 enforces the strictest CSP (no inline styles), clears session data proactively, and sticks to one key-derivation method, reducing attack surface. x3pro+ remains secure but relaxes CSP on styles and mixes derivation methods, which can complicate audits.
+                        </p>
+                    </div>
+                    
+                    <!-- Performance -->
+                    <div class="glass p-6 rounded-xl">
+                        <h3 class="text-xl font-bold mb-4 flex items-center">
+                            <div class="bg-primary-700 p-2 rounded-lg mr-3">
+                                <i class="fas fa-tachometer-alt text-white"></i>
+                            </div>
+                            Performance
+                        </h3>
+                        <p class="text-gray-300">
+                            x4 loads faster due to smaller assets and simpler JS. x3pro+ introduces PBKDF2 fallbacks and ripple-style CSS injection, slightly slowing page load and encryption setup.
+                        </p>
+                    </div>
+                    
+                    <!-- Developer Experience -->
+                    <div class="glass p-6 rounded-xl">
+                        <h3 class="text-xl font-bold mb-4 flex items-center">
+                            <div class="bg-primary-700 p-2 rounded-lg mr-3">
+                                <i class="fas fa-code text-white"></i>
+                            </div>
+                            Developer Experience
+                        </h3>
+                        <p class="text-gray-300">
+                            x4's streamlined code is easier to navigate, test, and extend with new cryptographic layers. x3pro+'s richer UI comes at the cost of additional helper functions and branching, making refactoring more involved.
+                        </p>
+                    </div>
+                    
+                    <!-- User Experience -->
+                    <div class="glass p-6 rounded-xl">
+                        <h3 class="text-xl font-bold mb-4 flex items-center">
+                            <div class="bg-primary-700 p-2 rounded-lg mr-3">
+                                <i class="fas fa-user text-white"></i>
+                            </div>
+                            User Experience
+                        </h3>
+                        <p class="text-gray-300">
+                            x4 offers a clean, straightforward interface with essential animations and clear feedback. x3pro+ delivers an eye-candy experience—blurred backgrounds, button ripples, bounce effects—that make it feel more "app-like."
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Conclusion -->
+    <section class="py-16 container mx-auto px-6">
+        <div class="max-w-4xl mx-auto bg-gradient-to-r from-primary-600 to-accent-600 rounded-xl shadow-xl overflow-hidden" data-aos="fade-up">
+            <div class="p-8 md:p-12">
+                <h2 class="text-3xl font-bold text-white mb-6 text-center">Conclusion</h2>
+                <div class="bg-white bg-opacity-10 p-6 rounded-lg mb-6">
+                    <p class="text-white mb-4">
+                        If you need rock-solid security, lean performance, and maintainable code, x4 remains the leader.
+                    </p>
+                    <p class="text-white">
+                        If you prioritize advanced styling, dynamic UI flourishes, and don't mind a slightly heavier footprint, x3pro+ takes the crown for user engagement.
+                    </p>
+                </div>
+                <div class="text-center">
+                    <button class="ripple bg-white text-primary-700 font-semibold py-3 px-8 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
+                        Learn More About x4
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 py-12">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <h2 class="text-2xl font-bold text-white mb-2">Advanced Encryption</h2>
+                    <p>Securing your data with cutting-edge technology</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" class="hover:text-white transition duration-300">
+                        <i class="fab fa-twitter text-xl"></i>
+                    </a>
+                    <a href="#" class="hover:text-white transition duration-300">
+                        <i class="fab fa-github text-xl"></i>
+                    </a>
+                    <a href="#" class="hover:text-white transition duration-300">
+                        <i class="fab fa-linkedin text-xl"></i>
+                    </a>
+                </div>
+            </div>
+            <hr class="border-gray-800 my-8" />
+            <div class="text-center">
+                <p>&copy; 2025 Advanced Encryption. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- AOS Animation Library JS -->
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script>
+        // Preloader
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.querySelector('.preloader').classList.add('hidden');
+            }, 1000);
+        });
+        
+        // Initialize AOS
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true
+        });
+        
+        // Add ripple effect to buttons
+        document.querySelectorAll('.ripple').forEach(button => {
+            button.addEventListener('click', function(e) {
+                const x = e.clientX - e.target.getBoundingClientRect().left;
+                const y = e.clientY - e.target.getBoundingClientRect().top;
+                
+                const ripple = document.createElement('span');
+                ripple.style.left = `${x}px`;
+                ripple.style.top = `${y}px`;
+                
+                this.appendChild(ripple);
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            });
+        });
+    </script>
+</body>
 </html>
