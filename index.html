@@ -1025,11 +1025,11 @@
       <div class="faq-container" data-aos="fade-up" data-aos-delay="200">
         <div class="faq-item">
           <div class="faq-question">
-            <span class="question-text">Can I recover my message if I forget one password?</span>
+            <span class="question-text">Can I recover my message if I forget one or both  passwords?</span>
             <i class="fas fa-chevron-down faq-icon"></i>
           </div>
           <div class="faq-answer">
-            <p>No. Both passwords are required in the exact order. x4 cannot decrypt without complete key material.</p>
+            <p>No, we don't store them anywhere. If you lose them, the encrypted text cant be recovered. Always keep backup of your passwords.</p>
           </div>
         </div>
         <div class="faq-item">
@@ -1038,7 +1038,7 @@
             <i class="fas fa-chevron-down faq-icon"></i>
           </div>
           <div class="faq-answer">
-            <p>Only in your clipboard or local storage if you choose. x4 never sends plaintext or keys over the network.</p>
+            <p>Never. x4 model is fully client based, we do all your encryption in your browser and nothing is shared over the network</p>
           </div>
         </div>
         <div class="faq-item">
@@ -1056,12 +1056,7 @@
             <i class="fas fa-chevron-down faq-icon"></i>
           </div>
           <div class="faq-answer">
-            <p>The x4 Model provides extremely high security through:</p>
-            <ul>
-              <li>Brute Force Resistance: Two passwords stretched via PBKDF2/HKDF → 4 layers of AES-GCM raises the cost of any attack exponentially.</li>
-              <li>Forward Secrecy (Ephemeral Salts): Unique per-message salts/IVs prevent replay or rainbow-table attacks.</li>
-              <li>Integrity Checks: AES-GCM's built-in authentication tag detects any tampering.</li>
-            </ul>
+            <p>Yes. AES-GCM is a modern, well-tested cipher. Layering it four times with independent keys makes it even stronger.</p>
           </div>
         </div>
       </div>
