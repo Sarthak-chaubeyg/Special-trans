@@ -163,6 +163,7 @@
     .nav-links {
       display: flex;
       gap: 2rem;
+      align-items: center;
     }
     
     .nav-link {
@@ -190,6 +191,22 @@
     
     .nav-link:hover::after {
       width: 100%;
+    }
+    
+    .encrypt-now-btn {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s;
+      box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+    }
+    
+    .encrypt-now-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
     }
     
     .mobile-menu-btn {
@@ -465,27 +482,24 @@
     .carousel-indicators {
       display: flex;
       justify-content: center;
-      gap: 1rem; /* Increased from 0.5rem to 1rem for more spacing */
+      gap: 1rem;
       margin-top: 1.5rem;
-      margin-bottom: 2rem; /* Added bottom margin to create space */
+      margin-bottom: 2rem;
     }
     
     .carousel-dot {
       width: 10px;
       height: 10px;
       border-radius: 50%;
-      background-color: var(--gray-400); /* Changed from var(--gray-300) */
+      background-color: var(--gray-400);
       transition: all 0.3s;
       cursor: pointer;
     }
     
     .carousel-dot.active {
-      background-color: var(--secondary); /* Changed from var(--primary) to var(--secondary) which is green */
+      background-color: var(--secondary);
       transform: scale(1.2);
     }
-    
-    /* Carousel Navigation */
-    
     
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
@@ -602,28 +616,6 @@
       margin-bottom: 1.5rem;
     }
     
-    .footer-social {
-      display: flex;
-      gap: 1rem;
-    }
-    
-    .social-link {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background-color: var(--gray-800);
-      color: white;
-      transition: all 0.3s;
-    }
-    
-    .social-link:hover {
-      background-color: var(--primary);
-      transform: translateY(-3px);
-    }
-    
     .footer-heading {
       font-size: 1.125rem;
       font-weight: 600;
@@ -661,7 +653,6 @@
       outline: none;
     }
 
-    /* Ensure buttons and interactive elements don't show outline */
     button, a, .faq-question, .layer-tab, .carousel-dot {
       -webkit-tap-highlight-color: transparent;
       -webkit-touch-callout: none;
@@ -745,6 +736,24 @@
         color: var(--primary);
       }
       
+      .mobile-encrypt-btn {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.5rem;
+        text-decoration: none;
+        font-weight: 500;
+        text-align: center;
+        margin-top: 1rem;
+        display: block;
+        transition: all 0.3s;
+      }
+      
+      .mobile-encrypt-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+      }
+      
       .overlay {
         position: fixed;
         top: 0;
@@ -796,6 +805,7 @@
           <a href="#security" class="nav-link">Security</a>
           <a href="#how-it-works" class="nav-link">How It Works</a>
           <a href="#faq" class="nav-link">FAQ</a>
+          <a href="translator.html" class="encrypt-now-btn">Encrypt Now</a>
         </div>
         <button class="mobile-menu-btn" id="mobileMenuBtn">
           <i class="fas fa-bars"></i>
@@ -814,6 +824,7 @@
       <a href="#security" class="mobile-nav-link">Security</a>
       <a href="#how-it-works" class="mobile-nav-link">How It Works</a>
       <a href="#faq" class="mobile-nav-link">FAQ</a>
+      <a href="translator.html" class="mobile-encrypt-btn">Encrypt Now</a>
     </div>
   </div>
   <div class="overlay" id="overlay"></div>
@@ -976,8 +987,6 @@
           <div class="carousel-dot" data-index="1"></div>
           <div class="carousel-dot" data-index="2"></div>
         </div>
-        
-        
       </div>
     </div>
   </section>
@@ -1069,11 +1078,9 @@
       <h2 class="cta-title" data-aos="fade-up">Ready to Fortify Your Data?</h2>
       <p class="cta-description" data-aos="fade-up" data-aos-delay="100">Experience the four-layer difference today with the x4 Model encryption system.</p>
       <div data-aos="fade-up" data-aos-delay="200">
-        <!-- Add your URL in the href attribute below -->
         <a href="translator.html" class="btn btn-light">
           <i class="fas fa-lock"></i> Encrypt Now ↗<i class="fas fa-arrow-up-right"></i>
         </a>
-        <!-- URL Comment: Replace the "#" with your actual URL for the encrypt now button -->
       </div>
     </div>
   </section>
@@ -1088,11 +1095,6 @@
             x4 Model
           </div>
           <p class="footer-description">Four-Layer Encryption for Ultimate Data Protection</p>
-          <div class="footer-social">
-            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
-            <a href="#" class="social-link"><i class="fab fa-github"></i></a>
-            <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
-          </div>
         </div>
         <div>
           <h3 class="footer-heading">Features</h3>
@@ -1105,7 +1107,7 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <p>&copy; 2023 x4 Model. All rights reserved.</p>
+        <p>&copy; 2025 x4 Model. All rights reserved.</p>
       </div>
     </div>
   </footer>
