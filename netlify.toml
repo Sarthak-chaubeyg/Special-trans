@@ -1,0 +1,8 @@
+# netlify.toml (place at the root of your repo)
+# Optional: set your publish directory if not root
+# [build]
+#   publish = "dist"
+
+[[edge_functions]]
+path = "/*"
+function = "csp"
