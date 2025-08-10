@@ -1,766 +1,190 @@
-<!DOCTYPE html>  <html lang="en">  
-<head>  
-  <meta charset="UTF-8" />  
-  <!-- Strict CSP: only allow scripts/styles with matching nonce and trusted CDNs -->  
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'nonce-2149a1070219f386af8e5590e597935f' https://cdnjs.cloudflare.com; style-src 'self' 'nonce-2149a1070219f386af8e5590e597935f' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com; upgrade-insecure-requests;">  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />  
-  <title>x4 - Enhanced Security Version</title>    <!-- Modern UI Libraries (CDNs) -->    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" />  
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />  
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />  
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />  
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">    <!-- Custom Styles -->    <style nonce="2149a1070219f386af8e5590e597935f">  
-    :root {  
-      --primary-color: #6366f1;  
-      --primary-dark: #4f46e5;  
-      --primary-light: #a5b4fc;  
-      --secondary-color: #10b981;  
-      --accent-color: #f59e0b;  
-      --danger-color: #ef4444;  
-      --dark-color: #1e293b;  
-      --light-color: #f8fafc;  
-      --success-color: #22c55e;  
-      --gradient-start: #4f46e5;  
-      --gradient-end: #6366f1;  
-      --radius-sm: 0.375rem;  
-      --radius-md: 0.5rem;  
-      --radius-lg: 0.75rem;  
-      --shadow-sm: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);  
-      --shadow-md: 0 4px 6px rgba(0,0,0,0.12), 0 1px 3px rgba(0,0,0,0.24);  
-      --shadow-lg: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);  
-      --glow: 0 0 15px rgba(99, 102, 241, 0.5);  
-    }  
-      
-    body {  
-      font-family: 'Poppins', sans-serif;  
-      background: linear-gradient(135deg, #f6f7ff 0%, #e9eeff 100%);  
-      min-height: 100vh;  
-      color: var(--dark-color);  
-      position: relative;  
-      overflow-x: hidden;  
-    }  
-      
-    /* Animated Background */  
-    .background-shapes {  
-      position: fixed;  
-      top: 0;  
-      left: 0;  
-      right: 0;  
-      bottom: 0;  
-      z-index: -1;  
-      overflow: hidden;  
-    }  
-      
-    .shape {  
-      position: absolute;  
-      opacity: 0.2;  
-      border-radius: 50%;  
-      animation: float 8s ease-in-out infinite;  
-    }  
-    .shape-1 {  
-      width: 300px;  
-      height: 300px;  
-      background: var(--gradient-start);  
-      top: 10%;  
-      left: 15%;  
-    }  
-    .shape-2 {  
-      width: 400px;  
-      height: 400px;  
-      background: var(--primary-light);  
-      bottom: 10%;  
-      right: 20%;  
-      animation-duration: 6s;  
-      animation-delay: 2s;  
-    }  
-    .shape-3 {  
-      width: 250px;  
-      height: 250px;  
-      background: var(--gradient-end);  
-      top: 50%;  
-      right: 10%;  
-      animation-duration: 10s;  
-      animation-delay: 4s;  
-    }  
-    @keyframes float {  
-      0%, 100% { transform: translateY(0) translateX(0); }  
-      50% { transform: translateY(-20px) translateX(20px); }  
-    }  
-      
-    /* Utility */  
-    .container {  
-      max-width: 800px;  
-      margin: 0 auto;  
-      padding: 2rem 1rem;  
-    }  
-    .header {  
-      text-align: center;  
-      margin-bottom: 2rem;  
-    }  
-    .header h1 {  
-      font-size: 2.5rem;  
-      font-weight: 700;  
-      color: var(--dark-color);  
-    }  
-    .header p {  
-      color: var(--dark-color);  
-    }  
-    .tabs-container {  
-      text-align: center;  
-      margin-bottom: 2rem;  
-    }  
-    .tabs {  
-      display: inline-block;  
-    }  
-    .tab-button {  
-      background: var(--light-color);  
-      color: var(--dark-color);  
-      border: none;  
-      padding: 0.75rem 1.5rem;  
-      margin: 0 0.5rem;  
-      border-radius: var(--radius-md);  
-      cursor: pointer;  
-      font-weight: 500;  
-      transition: background 0.3s;  
-    }  
-    .tab-button.active, .tab-button:hover {  
-      background: var(--primary-color);  
-      color: #fff;  
-    }  
-    .card {  
-      background: #fff;  
-      padding: 2rem;  
-      border-radius: var(--radius-md);  
-      box-shadow: var(--shadow-md);  
-      margin-bottom: 2rem;  
-      position: relative;  
-      overflow: hidden;  
-    }  
-    .card-header h2 {  
-      margin-bottom: 1rem;  
-      color: var(--primary-color);  
-    }  
-    .form-group {  
-      margin-bottom: 1rem;  
-    }  
-    .form-label {  
-      display: block;  
-      margin-bottom: 0.5rem;  
-      font-weight: 500;  
-    }  
-    .form-control {  
-      width: 100%;  
-      padding: 0.75rem 1rem;  
-      border: 1px solid #e2e8f0;  
-      border-radius: var(--radius-sm);  
-      transition: border-color 0.3s;  
-    }  
-    .form-control:focus {  
-      outline: none;  
-      border-color: var(--primary-color);  
-      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);  
-    }  
-    .input-group {  
-      position: relative;  
-    }  
-    .password-toggle {  
-      position: absolute;  
-      top: 50%;  
-      right: 0.75rem;  
-      transform: translateY(-50%);  
-      background: none;  
-      border: none;  
-      cursor: pointer;  
-      color: var(--dark-color);  
-    }  
-    .btn {  
-      display: inline-block;  
-      font-weight: 500;  
-      text-align: center;  
-      padding: 0.75rem 1.5rem;  
-      border: none;  
-      border-radius: var(--radius-md);  
-      cursor: pointer;  
-      transition: transform 0.2s, box-shadow 0.2s;  
-      position: relative;  
-      overflow: hidden;  
-    }  
-    .btn-primary {  
-      color: #fff;  
-      background: linear-gradient(135deg, var(--primary-dark), var(--primary-color));  
-    }  
-    .btn-primary:hover {  
-      box-shadow: 0 6px 16px rgba(79, 70, 229, 0.4);  
-      transform: translateY(-2px);  
-    }  
-    .btn-primary:active {  
-      transform: translateY(1px);  
-      box-shadow: 0 3px 10px rgba(79, 70, 229, 0.3);  
-    }  
-    .btn-secondary {  
-      color: #fff;  
-      background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));  
-    }  
-    .btn-secondary:hover {  
-      box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);  
-      transform: translateY(-2px);  
-    }  
-    .btn-secondary:active {  
-      transform: translateY(1px);  
-      box-shadow: 0 3px 10px rgba(16, 185, 129, 0.3);  
-    }  
-    .btn-light {  
-      background: #f1f5f9;  
-      color: #475569;  
-      border: 1px solid #e2e8f0;  
-    }  
-    .btn-light:hover {  
-      background: #e2e8f0;  
-    }  
-    .btn-block {  
-      display: block;  
-      width: 100%;  
-    }  
-    .loader-container {  
-      display: none;  
-      margin-top: 1rem;  
-      text-align: center;  
-    }  
-    .loader {  
-      display: inline-block;  
-    }  
-    .loader-spinner {  
-      border: 4px solid #e5e7eb;  
-      border-top: 4px solid var(--primary-color);  
-      border-radius: 50%;  
-      width: 36px;  
-      height: 36px;  
-      animation: spin 0.8s linear infinite;  
-    }  
-    @keyframes spin { 100% { transform: rotate(360deg); } }  
-    .result-container {  
-      margin-top: 1rem;  
-    }  
-    .result-header {  
-      margin-bottom: 0.5rem;  
-    }  
-    .result-title {  
-      font-weight: 600;  
-      color: var(--primary-color);  
-    }  
-    .border-success {  
-      border-color: var(--success-color) !important;  
-    }  
-    .border-danger {  
-      border-color: var(--danger-color) !important;  
-    }  
-    .animate-fade-in {  
-      animation: fadeIn 0.5s ease forwards;  
-    }  
-    @keyframes fadeIn {  
-      from { opacity: 0; transform: translateY(10px); }  
-      to { opacity: 1; transform: translateY(0); }  
-    }  
-    .animate-shake {  
-      animation: shake 0.5s;  
-    }  
-    @keyframes shake {  
-      10%, 90% { transform: translate3d(-1px, 0, 0); }  
-      20%, 80% { transform: translate3d(2px, 0, 0); }  
-      30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }  
-      40%, 60% { transform: translate3d(4px, 0, 0); }  
-    }  
-    .password-toggle { cursor: pointer; }  
-    .tooltip-text {  
-      visibility: hidden;  
-      opacity: 0;  
-      transition: visibility 0s 0.4s, opacity 0.4s;  
-      position: absolute;  
-      top: -1.5rem;  
-      right: 0;  
-      font-size: 0.8rem;  
-      background: #333;  
-      color: #fff;  
-      padding: 0.25rem 0.5rem;  
-      border-radius: 0.25rem;  
-      pointer-events: none;  
-    }  
-    .tooltip-text.visible {  
-      visibility: visible;  
-      opacity: 1;  
-      transition-delay: 0s;  
-    }  
-    .focus-ring {  
-      border-color: var(--primary-color);  
-      box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);  
-    }  
-    .footer {  
-      text-align: center;  
-      padding: 1.5rem 0;  
-      color: #64748b;  
-      font-size: 0.9rem;  
-    }  
-    .footer-brand {  
-      font-weight: 600;  
-      background: linear-gradient(135deg, var(--primary-dark), var(--primary-color));  
-      -webkit-background-clip: text;  
-      -webkit-text-fill-color: transparent;  
-    }  
-    .footer-divider {  
-      display: inline-block;  
-      margin: 0 0.5rem;  
-      color: #cbd5e1;  
-    }  
-    /* Responsive */  
-    @media (max-width: 640px) {  
-      .header h1 { font-size: 2rem; }  
-      .card { padding: 1.5rem; }  
-      .tab-button {  
-        padding: 0.6rem 1.2rem;  
-        min-width: 120px;  
-        font-size: 0.9rem;  
-      }  
-    }  
-  </style>  </head>  
-<body>  
-  <!-- Background shapes -->  
-  <div class="background-shapes">  
-    <div class="shape shape-1"></div>  
-    <div class="shape shape-2"></div>  
-    <div class="shape shape-3"></div>  
-  </div>    <div class="container">  
-    <header class="header" data-aos="fade-down">  
-      <h1>x4 - Four-Layer Encryption</h1>  
-      <p>Secure your sensitive information with advanced multi-layer encryption technology</p>  
-    </header>  <!-- Tab Navigation -->  
-<div class="tabs-container" data-aos="fade-up" data-aos-delay="200">  
-  <div class="tabs">  
-    <button id="encryptorTab" class="tab-button active"><i class="fas fa-lock"></i> Encrypt</button>  
-    <button id="decryptorTab" class="tab-button"><i class="fas fa-unlock"></i> Decrypt</button>  
-  </div>  
-</div>  
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <!-- Static CSP for external files only (no nonces needed) -->
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'none';
+    script-src 'self';
+    style-src 'self';
+    img-src 'self' data:;
+    connect-src 'none';
+    font-src 'none';
+    object-src 'none';
+    frame-ancestors 'none';
+    base-uri 'none';
+    form-action 'none';
+    upgrade-insecure-requests;
+    require-trusted-types-for 'script'
+  ">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="referrer" content="no-referrer" />
+  <title>x4 — Four-Layer Encryption (PBKDF2, external assets)</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="bg" aria-hidden="true">
+    <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+  </div>
 
-<!-- Encryption Section -->  
-<div id="encryptorSection" class="animate__animated animate__fadeIn" data-aos="fade-up" data-aos-delay="300">  
-  <div class="card">  
-    <div class="card-header"><h2>Encrypt Your Message</h2></div>  
-    <div class="form-group">  
-      <label for="plaintextInput" class="form-label">Message</label>  
-      <textarea id="plaintextInput" class="form-control" rows="5" placeholder="Enter text to encrypt..."></textarea>  
-    </div>  
-    <div class="grid grid-2">  
-      <div class="form-group">  
-        <label for="passwordEncrypt1" class="form-label">First Password</label>  
-        <div class="input-group">  
-          <input type="password" id="passwordEncrypt1" class="form-control" placeholder="Enter first password..." />  
-          <button class="password-toggle" data-for="passwordEncrypt1"><i class="fas fa-eye"></i></button>  
-        </div>  
-      </div>  
-      <div class="form-group">  
-        <label for="passwordEncrypt2" class="form-label">Second Password</label>  
-        <div class="input-group">  
-          <input type="password" id="passwordEncrypt2" class="form-control" placeholder="Enter second password..." />  
-          <button class="password-toggle" data-for="passwordEncrypt2"><i class="fas fa-eye"></i></button>  
-        </div>  
-      </div>  
-    </div>  
-    <button id="encryptButton" class="btn btn-primary btn-block"><i class="fas fa-lock mr-2"></i> Encrypt Message</button>  
-    <div id="loaderEncrypt" class="loader-container">  
-      <div class="loader"><div class="loader-spinner"></div></div>  
-    </div>  
-    <div class="result-container">  
-      <div class="result-header"><span class="result-title">Encrypted Result</span></div>  
-      <textarea id="ciphertextOutput" class="form-control" rows="5" placeholder="Encrypted output will appear here..." readonly></textarea>  
-      <div class="mt-4 flex justify-end">  
-        <button id="copyEncrypted" class="copy-btn">  
-          <i class="fas fa-copy"></i> Copy to Clipboard  
-          <span id="copyEncryptedTooltip" class="tooltip-text">Copied!</span>  
-        </button>  
-      </div>  
-    </div>  
-  </div>  
-</div>  
+  <div class="wrap">
+    <header class="fade">
+      <div class="brand">
+        <span class="logo">x4</span>
+        <span>Four-Layer Encryption</span>
+      </div>
+      <h1 class="headline">AES‑GCM (256) with PBKDF2 hardening</h1>
+      <p class="sub">Client‑side only. Strong KDF, unique salts and IVs per layer, tamper‑evident header.</p>
+      <div class="badges">
+        <span class="badge info">AES‑GCM 256</span>
+        <span class="badge info">PBKDF2 (HMAC‑SHA‑256/512)</span>
+        <span class="badge ok">4 independent layers</span>
+      </div>
+    </header>
 
-<!-- Decryption Section (start hidden) -->  
-<div id="decryptorSection" class="animate__animated" style="display: none;" data-aos="fade-up" data-aos-delay="300">  
-  <div class="card">  
-    <div class="card-header"><h2>Decrypt Your Message</h2></div>  
-    <div class="form-group">  
-      <label for="ciphertextInput" class="form-label">Encrypted Message</label>  
-      <textarea id="ciphertextInput" class="form-control" rows="5" placeholder="Enter text to decrypt..."></textarea>  
-    </div>  
-    <div class="grid grid-2">  
-      <div class="form-group">  
-        <label for="passwordDecrypt1" class="form-label">First Password</label>  
-        <div class="input-group">  
-          <input type="password" id="passwordDecrypt1" class="form-control" placeholder="Enter first password..." />  
-          <button class="password-toggle" data-for="passwordDecrypt1"><i class="fas fa-eye"></i></button>  
-        </div>  
-      </div>  
-      <div class="form-group">  
-        <label for="passwordDecrypt2" class="form-label">Second Password</label>  
-        <div class="input-group">  
-          <input type="password" id="passwordDecrypt2" class="form-control" placeholder="Enter second password..." />  
-          <button class="password-toggle" data-for="passwordDecrypt2"><i class="fas fa-eye"></i></button>  
-        </div>  
-      </div>  
-    </div>  
-    <button id="decryptButton" class="btn btn-secondary btn-block"><i class="fas fa-unlock mr-2"></i> Decrypt Message</button>  
-    <div id="loaderDecrypt" class="loader-container">  
-      <div class="loader"><div class="loader-spinner"></div></div>  
-    </div>  
-    <div class="result-container">  
-      <div class="result-header"><span class="result-title">Decrypted Result</span></div>  
-      <textarea id="plaintextOutput" class="form-control" rows="5" placeholder="Decrypted output will appear here..." readonly></textarea>  
-      <div class="mt-4 flex justify-end">  
-        <button id="copyDecrypted" class="copy-btn">  
-          <i class="fas fa-copy"></i> Copy to Clipboard  
-          <span id="copyDecryptedTooltip" class="tooltip-text">Copied!</span>  
-        </button>  
-      </div>  
-    </div>  
-  </div>  
-</div>  
-  
-<!-- Footer -->  
-<footer class="footer" data-aos="fade-up">  
-  <p><span class="footer-brand">x4</span> - Enhanced Security Version</p>  
-  <p class="text-gray-400 text-sm">Client-side encryption for your privacy and security</p>  
-</footer>
+    <div class="tabs">
+      <button id="tab-enc" class="tab active" type="button" role="tab" aria-selected="true" aria-controls="sec-enc">Encrypt</button>
+      <button id="tab-dec" class="tab" type="button" role="tab" aria-selected="false" aria-controls="sec-dec">Decrypt</button>
+    </div>
 
-  </div>    <!-- Required JS Libraries -->    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>    <!-- Inline Script (nonce applied) -->    <script nonce="2149a1070219f386af8e5590e597935f">  
-    document.addEventListener('DOMContentLoaded', function() {  
-      AOS.init({ duration: 800, easing: 'ease-in-out', once: true });  
-  
-      // Ensure correct initial visibility  
-      const encryptorSection = document.getElementById('encryptorSection');  
-      const decryptorSection = document.getElementById('decryptorSection');  
-      encryptorSection.style.display = 'block';  
-      decryptorSection.style.display = 'none';  
-  
-      // Tab elements  
-      const encryptorTab = document.getElementById('encryptorTab');  
-      const decryptorTab = document.getElementById('decryptorTab');  
-  
-      // Switch to Encrypt  
-      encryptorTab.addEventListener('click', function() {  
-        encryptorTab.classList.add('active');  
-        decryptorTab.classList.remove('active');  
-        decryptorSection.style.display = 'none';  
-        encryptorSection.style.display = 'block';  
-        encryptorSection.classList.add('animate__fadeIn');  
-        setTimeout(() => encryptorSection.classList.remove('animate__fadeIn'), 500);  
-      });  
-  
-      // Switch to Decrypt  
-      decryptorTab.addEventListener('click', function() {  
-        decryptorTab.classList.add('active');  
-        encryptorTab.classList.remove('active');  
-        encryptorSection.style.display = 'none';  
-        decryptorSection.style.display = 'block';  
-        decryptorSection.classList.add('animate__fadeIn');  
-        setTimeout(() => decryptorSection.classList.remove('animate__fadeIn'), 500);  
-      });  
-  
-      // ...rest of your existing JS (crypto, toggles, copy, validation) remains unchanged...  
-      // (I’ve omitted it here for brevity, but you can simply copy-paste your previous script below this point.)  
-  
-    });  
-  // All cryptographic operations are done client-side. Use only on trusted devices.  
-    document.addEventListener('DOMContentLoaded', function() {  
-      AOS.init({ duration: 800, easing: 'ease-in-out', once: true });  
-      console.log("x4 - Enhanced Security Version");  
-        
-      // Utility conversions  
-      function str2ab(str) { return new TextEncoder().encode(str); }  
-      function ab2str(buf) { return new TextDecoder().decode(buf); }  
-      function arrayBufferToBase64(buffer) {  
-        let binary = '';  
-        const bytes = new Uint8Array(buffer);  
-        for (let i = 0; i < bytes.byteLength; i++) {  
-          binary += String.fromCharCode(bytes[i]);  
-        }  
-        return window.btoa(binary);  
-      }  
-      function base64ToArrayBuffer(base64) {  
-        const binary_string = window.atob(base64);  
-        const len = binary_string.length;  
-        const bytes = new Uint8Array(len);  
-        for (let i = 0; i < len; i++) {  
-          bytes[i] = binary_string.charCodeAt(i);  
-        }  
-        return bytes.buffer;  
-      }  
-  
-      // HKDF key derivation  
-      async function deriveKeyHKDF(password, salt, info) {  
-        const keyMaterial = await crypto.subtle.importKey(  
-          "raw", str2ab(password), { name: "HKDF" }, false, ["deriveKey"]  
-        );  
-        return crypto.subtle.deriveKey(  
-          { name: "HKDF", hash: "SHA-256", salt: salt, info: str2ab(info) },  
-          keyMaterial,  
-          { name: "AES-GCM", length: 256 },  
-          false,  
-          ["encrypt", "decrypt"]  
-        );  
-      }  
-      // Encrypt data using HKDF-derived AES-GCM key  
-      async function encryptDataWithHKDF(dataInput, password, context) {  
-        const salt = crypto.getRandomValues(new Uint8Array(16));  
-        const iv = crypto.getRandomValues(new Uint8Array(12));  
-        const key = await deriveKeyHKDF(password, salt, context);  
-        const data = (dataInput instanceof ArrayBuffer) ? new Uint8Array(dataInput) : str2ab(dataInput);  
-        const ciphertext = await crypto.subtle.encrypt({ name: "AES-GCM", iv: iv }, key, data);  
-        const result = new Uint8Array(salt.byteLength + iv.byteLength + ciphertext.byteLength);  
-        result.set(salt, 0);  
-        result.set(iv, salt.byteLength);  
-        result.set(new Uint8Array(ciphertext), salt.byteLength + iv.byteLength);  
-        return result.buffer;  
-      }  
-      // Decrypt data using HKDF-derived AES-GCM key  
-      async function decryptDataWithHKDF(encryptedBuffer, password, context) {  
-        const data = new Uint8Array(encryptedBuffer);  
-        const salt = data.slice(0, 16);  
-        const iv = data.slice(16, 28);  
-        const ciphertext = data.slice(28);  
-        const key = await deriveKeyHKDF(password, salt, context);  
-        return await crypto.subtle.decrypt({ name: "AES-GCM", iv: iv }, key, ciphertext);  
-      }  
-      // Four-layer encryption: pwd1 (layer1), pwd1 (layer2), pwd2 (layer3), pwd2 (layer4)  
-      async function quadEncryptData(plaintext, password1, password2) {  
-        let layer = await encryptDataWithHKDF(plaintext, password1, "layer1");  
-        layer = await encryptDataWithHKDF(layer, password1, "layer2");  
-        layer = await encryptDataWithHKDF(layer, password2, "layer3");  
-        layer = await encryptDataWithHKDF(layer, password2, "layer4");  
-        password1 = ""; password2 = "";  
-        return layer;  
-      }  
-      // Four-layer decryption (reverse order)  
-      async function quadDecryptData(encryptedBase64, password1, password2) {  
-        try {  
-          let layer = base64ToArrayBuffer(encryptedBase64);  
-          layer = await decryptDataWithHKDF(layer, password2, "layer4");  
-          layer = await decryptDataWithHKDF(layer, password2, "layer3");  
-          layer = await decryptDataWithHKDF(layer, password1, "layer2");  
-          layer = await decryptDataWithHKDF(layer, password1, "layer1");  
-          password1 = ""; password2 = "";  
-          return ab2str(layer);  
-        } catch (error) {  
-          console.error("Decryption failed at one of the layers.", error);  
-          return "Decryption failed. Please check your passwords or the encrypted text.";  
-        }  
-      }  
-  
-      // Tab switching  
-      const encryptorTab = document.getElementById('encryptorTab');  
-      const decryptorTab = document.getElementById('decryptorTab');  
-      const encryptorSection = document.getElementById('encryptorSection');  
-      const decryptorSection = document.getElementById('decryptorSection');  
-      encryptorTab.addEventListener('click', function() {  
-        encryptorTab.classList.add('active');  
-        decryptorTab.classList.remove('active');  
-        encryptorSection.style.display = 'block';  
-        encryptorSection.classList.add('animate__fadeIn');  
-        decryptorSection.classList.add('animate__fadeOut');  
-        setTimeout(() => {  
-          decryptorSection.style.display = 'none';  
-          decryptorSection.classList.remove('animate__fadeOut');  
-          encryptorSection.classList.remove('animate__fadeIn');  
-        }, 500);  
-      });  
-      decryptorTab.addEventListener('click', function() {  
-        decryptorTab.classList.add('active');  
-        encryptorTab.classList.remove('active');  
-        decryptorSection.style.display = 'block';  
-        decryptorSection.classList.add('animate__fadeIn');  
-        encryptorSection.classList.add('animate__fadeOut');  
-        setTimeout(() => {  
-          encryptorSection.style.display = 'none';  
-          encryptorSection.classList.remove('animate__fadeOut');  
-          decryptorSection.classList.remove('animate__fadeIn');  
-        }, 500);  
-      });  
-  
-      // Toggle password visibility  
-      document.querySelectorAll('.password-toggle').forEach(toggle => {  
-        toggle.addEventListener('click', function() {  
-          const inputId = this.getAttribute('data-for');  
-          const input = document.getElementById(inputId);  
-          const icon = this.querySelector('i');  
-          if (input.type === 'password') {  
-            input.type = 'text'; icon.classList.remove('fa-eye'); icon.classList.add('fa-eye-slash');  
-          } else {  
-            input.type = 'password'; icon.classList.remove('fa-eye-slash'); icon.classList.add('fa-eye');  
-          }  
-        });  
-      });  
-  
-      // Copy to clipboard  
-      function setupCopyButton(buttonId, textareaId, tooltipId) {  
-        const button = document.getElementById(buttonId);  
-        const textarea = document.getElementById(textareaId);  
-        const tooltip = document.getElementById(tooltipId);  
-        button.addEventListener('click', function() {  
-          if (textarea.value) {  
-            navigator.clipboard.writeText(textarea.value)  
-              .then(() => {  
-                tooltip.classList.add('visible');  
-                textarea.classList.add('border-success');  
-                setTimeout(() => {  
-                  tooltip.classList.remove('visible');  
-                  setTimeout(() => { textarea.classList.remove('border-success'); }, 300);  
-                }, 1500);  
-              })  
-              .catch(err => {  
-                console.error('Copy failed: ', err);  
-                tooltip.textContent = 'Copy failed';  
-                tooltip.classList.add('visible');  
-                setTimeout(() => {  
-                  tooltip.classList.remove('visible');  
-                  tooltip.textContent = 'Copied!';  
-                }, 1500);  
-              });  
-          }  
-        });  
-      }  
-      setupCopyButton('copyEncrypted', 'ciphertextOutput', 'copyEncryptedTooltip');  
-      setupCopyButton('copyDecrypted', 'plaintextOutput', 'copyDecryptedTooltip');  
-  
-      // Input focus/blur animations  
-      document.querySelectorAll('.form-control').forEach(input => {  
-        input.addEventListener('focus', function() { this.classList.add('focus-ring'); });  
-        input.addEventListener('blur', function() { this.classList.remove('focus-ring'); });  
-      });  
-  
-      // Button ripple effect (no change)  
-      document.querySelectorAll('.btn').forEach(btn => {  
-        btn.addEventListener('mousedown', function(e) {  
-          const rect = this.getBoundingClientRect();  
-          const x = e.clientX - rect.left;  
-          const y = e.clientY - rect.top;  
-          const ripple = document.createElement('span');  
-          ripple.classList.add('ripple');  
-          ripple.style.left = `${x}px`;  
-          ripple.style.top = `${y}px`;  
-          this.appendChild(ripple);  
-          setTimeout(() => { ripple.remove(); }, 600);  
-        });  
-      });  
-  
-      // Form validation  
-      function validateForm(textareaId, password1Id, password2Id) {  
-        let isValid = true;  
-        const textarea = document.getElementById(textareaId);  
-        const password1 = document.getElementById(password1Id);  
-        const password2 = document.getElementById(password2Id);  
-        [textarea, password1, password2].forEach(el => {  
-          el.classList.remove('is-invalid', 'animate-shake');  
-        });  
-        if (!textarea.value.trim()) { textarea.classList.add('is-invalid', 'animate-shake'); isValid = false; }  
-        if (!password1.value.trim()) { password1.classList.add('is-invalid', 'animate-shake'); isValid = false; }  
-        if (!password2.value.trim()) { password2.classList.add('is-invalid', 'animate-shake'); isValid = false; }  
-        return isValid;  
-      }  
-  
-      // Encrypt button handler  
-      document.getElementById("encryptButton").addEventListener("click", async function() {  
-        if (!validateForm("plaintextInput", "passwordEncrypt1", "passwordEncrypt2")) return;  
-        const plaintext = document.getElementById("plaintextInput").value;  
-        let password1 = document.getElementById("passwordEncrypt1").value;  
-        let password2 = document.getElementById("passwordEncrypt2").value;  
-        const encryptButton = document.getElementById("encryptButton");  
-        const loaderEncrypt = document.getElementById("loaderEncrypt");  
-        const outputField = document.getElementById("ciphertextOutput");  
-        encryptButton.disabled = true; encryptButton.style.opacity = "0.7";  
-        encryptButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Encrypting...';  
-        loaderEncrypt.style.display = "block"; outputField.value = "";  
-        setTimeout(async () => {  
-          try {  
-            const encryptedBuffer = await quadEncryptData(plaintext, password1, password2);  
-            const ciphertext = arrayBufferToBase64(encryptedBuffer);  
-            outputField.value = ciphertext;  
-            outputField.classList.add('animate-fade-in', 'border-success');  
-            outputField.scrollIntoView({ behavior: 'smooth', block: 'nearest' });  
-            setTimeout(() => { outputField.classList.remove('border-success'); }, 3000);  
-          } catch (error) {  
-            console.error("Encryption failed:", error);  
-            outputField.value = "Encryption failed. Please try again.";  
-            outputField.classList.add('animate-fade-in', 'border-danger');  
-            setTimeout(() => { outputField.classList.remove('border-danger'); }, 3000);  
-          } finally {  
-            loaderEncrypt.style.display = "none";  
-            encryptButton.disabled = false; encryptButton.style.opacity = "1";  
-            encryptButton.innerHTML = '<i class="fas fa-lock mr-2"></i> Encrypt Message';  
-          }  
-        }, 300);  
-      });  
-  
-      // Decrypt button handler  
-      document.getElementById("decryptButton").addEventListener("click", async function() {  
-        if (!validateForm("ciphertextInput", "passwordDecrypt1", "passwordDecrypt2")) return;  
-        const encryptedText = document.getElementById("ciphertextInput").value;  
-        let password1 = document.getElementById("passwordDecrypt1").value;  
-        let password2 = document.getElementById("passwordDecrypt2").value;  
-        const decryptButton = document.getElementById("decryptButton");  
-        const loaderDecrypt = document.getElementById("loaderDecrypt");  
-        const outputField = document.getElementById("plaintextOutput");  
-        decryptButton.disabled = true; decryptButton.style.opacity = "0.7";  
-        decryptButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Decrypting...';  
-        loaderDecrypt.style.display = "block"; outputField.value = "";  
-        setTimeout(async () => {  
-          try {  
-            const plaintext = await quadDecryptData(encryptedText, password1, password2);  
-            outputField.value = plaintext;  
-            outputField.classList.add('animate-fade-in');  
-            outputField.scrollIntoView({ behavior: 'smooth', block: 'nearest' });  
-            if (plaintext.includes("Decryption failed")) {  
-              outputField.classList.add('border-danger');  
-              setTimeout(() => { outputField.classList.remove('border-danger'); }, 3000);  
-            } else {  
-              outputField.classList.add('border-success');  
-              setTimeout(() => { outputField.classList.remove('border-success'); }, 3000);  
-            }  
-          } catch (error) {  
-            console.error("Decryption failed:", error);  
-            outputField.value = "Decryption failed. Please check your passwords and encrypted text.";  
-            outputField.classList.add('animate-fade-in', 'border-danger');  
-            setTimeout(() => { outputField.classList.remove('border-danger'); }, 3000);  
-          } finally {  
-            loaderDecrypt.style.display = "none";  
-            decryptButton.disabled = false; decryptButton.style.opacity = "1";  
-            decryptButton.innerHTML = '<i class="fas fa-unlock mr-2"></i> Decrypt Message';  
-          }  
-        }, 300);  
-      });  
-  
-      // Tab pulse and autofocus  
-      setTimeout(() => {  
-        document.querySelector('.tabs').classList.add('animate-bounce');  
-        setTimeout(() => { document.querySelector('.tabs').classList.remove('animate-bounce'); }, 1000);  
-      }, 1500);  
-      document.getElementById('plaintextInput').focus();  
-      decryptorTab.addEventListener('click', function() {  
-        setTimeout(() => { document.getElementById('ciphertextInput').focus(); }, 600);  
-      });  
-      encryptorTab.addEventListener('click', function() {  
-        setTimeout(() => { document.getElementById('plaintextInput').focus(); }, 600);  
-      });  
-  
-      // Ripple & focus styles injection  
-      if (!document.querySelector('style#ripple-style')) {  
-        const style = document.createElement('style');  
-        style.id = 'ripple-style';  
-        style.textContent = `  
-          .btn { position: relative; overflow: hidden; }  
-          .ripple { position: absolute; background: rgba(255,255,255,0.3); border-radius: 50%; transform: scale(0); animation: ripple-effect 0.6s linear; width:250px; height:250px; margin-left:-125px; margin-top:-125px; z-index:0; }  
-          @keyframes ripple-effect { 100% { transform: scale(1); opacity: 0; } }  
-          .focus-ring { border-color: var(--primary-color); box-shadow: 0 0 0 4px rgba(99,102,241,0.15); }  
-        `;  
-        document.head.appendChild(style);  
-      }  
-  
-      // SessionStorage: clear on unload for security  
-      window.addEventListener('beforeunload', () => { sessionStorage.clear(); });  
-    });  
-  </script>  </body>  
+    <!-- Encrypt (visible by default) -->
+    <section id="sec-enc" class="fade" role="tabpanel" aria-labelledby="tab-enc">
+      <div class="card">
+        <div class="section-title">Encrypt your message</div>
+        <div class="hint">Use long, unique passwords. Header is AAD‑bound for tamper protection.</div>
+
+        <div class="grid mt-3">
+          <div>
+            <label class="label" for="enc-msg">Message</label>
+            <textarea id="enc-msg" class="textarea" placeholder="Type or paste your text to encrypt..." spellcheck="false"></textarea>
+          </div>
+
+          <div class="grid grid-2">
+            <div>
+              <label class="label" for="enc-p1">First password</label>
+              <div class="row">
+                <input id="enc-p1" type="password" class="input" placeholder="Enter first password..." autocomplete="new-password" spellcheck="false">
+                <button class="eye" type="button" data-for="enc-p1" aria-label="Toggle visibility">👁️</button>
+              </div>
+            </div>
+            <div>
+              <label class="label" for="enc-p2">Second password</label>
+              <div class="row">
+                <input id="enc-p2" type="password" class="input" placeholder="Enter second password..." autocomplete="new-password" spellcheck="false">
+                <button class="eye" type="button" data-for="enc-p2" aria-label="Toggle visibility">👁️</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card subcard">
+            <div class="grid grid-3">
+              <div>
+                <label class="label" for="pbkdf2-iters">PBKDF2 iterations</label>
+                <input id="pbkdf2-iters" type="number" class="input" min="120000" step="10000" value="600000" inputmode="numeric">
+              </div>
+              <div>
+                <label class="label" for="pbkdf2-hash">PBKDF2 hash</label>
+                <select id="pbkdf2-hash" class="select">
+                  <option value="SHA-256" selected>SHA‑256</option>
+                  <option value="SHA-512">SHA‑512</option>
+                </select>
+              </div>
+              <div class="align-end">
+                <button id="pbkdf2-cal" class="btn light block" type="button" aria-busy="false" data-busy-text="Calibrating...">
+                  <span class="btn-spinner" aria-hidden="true"></span>
+                  <span class="btn-text">⏱️ Calibrate (~300ms)</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-2 mt-2">
+            <button id="btn-enc" class="btn primary block" type="button" aria-busy="false" data-busy-text="Encrypting...">
+              <span class="btn-spinner" aria-hidden="true"></span>
+              <span class="btn-text">🔐 Encrypt</span>
+            </button>
+            <button id="btn-enc-clear" class="btn light block" type="button">
+              <span class="btn-text">🧹 Clear</span>
+            </button>
+          </div>
+
+          <div class="mt-3">
+            <div class="result-title">Encrypted output (self-describing)</div>
+            <div class="row mt-1">
+              <textarea id="enc-out" class="textarea" placeholder="Result appears here..." readonly></textarea>
+              <div class="tooltip" id="tip-enc">Copied!</div>
+            </div>
+            <div class="right mt-1">
+              <button id="copy-enc" class="btn accent" type="button">
+                <span class="btn-text">📋 Copy</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Decrypt (hidden by default) -->
+    <section id="sec-dec" class="fade hidden" role="tabpanel" aria-labelledby="tab-dec">
+      <div class="card">
+        <div class="section-title">Decrypt your message</div>
+        <div class="hint">Paste the text (starts with x4v2|...). Header is authenticated; altering it breaks decryption.</div>
+
+        <div class="grid mt-3">
+          <div>
+            <label class="label" for="dec-in">Encrypted input</label>
+            <textarea id="dec-in" class="textarea" placeholder="Paste ciphertext here..." spellcheck="false"></textarea>
+            <div id="kdf-detected" class="hint mt-1"></div>
+          </div>
+
+          <div class="grid grid-2">
+            <div>
+              <label class="label" for="dec-p1">First password</label>
+              <div class="row">
+                <input id="dec-p1" type="password" class="input" placeholder="Enter first password..." autocomplete="current-password" spellcheck="false">
+                <button class="eye" type="button" data-for="dec-p1" aria-label="Toggle visibility">👁️</button>
+              </div>
+            </div>
+            <div>
+              <label class="label" for="dec-p2">Second password</label>
+              <div class="row">
+                <input id="dec-p2" type="password" class="input" placeholder="Enter second password..." autocomplete="current-password" spellcheck="false">
+                <button class="eye" type="button" data-for="dec-p2" aria-label="Toggle visibility">👁️</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-2 mt-2">
+            <button id="btn-dec" class="btn primary block" type="button" aria-busy="false" data-busy-text="Decrypting...">
+              <span class="btn-spinner" aria-hidden="true"></span>
+              <span class="btn-text">🔓 Decrypt</span>
+            </button>
+            <button id="btn-dec-clear" class="btn light block" type="button">
+              <span class="btn-text">🧹 Clear</span>
+            </button>
+          </div>
+
+          <div class="mt-3">
+            <div class="result-title">Decrypted output</div>
+            <div class="row mt-1">
+              <textarea id="dec-out" class="textarea" placeholder="Plaintext appears here..." readonly></textarea>
+              <div class="tooltip" id="tip-dec">Copied!</div>
+            </div>
+            <div class="right mt-1">
+              <button id="copy-dec" class="btn accent" type="button">
+                <span class="btn-text">📋 Copy</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <span class="brandtxt">x4</span> • Enhanced client‑side encryption (PBKDF2)
+    </footer>
+  </div>
+
+  <script src="./app.js" defer></script>
+</body>
 </html>
