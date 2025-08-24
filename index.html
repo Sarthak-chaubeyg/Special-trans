@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>x4 Model - Advanced Four-Layer Encryption System</title>
+  <meta name="description" content="Military-grade four-layer AES-GCM encryption with PBKDF2 hardening. 100% client-side, zero-knowledge architecture.">
+  
+  <!-- Preconnect to external resources -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Animated Background -->
+  <div class="bg-animation">
+    <div class="gradient-orb orb-1"></div>
+    <div class="gradient-orb orb-2"></div>
+    <div class="gradient-orb orb-3"></div>
+    <div class="grid-overlay"></div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-brand">
+        <div class="brand-icon">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M12 2L3 7V12C3 16.5 6 20.74 12 22C18 20.74 21 16.5 21 12V7L12 2Z" stroke="currentColor" stroke-width="2"/>
+            <path d="M12 7V12M12 12L9 15M12 12L15 9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <span class="brand-text">x4</span>
+      </div>
+      <div class="nav-links desktop-only">
+        <a href="#features" class="nav-link">Features</a>
+        <a href="#how-it-works" class="nav-link">How It Works</a>
+        <a href="#security" class="nav-link">Security</a>
+        <a href="#specs" class="nav-link">Specifications</a>
+      </div>
+      <a href="translator.html" class="nav-cta">Launch App</a>
+      <button class="mobile-menu-btn" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu">
+    <div class="mobile-menu-content">
+      <a href="#features" class="mobile-link">Features</a>
+      <a href="#how-it-works" class="mobile-link">How It Works</a>
+      <a href="#security" class="mobile-link">Security</a>
+      <a href="#specs" class="mobile-link">Specifications</a>
+      <a href="translator.html" class="mobile-cta">Launch App</a>
+    </div>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-badge" data-aos="fade-down">
+          <span class="badge-dot"></span>
+          <span>Military-Grade Encryption</span>
+        </div>
+        <h1 class="hero-title" data-aos="fade-up">
+          Four-Layer <span class="gradient-text">AES‑GCM</span> Encryption
+          <br>with <span class="gradient-text">PBKDF2</span> Hardening
+        </h1>
+        <p class="hero-subtitle" data-aos="fade-up" data-aos-delay="100">
+          x4 Model delivers unbreakable encryption through four sequential AES-256-GCM layers,
+          each protected by PBKDF2 key derivation with up to 1.2 million iterations.
+          100% client-side. Zero server knowledge.
+        </p>
+        <div class="hero-actions" data-aos="fade-up" data-aos-delay="200">
+          <a href="translator.html" class="btn btn-primary btn-large">
+            <span class="btn-icon">🔐</span>
+            <span>Start Encrypting</span>
+            <svg class="btn-arrow" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"/>
+            </svg>
+          </a>
+          <a href="#how-it-works" class="btn btn-secondary btn-large">
+            <span>Learn More</span>
+          </a>
+        </div>
+        <div class="hero-stats" data-aos="fade-up" data-aos-delay="300">
+          <div class="stat">
+            <div class="stat-value">256-bit</div>
+            <div class="stat-label">AES-GCM</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value">4 Layers</div>
+            <div class="stat-label">Encryption</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value">600K+</div>
+            <div class="stat-label">PBKDF2 Iterations</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value">100%</div>
+            <div class="stat-label">Client-Side</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="features" class="features">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title" data-aos="fade-up">
+          Enterprise-Grade Security Features
+        </h2>
+        <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">
+          Built on industry-standard cryptographic algorithms with defense-in-depth architecture
+        </p>
+      </div>
+      
+      <div class="features-grid">
+        <div class="feature-card" data-aos="fade-up">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none">
+              <rect x="3" y="11" width="18" height="10" rx="2" stroke="currentColor" stroke-width="2"/>
+              <path d="M7 11V7a5 5 0 0110 0v4" stroke="currentColor" stroke-width="2"/>
+              <circle cx="12" cy="16" r="1" fill="currentColor"/>
+            </svg>
+          </div>
+          <h3 class="feature-title">Quadruple-Layer Protection</h3>
+          <p class="feature-description">
+            Four independent AES-GCM encryption layers, each with unique salts and IVs. 
+            Even if three layers are compromised, your data remains secure.
+          </p>
+          <div class="feature-specs">
+            <span class="spec">4x AES-256-GCM</span>
+            <span class="spec">Unique IVs per layer</span>
+          </div>
+        </div>
+
+        <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" stroke="currentColor" stroke-width="2"/>
+            </svg>
+          </div>
+          <h3 class="feature-title">PBKDF2 Key Hardening</h3>
+          <p class="feature-description">
+            Advanced password-based key derivation with configurable iterations (120K-1.2M). 
+            Calibration ensures optimal security-performance balance.
+          </p>
+          <div class="feature-specs">
+            <span class="spec">SHA-256/512</span>
+            <span class="spec">Auto-calibration</span>
+          </div>
+        </div>
+
+        <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M12 2v20M2 12h20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+            </svg>
+          </div>
+          <h3 class="feature-title">Zero-Knowledge Architecture</h3>
+          <p class="feature-description">
+            All encryption happens in your browser. No data, passwords, or keys ever leave 
+            your device. Complete privacy with no server-side processing.
+          </p>
+          <div class="feature-specs">
+            <span class="spec">100% Client-side</span>
+            <span class="spec">No tracking</span>
+          </div>
+        </div>
+
+        <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M7 7h10v10H7z" stroke="currentColor" stroke-width="2"/>
+              <path d="M3 3h6v6H3zM15 15h6v6h-6z" stroke="currentColor" stroke-width="2"/>
+            </svg>
+          </div>
+          <h3 class="feature-title">Dual-Password System</h3>
+          <p class="feature-description">
+            Two independent passwords control different encryption layers. 
+            First password manages layers 1-2, second password manages layers 3-4.
+          </p>
+          <div class="feature-specs">
+            <span class="spec">2-factor security</span>
+            <span class="spec">Layer isolation</span>
+          </div>
+        </div>
+
+        <div class="feature-card" data-aos="fade-up" data-aos-delay="400">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3 class="feature-title">AAD Tamper Protection</h3>
+          <p class="feature-description">
+            Additional Authenticated Data binding ensures header integrity. 
+            Any modification to the encryption parameters invalidates decryption.
+          </p>
+          <div class="feature-specs">
+            <span class="spec">Header authentication</span>
+            <span class="spec">Integrity verification</span>
+          </div>
+        </div>
+
+        <div class="feature-card" data-aos="fade-up" data-aos-delay="500">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none">
+              <rect x="2" y="7" width="20" height="14" rx="2" stroke="currentColor" stroke-width="2"/>
+              <path d="M8 7V5a4 4 0 118 0v2" stroke="currentColor" stroke-width="2"/>
+            </svg>
+          </div>
+          <h3 class="feature-title">Self-Describing Format</h3>
+          <p class="feature-description">
+            Encrypted output includes versioned header with all parameters. 
+            Automatic detection ensures correct decryption settings.
+          </p>
+          <div class="feature-specs">
+            <span class="spec">Version control</span>
+            <span class="spec">Auto-detection</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works Section -->
+  <section id="how-it-works" class="how-it-works">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title" data-aos="fade-up">How x4 Encryption Works</h2>
+        <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">
+          A sophisticated multi-layer approach to unbreakable encryption
+        </p>
+      </div>
+
+      <div class="process-timeline">
+        <div class="timeline-line"></div>
+        
+        <div class="process-step" data-aos="fade-right">
+          <div class="step-number">01</div>
+          <div class="step-content">
+            <h3>Input & Validation</h3>
+            <p>Enter your message and two strong passwords. Text is normalized using NFKC for consistency.</p>
+            <div class="step-detail">
+              <code>plaintext → UTF-8 → NFKC normalization</code>
+            </div>
+          </div>
+        </div>
+
+        <div class="process-step" data-aos="fade-left">
+          <div class="step-number">02</div>
+          <div class="step-content">
+            <h3>PBKDF2 Key Derivation</h3>
+            <p>Each password undergoes PBKDF2 hardening with configurable iterations (120K-1.2M) and salt.</p>
+            <div class="step-detail">
+              <code>password + salt + context → PBKDF2 → AES key</code>
+            </div>
+          </div>
+        </div>
+
+        <div class="process-step" data-aos="fade-right">
+          <div class="step-number">03</div>
+          <div class="step-content">
+            <h3>Layer 1-2 Encryption</h3>
+            <p>First password encrypts data twice with unique salts and IVs for each layer.</p>
+            <div class="step-detail">
+              <code>Layer 1: AES-GCM(data, key1, iv1, AAD)</code>
+              <code>Layer 2: AES-GCM(layer1, key2, iv2, AAD)</code>
+            </div>
+          </div>
+        </div>
+
+        <div class="process-step" data-aos="fade-left">
+          <div class="step-number">04</div>
+          <div class="step-content">
+            <h3>Layer 3-4 Encryption</h3>
+            <p>Second password adds two more encryption layers with independent parameters.</p>
+            <div class="step-detail">
+              <code>Layer 3: AES-GCM(layer2, key3, iv3, AAD)</code>
+              <code>Layer 4: AES-GCM(layer3, key4, iv4, AAD)</code>
+            </div>
+          </div>
+        </div>
+
+        <div class="process-step" data-aos="fade-right">
+          <div class="step-number">05</div>
+          <div class="step-content">
+            <h3>Output Generation</h3>
+            <p>Final ciphertext is encoded in Base64 URL-safe format with self-describing header.</p>
+            <div class="step-detail">
+              <code>x4v2|k=pbkdf2;i=600000;h=SHA-256||[ciphertext]</code>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Security Analysis Section -->
+  <section id="security" class="security">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title" data-aos="fade-up">Security Analysis</h2>
+        <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">
+          Defense-in-depth approach with multiple independent security barriers
+        </p>
+      </div>
+
+      <div class="security-grid">
+        <div class="security-card" data-aos="fade-up">
+          <div class="security-icon threat">⚠️</div>
+          <h3>Threat Model</h3>
+          <ul class="security-list">
+            <li>Brute force attacks</li>
+            <li>Dictionary attacks</li>
+            <li>Side-channel attacks</li>
+            <li>Cryptanalysis attempts</li>
+            <li>Tampering & modification</li>
+          </ul>
+        </div>
+
+        <div class="security-card" data-aos="fade-up" data-aos-delay="100">
+          <div class="security-icon defense">🛡️</div>
+          <h3>Defense Mechanisms</h3>
+          <ul class="security-list">
+            <li>4 independent encryption layers</li>
+            <li>PBKDF2 with high iterations</li>
+            <li>Unique salts per layer</li>
+            <li>AAD integrity binding</li>
+            <li>Memory sanitization</li>
+          </ul>
+        </div>
+
+        <div class="security-card" data-aos="fade-up" data-aos-delay="200">
+          <div class="security-icon strength">💪</div>
+          <h3>Cryptographic Strength</h3>
+          <ul class="security-list">
+            <li>AES-256-GCM (NIST approved)</li>
+            <li>HMAC-SHA-256/512</li>
+            <li>96-bit nonces (IVs)</li>
+            <li>128-bit authentication tags</li>
+            <li>Effective key space: 2^1024</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="security-comparison" data-aos="fade-up" data-aos-delay="300">
+        <h3>Comparison with Standard Encryption</h3>
+        <div class="comparison-table">
+          <div class="comparison-header">
+            <div>Feature</div>
+            <div>Standard AES</div>
+            <div class="highlight">x4 Model</div>
+          </div>
+          <div class="comparison-row">
+            <div>Encryption Layers</div>
+            <div>1</div>
+            <div class="highlight">4</div>
+          </div>
+          <div class="comparison-row">
+            <div>Key Derivation</div>
+            <div>Basic</div>
+            <div class="highlight">PBKDF2 (600K+ iterations)</div>
+          </div>
+          <div class="comparison-row">
+            <div>Password Requirements</div>
+            <div>1</div>
+            <div class="highlight">2 (independent)</div>
+          </div>
+          <div class="comparison-row">
+            <div>Salt/IV Uniqueness</div>
+            <div>Per message</div>
+            <div class="highlight">Per layer (4x)</div>
+          </div>
+          <div class="comparison-row">
+            <div>Tamper Detection</div>
+            <div>Optional</div>
+            <div class="highlight">Built-in (AAD)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Technical Specifications -->
+  <section id="specs" class="specs">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title" data-aos="fade-up">Technical Specifications</h2>
+        <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">
+          Detailed cryptographic parameters and implementation details
+        </p>
+      </div>
+
+      <div class="specs-grid">
+        <div class="spec-card" data-aos="fade-up">
+          <h3>Encryption Algorithm</h3>
+          <div class="spec-item">
+            <span class="spec-label">Cipher:</span>
+            <span class="spec-value">AES-256-GCM</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Mode:</span>
+            <span class="spec-value">Galois/Counter Mode</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Key Size:</span>
+            <span class="spec-value">256 bits</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">IV Size:</span>
+            <span class="spec-value">96 bits (12 bytes)</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Tag Size:</span>
+            <span class="spec-value">128 bits</span>
+          </div>
+        </div>
+
+        <div class="spec-card" data-aos="fade-up" data-aos-delay="100">
+          <h3>Key Derivation</h3>
+          <div class="spec-item">
+            <span class="spec-label">Function:</span>
+            <span class="spec-value">PBKDF2</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Hash:</span>
+            <span class="spec-value">SHA-256 / SHA-512</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Iterations:</span>
+            <span class="spec-value">120,000 - 1,200,000</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Salt Size:</span>
+            <span class="spec-value">128 bits (16 bytes)</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Default:</span>
+            <span class="spec-value">600,000 iterations</span>
+          </div>
+        </div>
+
+        <div class="spec-card" data-aos="fade-up" data-aos-delay="200">
+          <h3>Data Format</h3>
+          <div class="spec-item">
+            <span class="spec-label">Encoding:</span>
+            <span class="spec-value">Base64 URL-safe</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Header:</span>
+            <span class="spec-value">Self-describing</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Version:</span>
+            <span class="spec-value">x4v2</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Max Size:</span>
+            <span class="spec-value">250 KB plaintext</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Charset:</span>
+            <span class="spec-value">UTF-8 (NFKC)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="code-example" data-aos="fade-up" data-aos-delay="300">
+        <h3>Output Format Example</h3>
+        <pre><code class="language-text">x4v2|k=pbkdf2;i=600000;h=SHA-256;alg=AES-GCM;layers=4||<span class="token-highlight">[Base64 Ciphertext]</span>
+
+Header Components:
+├─ x4v2         : Protocol version
+├─ k=pbkdf2     : Key derivation function
+├─ i=600000     : PBKDF2 iterations
+├─ h=SHA-256    : Hash algorithm
+├─ alg=AES-GCM  : Encryption algorithm
+└─ layers=4     : Number of encryption layers</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- Use Cases Section -->
+  <section class="use-cases">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title" data-aos="fade-up">Perfect For</h2>
+        <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">
+          Trusted by professionals who demand the highest level of security
+        </p>
+      </div>
+
+      <div class="use-cases-grid">
+        <div class="use-case-card" data-aos="zoom-in">
+          <div class="use-case-icon">🏢</div>
+          <h3>Corporate Secrets</h3>
+          <p>Protect sensitive business information, trade secrets, and confidential communications.</p>
+        </div>
+        <div class="use-case-card" data-aos="zoom-in" data-aos-delay="100">
+          <div class="use-case-icon">⚖️</div>
+          <h3>Legal Documents</h3>
+          <p>Secure attorney-client privileged information and sensitive legal documents.</p>
+        </div>
+        <div class="use-case-card" data-aos="zoom-in" data-aos-delay="200">
+          <div class="use-case-icon">🏥</div>
+          <h3>Medical Records</h3>
+          <p>HIPAA-compliant encryption for patient data and medical records.</p>
+        </div>
+        <div class="use-case-card" data-aos="zoom-in" data-aos-delay="300">
+          <div class="use-case-icon">💼</div>
+          <h3>Financial Data</h3>
+          <p>Bank-level security for financial records, credentials, and transaction data.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta">
+    <div class="container">
+      <div class="cta-content" data-aos="zoom-in">
+        <h2 class="cta-title">Ready to Secure Your Data?</h2>
+        <p class="cta-subtitle">
+          Experience military-grade encryption with zero setup required.
+          No registration. No tracking. Just pure security.
+        </p>
+        <div class="cta-actions">
+          <a href="translator.html" class="btn btn-cta">
+            <span class="btn-icon">🔐</span>
+            <span>Launch x4 Encryption</span>
+          </a>
+        </div>
+        <div class="cta-features">
+          <div class="cta-feature">
+            <svg viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+            </svg>
+            <span>100% Free</span>
+          </div>
+          <div class="cta-feature">
+            <svg viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+            </svg>
+            <span>No Registration</span>
+          </div>
+          <div class="cta-feature">
+            <svg viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+            </svg>
+            <span>Open Source</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="brand-icon">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M12 2L3 7V12C3 16.5 6 20.74 12 22C18 20.74 21 16.5 21 12V7L12 2Z" stroke="currentColor" stroke-width="2"/>
+            </svg>
+          </div>
+          <span class="brand-text">x4 Model</span>
+        </div>
+        <p class="footer-text">
+          Four-Layer AES-GCM Encryption with PBKDF2 Hardening
+        </p>
+        <div class="footer-links">
+          <a href="translator.html">Launch App</a>
+          <a href="#features">Features</a>
+          <a href="#security">Security</a>
+          <a href="#specs">Specifications</a>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2024 x4 Model. Open-source encryption for everyone.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="script.js"></script>
+</body>
+</html>
