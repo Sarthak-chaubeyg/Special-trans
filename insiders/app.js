@@ -42,10 +42,14 @@
 
   function showTip(el){ el.classList.add('show'); setTimeout(()=> el.classList.remove('show'), 1400); }
 
+  // Zeroing helper
+  function zeroBytes(u8){
+    try{ if (u8 && typeof u8.fill === 'function') u8.fill(0); }catch(e){}
+  }
+
   // Envelope header (AAD-bound)
   const X4V = 2, LAYERS = 4;
   function buildHeaderPBKDF2(params){
-    // x4v2|k=pbkdf2;i=600000;h=SHA-256;alg=AES-GCM;layers=4||
     const hash = (params.hash === 'SHA-512') ? 'SHA-512' : 'SHA-256';
     const iters = Math.min(Math.max(Number(params.iterations||600000), 120000), 1200000);
     return `x4v${X4V}|k=pbkdf2;i=${iters};h=${hash};alg=AES-GCM;layers=${LAYERS}||`;
@@ -62,63 +66,94 @@
     return { version:vnum, header, payload, params:{ iterations, hash } };
   }
 
-  // PBKDF2 (password -> key)
-  async function derivePBKDF2(password, salt, ctx, iterations=600000, hash='SHA-256'){
-    const material = await crypto.subtle.importKey('raw', str2bytes(password), 'PBKDF2', false, ['deriveKey']);
-    // Domain separation: salt || '|' || ctx
-    const saltWithInfo = concatBytes(salt, str2bytes('|'+ctx));
-    return crypto.subtle.deriveKey(
-      { name:'PBKDF2', salt: saltWithInfo, iterations, hash },
-      material,
-      { name:'AES-GCM', length:256 },
-      false,
-      ['encrypt','decrypt']
-    );
+  // PBKDF2 (password bytes -> CryptoKey)
+  // passwordBytes: Uint8Array
+  async function derivePBKDF2Bytes(passwordBytes, salt, ctx, iterations=600000, hash='SHA-256'){
+    // make a compact copy of password bytes and import that ArrayBuffer (avoid referencing original large buffer)
+    const pwdBuf = passwordBytes.buffer.slice(passwordBytes.byteOffset, passwordBytes.byteOffset + passwordBytes.byteLength);
+    try{
+      const material = await crypto.subtle.importKey('raw', pwdBuf, 'PBKDF2', false, ['deriveKey']);
+      // Domain separation: salt || '|' || ctx
+      const saltWithInfo = concatBytes(salt, str2bytes('|'+ctx));
+      const key = await crypto.subtle.deriveKey(
+        { name:'PBKDF2', salt: saltWithInfo, iterations, hash },
+        material,
+        { name:'AES-GCM', length:256 },
+        false,
+        ['encrypt','decrypt']
+      );
+      // Attempt to zero the copied pwdBuf
+      try{ const tmp = new Uint8Array(pwdBuf); tmp.fill(0); }catch(e){}
+      return key;
+    } finally {
+      // best-effort: caller should zero their passwordBytes after this call
+    }
   }
 
   // AES-GCM layer ops (AAD-bound with header)
-  async function encLayer(dataInput, password, params, ctx, aadBytes){
+  async function encLayer(dataInput, passwordBytes, params, ctx, aadBytes){
     const salt = rand(16), iv = rand(12);
-    const key = await derivePBKDF2(password, salt, ctx, params.iterations, params.hash);
+    const key = await derivePBKDF2Bytes(passwordBytes, salt, ctx, params.iterations, params.hash);
     const plain = (dataInput instanceof ArrayBuffer || ArrayBuffer.isView(dataInput)) ? (dataInput.buffer || dataInput) : str2bytes(String(dataInput));
     const ct = await crypto.subtle.encrypt({ name:'AES-GCM', iv, additionalData: aadBytes }, key, plain);
     const out = new Uint8Array(salt.length + iv.length + ct.byteLength);
     out.set(salt,0); out.set(iv, salt.length); out.set(new Uint8Array(ct), salt.length+iv.length);
+    // Do not try to return CryptoKey or other sensitive objects
     return out.buffer;
   }
-  async function decLayer(buf, password, params, ctx, aadBytes){
+  async function decLayer(buf, passwordBytes, params, ctx, aadBytes){
     const bytes = new Uint8Array(buf);
     const salt = bytes.slice(0,16), iv = bytes.slice(16,28), ct = bytes.slice(28);
-    const key = await derivePBKDF2(password, salt, ctx, params.iterations, params.hash);
+    const key = await derivePBKDF2Bytes(passwordBytes, salt, ctx, params.iterations, params.hash);
     return crypto.subtle.decrypt({ name:'AES-GCM', iv, additionalData: aadBytes }, key, ct);
   }
 
-  async function quadEncrypt(plaintext, p1, p2, params, aadBytes){
-    let l = await encLayer(plaintext, p1, params, 'layer1', aadBytes);
-    l = await encLayer(l,        p1, params, 'layer2', aadBytes);
-    l = await encLayer(l,        p2, params, 'layer3', aadBytes);
-    l = await encLayer(l,        p2, params, 'layer4', aadBytes);
-    p1=''; p2=''; return l;
+  // Quad-layer: convert passwords to bytes early, clear DOM inputs ASAP, zero buffers after use
+  async function quadEncrypt(plaintext, p1Str, p2Str, params, aadBytes){
+    // convert immediately to bytes and clear inputs
+    const p1Bytes = str2bytes(p1Str);
+    const p2Bytes = str2bytes(p2Str);
+    // zero out plaintext DOM in caller; here we operate on the passed plaintext
+    try{
+      let l = await encLayer(plaintext, p1Bytes, params, 'layer1', aadBytes);
+      l = await encLayer(l,        p1Bytes, params, 'layer2', aadBytes);
+      l = await encLayer(l,        p2Bytes, params, 'layer3', aadBytes);
+      l = await encLayer(l,        p2Bytes, params, 'layer4', aadBytes);
+      return l;
+    } finally {
+      // zero password bytes as soon as possible
+      zeroBytes(p1Bytes); zeroBytes(p2Bytes);
+      // attempt to obliterate string refs (caller should also clear DOM)
+      p1Str = ''; p2Str = '';
+    }
   }
-  async function quadDecrypt(b64u, p1, p2, params, aadBytes){
+  async function quadDecrypt(b64u, p1Str, p2Str, params, aadBytes){
+    const p1Bytes = str2bytes(p1Str);
+    const p2Bytes = str2bytes(p2Str);
     try{
       let l = b64u2ab(b64u);
-      l = await decLayer(l, p2, params, 'layer4', aadBytes);
-      l = await decLayer(l, p2, params, 'layer3', aadBytes);
-      l = await decLayer(l, p1, params, 'layer2', aadBytes);
-      l = await decLayer(l, p1, params, 'layer1', aadBytes);
-      p1=''; p2=''; return bytes2str(l);
-    }catch(e){ console.error('Decrypt failed', e); return null; }
+      l = await decLayer(l, p2Bytes, params, 'layer4', aadBytes);
+      l = await decLayer(l, p2Bytes, params, 'layer3', aadBytes);
+      l = await decLayer(l, p1Bytes, params, 'layer2', aadBytes);
+      l = await decLayer(l, p1Bytes, params, 'layer1', aadBytes);
+      return bytes2str(l);
+    } catch(e){
+      // Generic failure (do not leak stack or internals)
+      return null;
+    } finally {
+      zeroBytes(p1Bytes); zeroBytes(p2Bytes);
+      p1Str = ''; p2Str = '';
+    }
   }
 
-  // Calibrate PBKDF2 (~300ms target)
-  async function calibratePBKDF2(targetMs=300){
+  // Calibrate PBKDF2 (~300ms target). Use selected hash algorithm.
+  async function calibratePBKDF2(targetMs=300, selectedHash='SHA-256'){
     const salt = rand(16);
     const mat = await crypto.subtle.importKey('raw', str2bytes('x4-cal'), 'PBKDF2', false, ['deriveBits']);
     let it = 150000; let dt = 0;
     while (it <= 1200000){
       const t0 = performance.now();
-      await crypto.subtle.deriveBits({name:'PBKDF2', salt, iterations:it, hash:'SHA-256'}, mat, 256);
+      await crypto.subtle.deriveBits({name:'PBKDF2', salt, iterations:it, hash:selectedHash}, mat, 256);
       dt = performance.now()-t0; if (dt >= targetMs*0.9) break;
       it = Math.floor(it*1.5);
     }
@@ -155,33 +190,51 @@
       const btn = ev.currentTarget;
       setBusy(btn, true);
       try{
-        const it = await calibratePBKDF2(300);
+        const selectedHash = $('#pbkdf2-hash').value === 'SHA-512' ? 'SHA-512' : 'SHA-256';
+        const it = await calibratePBKDF2(300, selectedHash);
         $('#pbkdf2-iters').value = it;
         validateOK($('#pbkdf2-iters'));
-      }catch(e){ console.warn('Calibration failed', e); invalidate($('#pbkdf2-iters')); }
-      finally{ setBusy(btn, false); }
+      }catch(e){
+        invalidate($('#pbkdf2-iters'));
+      }finally{ setBusy(btn, false); }
     });
 
     // Copy buttons
     $('#copy-enc').addEventListener('click', async ()=>{
       const v = $('#enc-out').value.trim(); if (!v) return;
-      try{ await navigator.clipboard.writeText(v); showTip($('#tip-enc')); }catch(e){ console.warn('Clipboard failed', e); }
+      try{ await navigator.clipboard.writeText(v); showTip($('#tip-enc')); }catch(e){}
     });
+
+    // For plaintext copying, ask explicit confirmation and attempt clipboard clear after a delay
     $('#copy-dec').addEventListener('click', async ()=>{
       const v = $('#dec-out').value.trim(); if (!v) return;
-      try{ await navigator.clipboard.writeText(v); showTip($('#tip-dec')); }catch(e){ console.warn('Clipboard failed', e); }
+      // require explicit user confirmation to put plaintext into clipboard
+      const ok = window.confirm('Copying plaintext to the clipboard is a risk. Proceed?');
+      if (!ok) return;
+      try{
+        await navigator.clipboard.writeText(v);
+        showTip($('#tip-dec'));
+        // attempt to clear clipboard after 10 seconds (best-effort)
+        setTimeout(async ()=> {
+          try{ await navigator.clipboard.writeText(''); }catch(e){}
+        }, 10000);
+      }catch(e){}
     });
 
     // Encrypt
     $('#btn-enc').addEventListener('click', async (ev)=>{
       const btn = ev.currentTarget;
-      const msg = $('#enc-msg'), p1 = $('#enc-p1'), p2 = $('#enc-p2'), out = $('#enc-out');
-      [msg,p1,p2,out].forEach(x=> x.classList.remove('invalid','valid'));
+      const msgEl = $('#enc-msg'), p1El = $('#enc-p1'), p2El = $('#enc-p2'), out = $('#enc-out');
+      [msgEl,p1El,p2El,out].forEach(x=> x.classList.remove('invalid','valid'));
 
-      if (!msg.value.trim()) { invalidate(msg); return; }
-      if (!p1.value.trim()) { invalidate(p1); return; }
-      if (!p2.value.trim()) { invalidate(p2); return; }
-      if (msg.value.length > MAX_CHARS){ invalidate(msg); return; }
+      const msgVal = msgEl.value || '';
+      const p1Val = p1El.value || '';
+      const p2Val = p2El.value || '';
+
+      if (!msgVal.trim()) { invalidate(msgEl); return; }
+      if (!p1Val.trim()) { invalidate(p1El); return; }
+      if (!p2Val.trim()) { invalidate(p2El); return; }
+      if (msgVal.length > MAX_CHARS){ invalidate(msgEl); return; }
 
       const iterations = Math.min(Math.max(Number($('#pbkdf2-iters').value||600000),120000),1200000);
       const hashRaw = $('#pbkdf2-hash').value;
@@ -191,14 +244,22 @@
       const header = buildHeaderPBKDF2(params);
       const aad = str2bytes(header);
 
+      // Immediately clear password inputs in DOM to reduce time they exist as strings in the document
+      p1El.value = ''; p2El.value = '';
+      // Keep local copies of password strings just long enough to convert to bytes below
       setBusy(btn, true);
       try{
-        const buf = await quadEncrypt(msg.value, p1.value, p2.value, params, aad);
+        const buf = await quadEncrypt(msgVal, p1Val, p2Val, params, aad);
         out.value = header + ab2b64u(buf);
         validateOK(out); // green on success
-      }catch(e){ console.error(e); invalidate(out); }
-      finally{
-        $('#enc-p1').value=''; $('#enc-p2').value='';
+        // Optionally clear the message input after encrypt to reduce plaintext lingering
+        // Note: keep message visible for user unless they choose to clear
+      }catch(e){
+        out.value = 'Encryption failed.'; invalidate(out);
+      }finally{
+        // zero local string refs
+        // (strings cannot be zeroed but we remove references)
+        // p1Val/p2Val go out of scope; encourage GC
         setBusy(btn, false);
       }
     });
@@ -214,19 +275,25 @@
     // Decrypt
     $('#btn-dec').addEventListener('click', async (ev)=>{
       const btn = ev.currentTarget;
-      const txt = $('#dec-in'), p1 = $('#dec-p1'), p2 = $('#dec-p2'), out = $('#dec-out');
-      [txt,p1,p2,out].forEach(x=> x.classList.remove('invalid','valid'));
+      const txt = $('#dec-in'), p1El = $('#dec-p1'), p2El = $('#dec-p2'), out = $('#dec-out');
+      [txt,p1El,p2El,out].forEach(x=> x.classList.remove('invalid','valid'));
 
-      if (!txt.value.trim()) { invalidate(txt); return; }
-      if (!p1.value.trim()) { invalidate(p1); return; }
-      if (!p2.value.trim()) { invalidate(p2); return; }
+      const inputVal = txt.value || '';
+      const p1Val = p1El.value || '';
+      const p2Val = p2El.value || '';
+
+      if (!inputVal.trim()) { invalidate(txt); return; }
+      if (!p1Val.trim()) { invalidate(p1El); return; }
+      if (!p2Val.trim()) { invalidate(p2El); return; }
+
+      // Clear password inputs in DOM immediately to reduce exposure
+      p1El.value = ''; p2El.value = '';
 
       setBusy(btn, true);
       try{
-        const input = txt.value.trim();
         let header, payload, params, aad;
 
-        const parsed = parseHeader(input);
+        const parsed = parseHeader(inputVal);
         if (parsed && parsed.version === X4V){
           header = parsed.header + '||';
           payload = parsed.payload;
@@ -234,13 +301,13 @@
           aad = str2bytes(header);
         } else {
           // Legacy (no header): assume PBKDF2 defaults and build AAD from them
-          payload = input;
+          payload = inputVal;
           params = { iterations:600000, hash:'SHA-256' };
           header = buildHeaderPBKDF2(params);
           aad = str2bytes(header);
         }
 
-        const plain = await quadDecrypt(payload, p1.value, p2.value, params, aad);
+        const plain = await quadDecrypt(payload, p1Val, p2Val, params, aad);
         if (plain === null){
           out.value = 'Decryption failed. Check passwords and ensure header/ciphertext is intact.';
           invalidate(out); // red on failure
@@ -248,9 +315,10 @@
           out.value = plain;
           validateOK(out); // green on success
         }
-      }catch(e){ console.error(e); out.value='Decryption failed.'; invalidate(out); }
-      finally{
-        $('#dec-p1').value=''; $('#dec-p2').value='';
+      }catch(e){
+        out.value='Decryption failed.'; invalidate(out);
+      }finally{
+        // encourage GC of password strings
         setBusy(btn, false);
       }
     });
