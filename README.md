@@ -8,7 +8,7 @@
 
 It uses the native Web Crypto API to ensure that your passwords and sensitive data are never sent to any server and never leave your device.
 
-### [➡️ Launch the Application](https://x4translator.netlify.app/launch.html)
+### [➡️ Launch the Application](https://x4translator.netlify.app/insiders/translator.html)
 
 ---
 
