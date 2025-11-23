@@ -1,25 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <!-- Static CSP for external files only (no nonces needed) -->
+  <meta charset="utf-8" />
+  <!-- NOTE: For production, prefer sending an equivalent CSP as an HTTP response header.
+       The meta tag here is strict but server headers are stronger and recommended. -->
   <meta http-equiv="Content-Security-Policy" content="
     default-src 'none';
     script-src 'self';
     style-src 'self';
     img-src 'self' data:;
     connect-src 'none';
-    font-src 'none';
-    object-src 'none';
     frame-ancestors 'none';
     base-uri 'none';
     form-action 'none';
-    upgrade-insecure-requests;
-    require-trusted-types-for 'script'
   ">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="referrer" content="no-referrer" />
-  <title>x4 — Four-Layer Encryption (PBKDF2, external assets)</title>
+  <title>x4 — Four-Layer Encryption (PBKDF2)</title>
   <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
@@ -33,11 +30,11 @@
         <span class="logo">x4</span>
         <span>Four-Layer Encryption</span>
       </div>
-      <h1 class="headline">AES‑GCM (256) with PBKDF2 hardening</h1>
-      <p class="sub">Client‑side only. Strong KDF, unique salts and IVs per layer, tamper‑evident header.</p>
+      <h1 class="headline">AES-GCM (256) with PBKDF2 hardening</h1>
+      <p class="sub">Client-side only. Strong KDF, unique salts and IVs per layer, tamper-evident header.</p>
       <div class="badges">
-        <span class="badge info">AES‑GCM 256</span>
-        <span class="badge info">PBKDF2 (HMAC‑SHA‑256/512)</span>
+        <span class="badge info">AES-GCM 256</span>
+        <span class="badge info">PBKDF2 (HMAC-SHA-256/512)</span>
         <span class="badge ok">4 independent layers</span>
       </div>
     </header>
@@ -47,16 +44,16 @@
       <button id="tab-dec" class="tab" type="button" role="tab" aria-selected="false" aria-controls="sec-dec">Decrypt</button>
     </div>
 
-    <!-- Encrypt (visible by default) -->
+    <!-- Encrypt -->
     <section id="sec-enc" class="fade" role="tabpanel" aria-labelledby="tab-enc">
       <div class="card">
         <div class="section-title">Encrypt your message</div>
-        <div class="hint">Use long, unique passwords. Header is AAD‑bound for tamper protection.</div>
+        <div class="hint">Use long, unique passwords. Header is AAD-bound for tamper protection.</div>
 
         <div class="grid mt-3">
           <div>
             <label class="label" for="enc-msg">Message</label>
-            <textarea id="enc-msg" class="textarea" placeholder="Type or paste your text to encrypt..." spellcheck="false"></textarea>
+            <textarea id="enc-msg" class="textarea" placeholder="Type or paste your text to encrypt..." spellcheck="false" ></textarea>
           </div>
 
           <div class="grid grid-2">
@@ -85,8 +82,8 @@
               <div>
                 <label class="label" for="pbkdf2-hash">PBKDF2 hash</label>
                 <select id="pbkdf2-hash" class="select">
-                  <option value="SHA-256" selected>SHA‑256</option>
-                  <option value="SHA-512">SHA‑512</option>
+                  <option value="SHA-256" selected>SHA-256</option>
+                  <option value="SHA-512">SHA-512</option>
                 </select>
               </div>
               <div class="align-end">
@@ -124,7 +121,7 @@
       </div>
     </section>
 
-    <!-- Decrypt (hidden by default) -->
+    <!-- Decrypt -->
     <section id="sec-dec" class="fade hidden" role="tabpanel" aria-labelledby="tab-dec">
       <div class="card">
         <div class="section-title">Decrypt your message</div>
@@ -141,14 +138,14 @@
             <div>
               <label class="label" for="dec-p1">First password</label>
               <div class="row">
-                <input id="dec-p1" type="password" class="input" placeholder="Enter first password..." autocomplete="current-password" spellcheck="false">
+                <input id="dec-p1" type="password" class="input" placeholder="Enter first password..." autocomplete="new-password" spellcheck="false">
                 <button class="eye" type="button" data-for="dec-p1" aria-label="Toggle visibility">👁️</button>
               </div>
             </div>
             <div>
               <label class="label" for="dec-p2">Second password</label>
               <div class="row">
-                <input id="dec-p2" type="password" class="input" placeholder="Enter second password..." autocomplete="current-password" spellcheck="false">
+                <input id="dec-p2" type="password" class="input" placeholder="Enter second password..." autocomplete="new-password" spellcheck="false">
                 <button class="eye" type="button" data-for="dec-p2" aria-label="Toggle visibility">👁️</button>
               </div>
             </div>
@@ -181,7 +178,7 @@
     </section>
 
     <footer class="footer">
-      <span class="brandtxt">x4</span> • Enhanced client‑side encryption (PBKDF2)
+      <span class="brandtxt">x4</span> • Enhanced client-side encryption (PBKDF2)
     </footer>
   </div>
 
