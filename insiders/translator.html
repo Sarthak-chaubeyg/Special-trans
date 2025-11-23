@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <!-- NOTE: For production, prefer sending an equivalent CSP as an HTTP response header.
-       The meta tag here is strict but server headers are stronger and recommended. -->
   <meta http-equiv="Content-Security-Policy" content="
     default-src 'none';
-    script-src 'self';
+    script-src 'self' 'blob:';
+    worker-src 'self' blob:;
+    child-src 'self' blob:;
     style-src 'self';
     img-src 'self' data:;
     connect-src 'none';
@@ -53,7 +53,7 @@
         <div class="grid mt-3">
           <div>
             <label class="label" for="enc-msg">Message</label>
-            <textarea id="enc-msg" class="textarea" placeholder="Type or paste your text to encrypt..." spellcheck="false" ></textarea>
+            <textarea id="enc-msg" class="textarea" placeholder="Type or paste your text to encrypt..." spellcheck="false"></textarea>
           </div>
 
           <div class="grid grid-2">
