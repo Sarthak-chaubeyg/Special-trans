@@ -638,59 +638,52 @@ body {
   color: var(--gray-mid);
 }
 
-/* ==== Vertical bar chart (Qualitative security features) ==== */
+/* ==== SVG bar chart ==== */
 
-.bar-chart-vertical {
-  margin-top: 1.1rem;
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 1.2rem;
-  padding-inline: 0.2rem;
+.bar-svg-wrapper {
+  margin-top: 1rem;
 }
 
-.bar-col {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.4rem;
-}
-
-.vbar-wrap {
-  position: relative;
+.bar-svg {
   width: 100%;
-  max-width: 60px;
-  height: 150px;
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 4px;
+  height: auto;
+  display: block;
 }
 
-.vbar {
-  width: 48%;
-  border-radius: 10px 10px 0 0;
-  border: 2px solid var(--border);
-  box-shadow: 3px 3px 0 #020617;
-  background: #6b7280;
+.bar-x4 {
+  fill: url(#x4Gradient);
 }
 
-.vbar-x4 {
-  background: linear-gradient(135deg, var(--violet-neon), var(--violet-strong));
+/* fallback if gradient id not used */
+.bar-x4 {
+  fill: #a855f7;
+  stroke: var(--border);
+  stroke-width: 1.2;
 }
 
-.vbar-trad {
-  background: #6b7280;
+.bar-trad {
+  fill: #6b7280;
+  stroke: var(--border);
+  stroke-width: 1.2;
 }
 
-.bar-col-label {
-  font-size: 0.78rem;
-  color: var(--gray-mid);
-  text-align: center;
+.axis {
+  stroke: #9ca3af;
+  stroke-width: 1;
 }
 
-/* Legend under the bar chart */
+.axis-label {
+  fill: var(--gray-mid);
+  font-size: 9px;
+}
+
+.axis-label-x {
+  fill: var(--gray-mid);
+  font-size: 8px;
+  text-anchor: middle;
+}
+
+/* Legend under bar chart */
 
 .bar-legend {
   margin-top: 0.8rem;
@@ -716,51 +709,6 @@ body {
 
 .legend-x4 {
   background: linear-gradient(135deg, var(--violet-neon), var(--violet-strong));
-}
-
-.legend-trad {
-  background: #6b7280;
-}
-
-@media (max-width: 640px) {
-  .bar-chart-vertical {
-    gap: 0.8rem;
-  }
-  .bar-col-label {
-    font-size: 0.72rem;
-  }
-}
-
-/* Legend under the bar chart */
-
-.bar-legend {
-  margin-top: 0.8rem;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.7rem 1.4rem;
-  font-size: 0.8rem;
-  color: var(--gray-mid);
-}
-
-.legend-item {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-}
-
-.legend-swatch {
-  width: 14px;
-  height: 14px;
-  border-radius: 4px;
-  border: 2px solid var(--border);
-}
-
-.legend-x4 {
-  background: linear-gradient(
-    135deg,
-    var(--violet-neon),
-    var(--violet-strong)
-  );
 }
 
 .legend-trad {
@@ -776,16 +724,6 @@ body {
 .line-chart {
   width: 100%;
   height: auto;
-}
-
-.axis {
-  stroke: #9ca3af;
-  stroke-width: 1;
-}
-
-.axis-label {
-  fill: var(--gray-mid);
-  font-size: 9px;
 }
 
 .line {
@@ -946,11 +884,7 @@ body {
     align-items: flex-start;
   }
 
-  .bar-chart-vertical {
-    gap: 0.8rem;
-  }
-
-  .bar-col-label {
-    font-size: 0.72rem;
+  .axis-label-x {
+    font-size: 7px;
   }
 }
