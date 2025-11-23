@@ -1,933 +1,449 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>x4 Model - Military-Grade Memory-Safe Encryption</title>
-  <meta name="description" content="Zero-residue four-layer AES-GCM encryption with advanced memory sanitization, PBKDF2 hardening, and automatic security measures.">
-  
-  <!-- Preconnect to external resources -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <meta name="google-site-verification" content="4Ze4KIetnizk5DP2TWQUWys5b7baVISjSzmYI6l9F5s" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  
-  <!-- Custom CSS -->
-  <link rel="stylesheet" href="styles.css">
+  <meta charset="utf-8" />
+  <title>x4 Encryption · Client-side text security</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta
+    name="description"
+    content="x4 is a client-side text encryption workspace using AES-GCM and PBKDF2 in your browser. The tool is written so plaintext and passwords are not sent to a server."
+  />
+  <link rel="stylesheet" href="landing.css" />
+  <link rel="icon" href="path/to/your/favicon.ico" type="image/x-icon">
 </head>
-<body>
-  <!-- Animated Background -->
-  <div class="bg-animation">
-    <div class="gradient-orb orb-1"></div>
-    <div class="gradient-orb orb-2"></div>
-    <div class="gradient-orb orb-3"></div>
-    <div class="matrix-rain"></div>
-    <div class="grid-overlay"></div>
-  </div>
+<body id="top">
+  <!-- Floating background shapes -->
+  <div class="bg-orb orb-1"></div>
+  <div class="bg-orb orb-2"></div>
+  <div class="bg-orb orb-3"></div>
 
-  <!-- Security Alert Bar -->
-  <div class="security-bar">
-    <div class="security-bar-content">
-      <span class="security-indicator"></span>
-      <span>Memory-Safe Encryption Active</span>
-    </div>
-  </div>
-
-  <!-- Navigation -->
-  <nav class="navbar">
-    <div class="nav-container">
-      <div class="nav-brand">
-        <div class="brand-icon">
-          <svg viewBox="0 0 24 24" fill="none">
-            <path d="M12 2L3 7V12C3 16.5 6 20.74 12 22C18 20.74 21 16.5 21 12V7L12 2Z" stroke="currentColor" stroke-width="2"/>
-            <path d="M8 12L10.5 14.5L16 9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          </svg>
+  <!-- Top navigation -->
+  <header class="nav">
+    <div class="nav-inner">
+      <div class="nav-left">
+        <div class="nav-logo-wrap">
+          <img src="assets/x4-logo.png" alt="x4 logo" class="nav-logo" />
         </div>
-        <span class="brand-text">x4</span>
-        <span class="brand-tag">Memory-Safe</span>
+        <div class="nav-brand-text">
+          <span class="nav-title">x4</span>
+          <span class="nav-subtitle">Encryption Suite</span>
+        </div>
       </div>
-      <div class="nav-links desktop-only">
-        <a href="#features" class="nav-link">Features</a>
-        <a href="#security" class="nav-link">Security</a>
-        <a href="#how-it-works" class="nav-link">Process</a>
-        <a href="#specifications" class="nav-link">Specs</a>
-      </div>
-      <a href="insiders/translator.html" class="nav-cta">
-        <span class="cta-lock">🔐</span>
-        <span>Launch App</span>
+
+      <nav class="nav-links">
+        <a href="#how-it-works">How it works</a>
+        <a href="#security">Security model</a>
+        <a href="#comparison">Comparison</a>
+      </nav>
+
+      <a href="insiders/translator.html" class="btn btn-primary nav-cta">
+        Try now
       </a>
-      <button class="mobile-menu-btn" aria-label="Toggle menu">
-        <span></span><span></span><span></span>
-      </button>
     </div>
-  </nav>
+  </header>
 
-  <!-- Mobile Menu -->
-  <div class="mobile-menu">
-    <div class="mobile-menu-content">
-      <a href="#features" class="mobile-link">Features</a>
-      <a href="#security" class="mobile-link">Security</a>
-      <a href="#how-it-works" class="mobile-link">Process</a>
-      <a href="#specifications" class="mobile-link">Specifications</a>
-      <a href="insiders/translator.html" class="mobile-cta">Launch App</a>
-    </div>
-  </div>
+  <main>
+    <!-- Hero -->
+    <section class="hero section-reveal">
+      <div class="hero-inner">
+        <div class="hero-copy">
+          <div class="hero-logo-badge">
+            <img src="assets/x4-logo.png" alt="x4 logo" class="hero-logo" />
+            <span class="hero-badge-text">x4 · client-side text encryption</span>
+          </div>
 
-  <!-- Hero Section -->
-  <section class="hero">
-    <div class="container">
-      <div class="hero-content">
-        <div class="hero-badge" data-aos="fade-down">
-          <span class="badge-pulse"></span>
-          <span>Zero-Residue Technology</span>
-        </div>
-        
-        <h1 class="hero-title" data-aos="fade-up">
-          <span class="title-line">Memory-Safe</span>
-          <span class="title-line gradient-text">Four-Layer Encryption</span>
-          <span class="title-line">with Instant Sanitization</span>
-        </h1>
-        
-        <p class="hero-subtitle" data-aos="fade-up" data-aos-delay="100">
-          x4 Model implements military-grade AES-256-GCM encryption with revolutionary memory management. 
-          Passwords are zeroed within milliseconds, clipboard auto-clears, and no sensitive data 
-          ever persists in memory. True zero-knowledge architecture.
-        </p>
-        
-        <div class="hero-actions" data-aos="fade-up" data-aos-delay="200">
-          <a href="insiders/translator.html" class="btn btn-primary btn-glow">
-            <span class="btn-icon">🛡️</span>
-            <span>Start Encrypting</span>
-            <span class="btn-arrow">→</span>
-          </a>
-          <a href="#security" class="btn btn-secondary">
-            <span>Security Features</span>
-          </a>
-        </div>
-        
-        <div class="hero-features" data-aos="fade-up" data-aos-delay="300">
-          <div class="hero-feature">
-            <div class="feature-icon-mini">⚡</div>
-            <div>
-              <div class="feature-label">Memory Zeroing</div>
-              <div class="feature-value">< 10ms</div>
-            </div>
-          </div>
-          <div class="hero-feature">
-            <div class="feature-icon-mini">🔐</div>
-            <div>
-              <div class="feature-label">Encryption Layers</div>
-              <div class="feature-value">4x AES-256</div>
-            </div>
-          </div>
-          <div class="hero-feature">
-            <div class="feature-icon-mini">🔑</div>
-            <div>
-              <div class="feature-label">PBKDF2 Iterations</div>
-              <div class="feature-value">120K-1.2M</div>
-            </div>
-          </div>
-          <div class="hero-feature">
-            <div class="feature-icon-mini">📋</div>
-            <div>
-              <div class="feature-label">Clipboard Clear</div>
-              <div class="feature-value">10 seconds</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+          <h1>
+            Encrypt and decrypt text
+            <span class="highlight">without leaving your browser tab.</span>
+          </h1>
 
-  <!-- Revolutionary Features Section -->
-  <section id="features" class="features">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-badge" data-aos="fade-down">Advanced Security</div>
-        <h2 class="section-title" data-aos="fade-up">
-          Revolutionary Security Features
-        </h2>
-        <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">
-          Beyond encryption: Complete memory sanitization and zero-residue technology
-        </p>
-      </div>
-      
-      <div class="features-grid">
-        <div class="feature-card feature-highlight" data-aos="fade-up">
-          <div class="feature-icon pulse">
-            <svg viewBox="0 0 24 24" fill="none">
-              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-            </svg>
-          </div>
-          <h3 class="feature-title">Instant Memory Sanitization</h3>
-          <p class="feature-description">
-            Revolutionary memory management zeros all sensitive data within milliseconds. 
-            Password bytes are immediately overwritten after use, preventing memory forensics 
-            and cold boot attacks.
+          <p class="hero-sub">
+            x4 uses the browser’s WebCrypto API (AES-GCM-256 + PBKDF2)
+            to process text locally. The tool’s code does not include logic
+            to send your plaintext or passwords to a remote server.
           </p>
-          <div class="feature-details">
-            <div class="detail-item">
-              <span class="detail-icon">✓</span>
-              <span>Passwords zeroed in &lt; 10ms</span>
-            </div>
-            <div class="detail-item">
-              <span class="detail-icon">✓</span>
-              <span>Buffer isolation & clearing</span>
-            </div>
-            <div class="detail-item">
-              <span class="detail-icon">✓</span>
-              <span>DOM input instant clearing</span>
-            </div>
-          </div>
-        </div>
 
-        <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
-          <div class="feature-icon">
-            <svg viewBox="0 0 24 24" fill="none">
-              <rect x="8" y="8" width="8" height="8" stroke="currentColor" stroke-width="2"/>
-              <rect x="4" y="4" width="8" height="8" stroke="currentColor" stroke-width="1" opacity="0.5"/>
-              <rect x="12" y="12" width="8" height="8" stroke="currentColor" stroke-width="1" opacity="0.5"/>
-            </svg>
+          <div class="hero-actions">
+            <a href="insiders/translator.html" class="btn btn-primary hero-btn">
+              Try x4 now
+            </a>
+            <span class="hero-note">
+              Opens the workspace at <code>insiders/translator.html</code>
+            </span>
           </div>
-          <h3 class="feature-title">Quadruple-Layer Defense</h3>
-          <p class="feature-description">
-            Four independent AES-256-GCM encryption layers with unique salts, IVs, and 
-            context separation. Even three compromised layers leave data secure.
-          </p>
-          <div class="feature-specs">
-            <span class="spec">4x AES-256-GCM</span>
-            <span class="spec">Unique IVs/Salts</span>
-          </div>
-        </div>
 
-        <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
-          <div class="feature-icon">
-            <svg viewBox="0 0 24 24" fill="none">
-              <path d="M9 11V7a3 3 0 116 0v4M5 11h14l-1 9H6l-1-9z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-          </div>
-          <h3 class="feature-title">Clipboard Auto-Clear</h3>
-          <p class="feature-description">
-            Decrypted text requires confirmation before copying. Clipboard automatically 
-            clears after 10 seconds, preventing data leakage through clipboard managers.
-          </p>
-          <div class="feature-specs">
-            <span class="spec">Confirmation required</span>
-            <span class="spec">10s auto-clear</span>
-          </div>
-        </div>
-
-        <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
-          <div class="feature-icon">
-            <svg viewBox="0 0 24 24" fill="none">
-              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
-              <path d="M12 8v4l3 3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-          </div>
-          <h3 class="feature-title">Adaptive PBKDF2 Calibration</h3>
-          <p class="feature-description">
-            Intelligent calibration determines optimal iteration count (120K-1.2M) for 
-            ~300ms derivation time. Supports both SHA-256 and SHA-512 algorithms.
-          </p>
-          <div class="feature-specs">
-            <span class="spec">Auto-calibration</span>
-            <span class="spec">SHA-256/512</span>
-          </div>
-        </div>
-
-        <div class="feature-card" data-aos="fade-up" data-aos-delay="400">
-          <div class="feature-icon">
-            <svg viewBox="0 0 24 24" fill="none">
-              <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z" stroke="currentColor" stroke-width="2"/>
-            </svg>
-          </div>
-          <h3 class="feature-title">AAD Tamper Protection</h3>
-          <p class="feature-description">
-            Header authentication through Additional Authenticated Data binding ensures 
-            any modification to encryption parameters invalidates decryption entirely.
-          </p>
-          <div class="feature-specs">
-            <span class="spec">Header integrity</span>
-            <span class="spec">Version control</span>
-          </div>
-        </div>
-
-        <div class="feature-card" data-aos="fade-up" data-aos-delay="500">
-          <div class="feature-icon">
-            <svg viewBox="0 0 24 24" fill="none">
-              <path d="M3 12h18M3 6h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-          </div>
-          <h3 class="feature-title">Zero-Knowledge Architecture</h3>
-          <p class="feature-description">
-            100% client-side encryption with no server communication. Your data never 
-            leaves your device, ensuring complete privacy and security.
-          </p>
-          <div class="feature-specs">
-            <span class="spec">No server calls</span>
-            <span class="spec">Local processing</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Security Deep Dive Section -->
-  <section id="security" class="security">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-badge" data-aos="fade-down">Security Analysis</div>
-        <h2 class="section-title" data-aos="fade-up">
-          Memory-Safe Security Architecture
-        </h2>
-        <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">
-          Revolutionary approach to preventing data persistence in memory
-        </p>
-      </div>
-
-      <div class="memory-timeline" data-aos="fade-up">
-        <h3 class="timeline-title">Memory Lifecycle Management</h3>
-        <div class="timeline-container">
-          <div class="timeline-track"></div>
-          
-          <div class="timeline-event">
-            <div class="event-time">0ms</div>
-            <div class="event-content">
-              <h4>Password Input</h4>
-              <p>User enters passwords</p>
-            </div>
-          </div>
-          
-          <div class="timeline-event">
-            <div class="event-time">1ms</div>
-            <div class="event-content">
-              <h4>DOM Clearing</h4>
-              <p>Input fields immediately cleared</p>
-            </div>
-          </div>
-          
-          <div class="timeline-event">
-            <div class="event-time">5ms</div>
-            <div class="event-content">
-              <h4>Byte Conversion</h4>
-              <p>Strings converted to Uint8Array</p>
-            </div>
-          </div>
-          
-          <div class="timeline-event">
-            <div class="event-time">300ms</div>
-            <div class="event-content">
-              <h4>Encryption Complete</h4>
-              <p>Four layers applied</p>
-            </div>
-          </div>
-          
-          <div class="timeline-event">
-            <div class="event-time">301ms</div>
-            <div class="event-content">
-              <h4>Memory Zeroing</h4>
-              <p>All password bytes overwritten with zeros</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="security-grid">
-        <div class="security-card advanced" data-aos="fade-right">
-          <div class="card-header">
-            <div class="card-icon">🛡️</div>
-            <h3>Attack Resistance</h3>
-          </div>
-          <div class="resistance-grid">
-            <div class="resistance-item">
-              <span class="resistance-name">Memory Forensics</span>
-              <div class="resistance-bar">
-                <div class="resistance-fill" style="width: 98%"></div>
-              </div>
-              <span class="resistance-value">98%</span>
-            </div>
-            <div class="resistance-item">
-              <span class="resistance-name">Cold Boot Attack</span>
-              <div class="resistance-bar">
-                <div class="resistance-fill" style="width: 96%"></div>
-              </div>
-              <span class="resistance-value">96%</span>
-            </div>
-            <div class="resistance-item">
-              <span class="resistance-name">Brute Force</span>
-              <div class="resistance-bar">
-                <div class="resistance-fill" style="width: 100%"></div>
-              </div>
-              <span class="resistance-value">100%</span>
-            </div>
-            <div class="resistance-item">
-              <span class="resistance-name">Side-Channel</span>
-              <div class="resistance-bar">
-                <div class="resistance-fill" style="width: 94%"></div>
-              </div>
-              <span class="resistance-value">94%</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="security-card advanced" data-aos="fade-left">
-          <div class="card-header">
-            <div class="card-icon">🔬</div>
-            <h3>Security Measures</h3>
-          </div>
-          <ul class="measures-list">
-            <li>
-              <span class="measure-icon">✓</span>
-              <div>
-                <strong>Immediate DOM Sanitization</strong>
-                <p>Password inputs cleared within 1ms of reading</p>
-              </div>
-            </li>
-            <li>
-              <span class="measure-icon">✓</span>
-              <div>
-                <strong>Buffer Isolation</strong>
-                <p>ArrayBuffer slicing prevents reference leaks</p>
-              </div>
-            </li>
-            <li>
-              <span class="measure-icon">✓</span>
-              <div>
-                <strong>Forced Garbage Collection</strong>
-                <p>String references cleared to encourage GC</p>
-              </div>
-            </li>
-            <li>
-              <span class="measure-icon">✓</span>
-              <div>
-                <strong>Clipboard Protection</strong>
-                <p>Auto-clear after 10 seconds with user confirmation</p>
-              </div>
-            </li>
+          <ul class="hero-bullets">
+            <li>Four AES-GCM layers with separate salts and IVs</li>
+            <li>PBKDF2 with configurable, high iteration counts</li>
+            <li>Web Worker isolation for heavy cryptography</li>
+            <li>Designed to run under a strict Content Security Policy</li>
           </ul>
         </div>
-      </div>
 
-      <div class="encryption-visual" data-aos="zoom-in">
-        <h3>Four-Layer Encryption Process</h3>
-        <div class="encryption-diagram">
-          <div class="diagram-input">
-            <span class="diagram-label">Plaintext</span>
-            <div class="data-block">Your Message</div>
-          </div>
-          
-          <div class="encryption-layers">
-            <div class="layer-group">
-              <div class="layer-label">Password 1</div>
-              <div class="encryption-layer">
-                <span class="layer-number">L1</span>
-                <span class="layer-name">AES-GCM</span>
-                <span class="layer-detail">Salt₁ + IV₁</span>
+        <aside class="hero-panel">
+          <div class="hero-card section-reveal delay-1">
+            <div class="hero-card-logo-strip">
+              <img src="assets/x4-logo.png" alt="x4 logo" class="hero-card-logo" />
+              <span>Technical snapshot</span>
+            </div>
+
+            <dl class="hero-metrics">
+              <div class="hero-metric">
+                <dt>Encryption</dt>
+                <dd>AES-GCM-256 (WebCrypto)</dd>
               </div>
-              <div class="encryption-layer">
-                <span class="layer-number">L2</span>
-                <span class="layer-name">AES-GCM</span>
-                <span class="layer-detail">Salt₂ + IV₂</span>
+              <div class="hero-metric">
+                <dt>Key derivation</dt>
+                <dd>PBKDF2 (SHA-256 / SHA-512)</dd>
+              </div>
+              <div class="hero-metric">
+                <dt>Layers</dt>
+                <dd>4 chained encryption layers</dd>
+              </div>
+              <div class="hero-metric">
+                <dt>Execution</dt>
+                <dd>Browser tab + Web Worker</dd>
+              </div>
+              <div class="hero-metric">
+                <dt>Plaintext network sends</dt>
+                <dd class="metric-strong">Not implemented in tool code</dd>
+              </div>
+            </dl>
+
+            <p class="hero-disclaimer">
+              The actual security of your data also depends on hosting
+              configuration, TLS, browser extensions and the security of the
+              device you use.
+            </p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section id="how-it-works" class="section section-reveal">
+      <div class="section-inner">
+        <h2>How x4 protects your text</h2>
+        <p class="section-lead">
+          x4 focuses on transparent client-side protection. It does not promise
+          perfect security; instead it clearly explains which mechanisms it uses
+          and what they are intended to do.
+        </p>
+
+        <div class="cards-grid">
+          <article class="card">
+            <h3>WebCrypto primitives</h3>
+            <p>
+              Uses <code>crypto.subtle</code> for AES-GCM-256 and PBKDF2. Crypto
+              operations are performed by the browser’s implementation, not by
+              custom math code.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Configurable PBKDF2</h3>
+            <p>
+              Derives keys from user passwords with PBKDF2 using relatively high
+              iteration counts (within practical limits) and either SHA-256 or
+              SHA-512, plus a calibration helper.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Four independent layers</h3>
+            <p>
+              Applies four AES-GCM layers built from two passwords. Each layer
+              has its own salt and IV, and the header is bound as additional
+              authenticated data (AAD).
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Worker isolation</h3>
+            <p>
+              Expensive key derivation and encryption work run in a Web Worker
+              so the UI stays responsive and less crypto logic lives on the main
+              page.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Strict tool CSP</h3>
+            <p>
+              The translator page is designed to be used with a Content Security
+              Policy that limits scripts to your own files and blocks network
+              connections from its JavaScript.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Defensive UX details</h3>
+            <p>
+              Includes password field clearing, conservative error messages and
+              warnings when copying decrypted text to the clipboard, followed
+              by a best-effort clipboard clear.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Security model -->
+    <section id="security" class="section section-alt section-reveal">
+      <div class="section-inner">
+        <h2>Security model & scope</h2>
+
+        <div class="security-layout">
+          <div class="security-copy">
+            <h3>What x4 is designed to provide</h3>
+            <ul class="list check-list">
+              <li>
+                Encrypt and decrypt text locally using AES-GCM-256 with keys
+                derived from user-supplied passwords.
+              </li>
+              <li>
+                A workspace whose JavaScript does not include logic to send
+                plaintext or passwords to a remote service.
+              </li>
+              <li>
+                Stronger password handling through PBKDF2 with high iteration
+                counts and a calibration helper to adjust to the device.
+              </li>
+              <li>
+                Warnings around copying decrypted text and a best-effort attempt
+                to clear the clipboard after a short delay.
+              </li>
+            </ul>
+
+            <h3>What x4 does not claim</h3>
+            <ul class="list plain-list">
+              <li>
+                It does not claim to protect against device-level compromise,
+                malicious extensions or insecure hosting environments.
+              </li>
+              <li>
+                It does not replace a full security review of how and where the
+                files are hosted or how HTTPS is configured.
+              </li>
+              <li>
+                It does not guarantee safety for weak, reused or guessable
+                passwords.
+              </li>
+            </ul>
+          </div>
+
+          <aside class="security-box section-reveal delay-1">
+            <div class="security-box-header">
+              <img src="assets/x4-logo.png" alt="x4 logo" class="security-logo" />
+              <span>x4 technical summary</span>
+            </div>
+
+            <dl class="kv">
+              <div>
+                <dt>Encryption</dt>
+                <dd>AES-GCM-256 (WebCrypto)</dd>
+              </div>
+              <div>
+                <dt>KDF</dt>
+                <dd>PBKDF2, SHA-256 / SHA-512, high iterations</dd>
+              </div>
+              <div>
+                <dt>Execution model</dt>
+                <dd>Browser tab + Web Worker for heavy crypto</dd>
+              </div>
+              <div>
+                <dt>Header format</dt>
+                <dd>Self-describing text header with KDF options</dd>
+              </div>
+              <div>
+                <dt>Network use in tool code</dt>
+                <dd>No plaintext or password send logic implemented</dd>
+              </div>
+              <div>
+                <dt>Error handling</dt>
+                <dd>Generic failure messages, reduced detail for attackers</dd>
+              </div>
+            </dl>
+
+            <p class="security-note">
+              Effective protection also depends on your hosting setup, HTTPS
+              configuration and the security of the client device and browser.
+            </p>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- Comparison & charts -->
+    <section id="comparison" class="section section-reveal">
+      <div class="section-inner">
+        <h2>Design comparison: x4 vs typical online tools</h2>
+        <p class="section-lead">
+          Many web tools send your input to a server for processing. x4 is
+          written to operate on text directly in the browser tab. The charts
+          below are qualitative and describe design choices, not measured
+          performance.
+        </p>
+
+        <div class="charts-layout">
+          <!-- Vertical bar chart -->
+          <div class="chart-card">
+            <h3>Qualitative security features</h3>
+            <p class="chart-caption">
+              Taller bars indicate a stronger focus on that design aspect.
+            </p>
+
+            <div class="bar-chart-vertical">
+              <div class="bar-col">
+                <div class="bar-col-bars">
+                  <div class="vbar vbar-x4" style="height: 96%;"></div>
+                  <div class="vbar vbar-trad" style="height: 40%;"></div>
+                </div>
+                <div class="bar-col-label">Client-side encryption emphasis</div>
+              </div>
+
+              <div class="bar-col">
+                <div class="bar-col-bars">
+                  <!-- lower height for x4 because it avoids sending plaintext -->
+                  <div class="vbar vbar-x4 low" style="height: 15%;"></div>
+                  <div class="vbar vbar-trad" style="height: 90%;"></div>
+                </div>
+                <div class="bar-col-label">Plaintext sent to server</div>
+              </div>
+
+              <div class="bar-col">
+                <div class="bar-col-bars">
+                  <div class="vbar vbar-x4" style="height: 90%;"></div>
+                  <div class="vbar vbar-trad" style="height: 35%;"></div>
+                </div>
+                <div class="bar-col-label">Use of WebCrypto APIs</div>
+              </div>
+
+              <div class="bar-col">
+                <div class="bar-col-bars">
+                  <div class="vbar vbar-x4" style="height: 80%;"></div>
+                  <div class="vbar vbar-trad" style="height: 20%;"></div>
+                </div>
+                <div class="bar-col-label">Clipboard-safety features</div>
+              </div>
+
+              <div class="bar-col">
+                <div class="bar-col-bars">
+                  <div class="vbar vbar-x4" style="height: 88%;"></div>
+                  <div class="vbar vbar-trad" style="height: 45%;"></div>
+                </div>
+                <div class="bar-col-label">Security-focused UI guidance</div>
               </div>
             </div>
-            
-            <div class="layer-group">
-              <div class="layer-label">Password 2</div>
-              <div class="encryption-layer">
-                <span class="layer-number">L3</span>
-                <span class="layer-name">AES-GCM</span>
-                <span class="layer-detail">Salt₃ + IV₃</span>
+
+            <div class="bar-legend">
+              <div class="legend-item">
+                <span class="legend-swatch legend-x4"></span>
+                <span>x4 (designed for client-side use)</span>
               </div>
-              <div class="encryption-layer">
-                <span class="layer-number">L4</span>
-                <span class="layer-name">AES-GCM</span>
-                <span class="layer-detail">Salt₄ + IV₄</span>
+              <div class="legend-item">
+                <span class="legend-swatch legend-trad"></span>
+                <span>Typical online tool (server-side)</span>
               </div>
             </div>
           </div>
-          
-          <div class="diagram-output">
-            <span class="diagram-label">Ciphertext</span>
-            <div class="data-block encrypted">x4v2|k=pbkdf2;i=600000...</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- How It Works Section -->
-  <section id="how-it-works" class="how-it-works">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-badge" data-aos="fade-down">Technical Process</div>
-        <h2 class="section-title" data-aos="fade-up">
-          How x4 Encryption Works
-        </h2>
-        <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">
-          Step-by-step breakdown of the encryption and security process
-        </p>
-      </div>
+          <!-- Line chart -->
+          <div class="chart-card">
+            <h3>
+              Conceptual exposure to remote services
+              <span class="chart-small">(lower is better)</span>
+            </h3>
+            <p class="chart-caption">
+              Illustrates how designs differ in dependence on remote services.
+              This is not a measured metric; it reflects intended behavior.
+            </p>
 
-      <div class="process-cards">
-        <div class="process-card" data-aos="fade-up">
-          <div class="process-number">01</div>
-          <div class="process-content">
-            <h3>Input & Instant Clearing</h3>
-            <p>Passwords are read from DOM and immediately cleared from input fields. 
-            Values are converted to Uint8Array for processing.</p>
-            <div class="process-code">
-              <code>DOM → Read → Clear (1ms) → Uint8Array</code>
+            <div class="line-chart-wrapper">
+              <svg
+                viewBox="0 0 260 160"
+                class="line-chart"
+                aria-hidden="true"
+              >
+                <!-- Axes -->
+                <line x1="30" y1="10" x2="30" y2="140" class="axis" />
+                <line x1="30" y1="140" x2="240" y2="140" class="axis" />
+
+                <!-- X labels -->
+                <text x="50" y="155" class="axis-label">Local</text>
+                <text x="120" y="155" class="axis-label">Mixed</text>
+                <text x="200" y="155" class="axis-label">Server-dependent</text>
+
+                <!-- Y labels -->
+                <text x="5" y="20" class="axis-label">High</text>
+                <text x="5" y="80" class="axis-label">Medium</text>
+                <text x="5" y="135" class="axis-label">Low</text>
+
+                <!-- x4 (lower line) -->
+                <polyline
+                  points="50,110 120,100 200,95"
+                  class="line line-x4"
+                />
+                <circle cx="50" cy="110" r="3" class="dot dot-x4" />
+                <circle cx="120" cy="100" r="3" class="dot dot-x4" />
+                <circle cx="200" cy="95" r="3" class="dot dot-x4" />
+                <text x="150" y="112" class="legend-text">
+                  x4 (designed for local use)
+                </text>
+
+                <!-- Typical tool (higher line) -->
+                <polyline
+                  points="50,70 120,60 200,40"
+                  class="line line-trad"
+                />
+                <circle cx="50" cy="70" r="3" class="dot dot-trad" />
+                <circle cx="120" cy="60" r="3" class="dot dot-trad" />
+                <circle cx="200" cy="40" r="3" class="dot dot-trad" />
+                <text x="140" y="55" class="legend-text">
+                  Typical server-side web tool
+                </text>
+              </svg>
             </div>
+
+            <p class="chart-footnote">
+              “Exposure” refers to how much the design relies on sending text to
+              a server. x4’s translator is written to work on text directly in
+              your browser.
+            </p>
           </div>
         </div>
 
-        <div class="process-card" data-aos="fade-up" data-aos-delay="100">
-          <div class="process-number">02</div>
-          <div class="process-content">
-            <h3>PBKDF2 Key Derivation</h3>
-            <p>Each password undergoes PBKDF2 with domain-separated salts. 
-            Iterations calibrated for ~300ms derivation time.</p>
-            <div class="process-code">
-              <code>PBKDF2(password, salt|context, 600K iterations)</code>
-            </div>
+        <div class="cta-panel section-reveal delay-1">
+          <div class="cta-text">
+            <h3>Try x4 with your own sample text</h3>
+            <p>
+              Open the translator, encrypt a message and decrypt it again using
+              the same passwords. For sensitive data, always use strong, unique
+              passwords and a trusted device.
+            </p>
           </div>
-        </div>
-
-        <div class="process-card" data-aos="fade-up" data-aos-delay="200">
-          <div class="process-number">03</div>
-          <div class="process-content">
-            <h3>Four-Layer Encryption</h3>
-            <p>Sequential AES-256-GCM encryption with unique parameters per layer. 
-            AAD binding ensures tamper detection.</p>
-            <div class="process-code">
-              <code>L1(p1) → L2(p1) → L3(p2) → L4(p2)</code>
-            </div>
-          </div>
-        </div>
-
-        <div class="process-card" data-aos="fade-up" data-aos-delay="300">
-          <div class="process-number">04</div>
-          <div class="process-content">
-            <h3>Memory Sanitization</h3>
-            <p>All password bytes are immediately zeroed. Buffer references cleared. 
-            String variables reset to empty.</p>
-            <div class="process-code">
-              <code>passwordBytes.fill(0) → buffer.slice() → GC</code>
-            </div>
-          </div>
-        </div>
-
-        <div class="process-card" data-aos="fade-up" data-aos-delay="400">
-          <div class="process-number">05</div>
-          <div class="process-content">
-            <h3>Output with Header</h3>
-            <p>Self-describing header includes all parameters. Base64 URL-safe encoding 
-            for universal compatibility.</p>
-            <div class="process-code">
-              <code>x4v2|params||base64url(ciphertext)</code>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Technical Specifications -->
-  <section id="specifications" class="specifications">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-badge" data-aos="fade-down">Technical Details</div>
-        <h2 class="section-title" data-aos="fade-up">
-          Technical Specifications
-        </h2>
-        <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">
-          Comprehensive cryptographic parameters and implementation details
-        </p>
-      </div>
-
-      <div class="specs-container">
-        <div class="spec-group" data-aos="fade-up">
-          <h3 class="spec-group-title">
-            <span class="group-icon">🔐</span>
-            Encryption Parameters
-          </h3>
-          <table class="spec-table">
-            <tr>
-              <td>Algorithm</td>
-              <td><code>AES-256-GCM</code></td>
-            </tr>
-            <tr>
-              <td>Key Size</td>
-              <td><code>256 bits</code></td>
-            </tr>
-            <tr>
-              <td>IV Size</td>
-              <td><code>96 bits (12 bytes)</code></td>
-            </tr>
-            <tr>
-              <td>Salt Size</td>
-              <td><code>128 bits (16 bytes)</code></td>
-            </tr>
-            <tr>
-              <td>Auth Tag</td>
-              <td><code>128 bits</code></td>
-            </tr>
-            <tr>
-              <td>Layers</td>
-              <td><code>4 sequential</code></td>
-            </tr>
-          </table>
-        </div>
-
-        <div class="spec-group" data-aos="fade-up" data-aos-delay="100">
-          <h3 class="spec-group-title">
-            <span class="group-icon">🔑</span>
-            Key Derivation
-          </h3>
-          <table class="spec-table">
-            <tr>
-              <td>Function</td>
-              <td><code>PBKDF2</code></td>
-            </tr>
-            <tr>
-              <td>Hash</td>
-              <td><code>SHA-256 / SHA-512</code></td>
-            </tr>
-            <tr>
-              <td>Iterations</td>
-              <td><code>120,000 - 1,200,000</code></td>
-            </tr>
-            <tr>
-              <td>Default</td>
-              <td><code>600,000 iterations</code></td>
-            </tr>
-            <tr>
-              <td>Calibration</td>
-              <td><code>~300ms target</code></td>
-            </tr>
-            <tr>
-              <td>Domain Sep.</td>
-              <td><code>salt|context</code></td>
-            </tr>
-          </table>
-        </div>
-
-        <div class="spec-group" data-aos="fade-up" data-aos-delay="200">
-          <h3 class="spec-group-title">
-            <span class="group-icon">🧹</span>
-            Memory Security
-          </h3>
-          <table class="spec-table">
-            <tr>
-              <td>DOM Clear</td>
-              <td><code>&lt; 1ms</code></td>
-            </tr>
-            <tr>
-              <td>Byte Zeroing</td>
-              <td><code>&lt; 10ms</code></td>
-            </tr>
-            <tr>
-              <td>Buffer Isolation</td>
-              <td><code>ArrayBuffer.slice()</code></td>
-            </tr>
-            <tr>
-              <td>Clipboard Clear</td>
-              <td><code>10 seconds</code></td>
-            </tr>
-            <tr>
-              <td>GC Hints</td>
-              <td><code>Reference clearing</code></td>
-            </tr>
-            <tr>
-              <td>String Handling</td>
-              <td><code>Immediate disposal</code></td>
-            </tr>
-          </table>
-        </div>
-
-        <div class="spec-group" data-aos="fade-up" data-aos-delay="300">
-          <h3 class="spec-group-title">
-            <span class="group-icon">📦</span>
-            Data Format
-          </h3>
-          <table class="spec-table">
-            <tr>
-              <td>Encoding</td>
-              <td><code>Base64 URL-safe</code></td>
-            </tr>
-            <tr>
-              <td>Header</td>
-              <td><code>x4v2|params||</code></td>
-            </tr>
-            <tr>
-              <td>Normalization</td>
-              <td><code>NFKC</code></td>
-            </tr>
-            <tr>
-              <td>Max Input</td>
-              <td><code>250 KB</code></td>
-            </tr>
-            <tr>
-              <td>Charset</td>
-              <td><code>UTF-8</code></td>
-            </tr>
-            <tr>
-              <td>AAD Binding</td>
-              <td><code>Header authenticated</code></td>
-            </tr>
-          </table>
-        </div>
-      </div>
-
-      <div class="output-example" data-aos="fade-up">
-        <h3>Example Output Structure</h3>
-        <div class="code-block">
-          <div class="code-header">
-            <span class="code-lang">Output Format</span>
-            <button class="code-copy">Copy</button>
-          </div>
-          <pre><code><span class="code-comment"># Header (self-describing, AAD-bound)</span>
-<span class="code-key">x4v2</span>|<span class="code-value">k=pbkdf2;i=600000;h=SHA-256;alg=AES-GCM;layers=4</span>||
-
-<span class="code-comment"># Encrypted payload structure (Base64 URL-safe)</span>
-<span class="code-key">[Salt₁]</span><span class="code-value">[IV₁]</span><span class="code-key">[Salt₂]</span><span class="code-value">[IV₂]</span><span class="code-key">[Salt₃]</span><span class="code-value">[IV₃]</span><span class="code-key">[Salt₄]</span><span class="code-value">[IV₄]</span><span class="code-encrypted">[Ciphertext+Tag]</span>
-
-<span class="code-comment"># Total overhead: ~176 bytes (headers + salts + IVs + tags)</span></code></pre>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Use Cases Section -->
-  <section class="use-cases">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-badge" data-aos="fade-down">Applications</div>
-        <h2 class="section-title" data-aos="fade-up">
-          Trusted for Critical Data Protection
-        </h2>
-        <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">
-          When memory forensics and data persistence are unacceptable risks
-        </p>
-      </div>
-
-      <div class="use-cases-grid">
-        <div class="use-case-card" data-aos="zoom-in">
-          <div class="use-case-icon">🏛️</div>
-          <h3>Government & Defense</h3>
-          <p>Classified information requiring zero-residue encryption with immediate memory sanitization.</p>
-          <div class="use-case-badge">Top Secret</div>
-        </div>
-        
-        <div class="use-case-card" data-aos="zoom-in" data-aos-delay="100">
-          <div class="use-case-icon">🏦</div>
-          <h3>Financial Services</h3>
-          <p>Banking credentials, transaction data, and PII with regulatory compliance requirements.</p>
-          <div class="use-case-badge">PCI-DSS</div>
-        </div>
-        
-        <div class="use-case-card" data-aos="zoom-in" data-aos-delay="200">
-          <div class="use-case-icon">🏥</div>
-          <h3>Healthcare</h3>
-          <p>Patient records and medical data requiring HIPAA-compliant zero-knowledge encryption.</p>
-          <div class="use-case-badge">HIPAA</div>
-        </div>
-        
-        <div class="use-case-card" data-aos="zoom-in" data-aos-delay="300">
-          <div class="use-case-icon">⚖️</div>
-          <h3>Legal & Compliance</h3>
-          <p>Attorney-client privileged communications and sensitive legal documents.</p>
-          <div class="use-case-badge">Privileged</div>
-        </div>
-        
-        <div class="use-case-card" data-aos="zoom-in" data-aos-delay="400">
-          <div class="use-case-icon">🔬</div>
-          <h3>Research & IP</h3>
-          <p>Trade secrets, proprietary algorithms, and intellectual property protection.</p>
-          <div class="use-case-badge">Confidential</div>
-        </div>
-        
-        <div class="use-case-card" data-aos="zoom-in" data-aos-delay="500">
-          <div class="use-case-icon">📡</div>
-          <h3>Journalists & Activists</h3>
-          <p>Source protection and sensitive communications in high-risk environments.</p>
-          <div class="use-case-badge">Protected</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Security Comparison -->
-  <section class="comparison">
-    <div class="container">
-      <div class="section-header">
-        <h2 class="section-title" data-aos="fade-up">
-          x4 vs Traditional Encryption
-        </h2>
-      </div>
-
-      <div class="comparison-table-container" data-aos="fade-up">
-        <table class="comparison-table">
-          <thead>
-            <tr>
-              <th>Feature</th>
-              <th>Traditional Encryption</th>
-              <th class="highlight">x4 Model</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Memory Persistence</td>
-              <td class="negative">Minutes to hours</td>
-              <td class="positive">&lt; 10 milliseconds</td>
-            </tr>
-            <tr>
-              <td>Password Clearing</td>
-              <td class="negative">Manual/Never</td>
-              <td class="positive">Automatic & Immediate</td>
-            </tr>
-            <tr>
-              <td>Clipboard Protection</td>
-              <td class="negative">None</td>
-              <td class="positive">10s auto-clear + confirmation</td>
-            </tr>
-            <tr>
-              <td>Encryption Layers</td>
-              <td class="neutral">1</td>
-              <td class="positive">4 independent</td>
-            </tr>
-            <tr>
-              <td>Key Derivation</td>
-              <td class="neutral">Basic/None</td>
-              <td class="positive">PBKDF2 (120K-1.2M iterations)</td>
-            </tr>
-            <tr>
-              <td>DOM Security</td>
-              <td class="negative">Values persist</td>
-              <td class="positive">Instant clearing</td>
-            </tr>
-            <tr>
-              <td>Buffer Management</td>
-              <td class="negative">Shared references</td>
-              <td class="positive">Isolated & zeroed</td>
-            </tr>
-            <tr>
-              <td>Cold Boot Resistance</td>
-              <td class="negative">Vulnerable</td>
-              <td class="positive">96% resistant</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA Section -->
-  <section class="cta">
-    <div class="container">
-      <div class="cta-content" data-aos="zoom-in">
-        <div class="cta-badge">Zero-Residue Technology</div>
-        <h2 class="cta-title">Experience Memory-Safe Encryption</h2>
-        <p class="cta-subtitle">
-          Military-grade security with revolutionary memory management. 
-          No setup. No registration. No traces left behind.
-        </p>
-        
-        <div class="cta-features">
-          <div class="cta-feature">
-            <span class="feature-check">✓</span>
-            <span>Passwords zeroed in milliseconds</span>
-          </div>
-          <div class="cta-feature">
-            <span class="feature-check">✓</span>
-            <span>Clipboard auto-clears</span>
-          </div>
-          <div class="cta-feature">
-            <span class="feature-check">✓</span>
-            <span>No memory persistence</span>
-          </div>
-          <div class="cta-feature">
-            <span class="feature-check">✓</span>
-            <span>100% client-side</span>
-          </div>
-        </div>
-        
-        <div class="cta-actions">
-          <a href="insiders/translator.html" class="btn btn-cta-primary">
-            <span class="cta-icon">🛡️</span>
-            <span>Launch Secure Encryption</span>
-            <span class="cta-arrow">→</span>
+          <a href="insiders/translator.html" class="btn btn-primary">
+            Open translator
           </a>
         </div>
-        
-        <p class="cta-note">
-          No data leaves your device. Ever.
-        </p>
       </div>
-    </div>
-  </section>
+    </section>
+  </main>
 
   <!-- Footer -->
   <footer class="footer">
-    <div class="container">
-      <div class="footer-content">
-        <div class="footer-main">
-          <div class="footer-brand">
-            <div class="brand-icon">
-              <svg viewBox="0 0 24 24" fill="none">
-                <path d="M12 2L3 7V12C3 16.5 6 20.74 12 22C18 20.74 21 16.5 21 12V7L12 2Z" stroke="currentColor" stroke-width="2"/>
-              </svg>
-            </div>
-            <div>
-              <span class="brand-text">x4 Model</span>
-              <p class="brand-tagline">Memory-Safe Encryption</p>
-            </div>
-          </div>
-          <p class="footer-description">
-            Revolutionary four-layer AES-GCM encryption with instant memory sanitization. 
-            Zero-residue technology ensures no sensitive data persists in memory.
-          </p>
-        </div>
-        
-        <div class="footer-links">
-          <div class="footer-column">
-            <h4>Product</h4>
-            <a href="insiders/translator.html">Launch App</a>
-            <a href="#features">Features</a>
-            <a href="#security">Security</a>
-            <a href="#specifications">Specifications</a>
-          </div>
-          <div class="footer-column">
-            <h4>Technology</h4>
-            <a href="#how-it-works">How It Works</a>
-            <a href="#specifications">Technical Specs</a>
-            <a href="#security">Memory Security</a>
-            <a href="#features">Zero-Residue</a>
-          </div>
-          <div class="footer-column">
-            <h4>Resources</h4>
-            <a href="https://github.com/Sarthak-chaubeyg/Special-trans/blob/main/README.md" target="_blank">Documentation</a>
-            <a href="https://github.com/Sarthak-chaubeyg/Special-trans/blob/main/SECURITY.md" target="_blank">Security</a>
-            <a href="https://github.com/Sarthak-chaubeyg/Special-trans/tree/main/insiders" target="_blank">Open Source</a>
-            <a href="https://sarthakchaubey.netlify.app/contact" target="_blank">Support</a>
-          </div>
-        </div>
+    <div class="footer-inner">
+      <div class="footer-left">
+        <img src="assets/x4-logo.png" alt="x4 logo" class="footer-logo" />
+        <span class="footer-text">
+          x4 · Client-side encryption workspace. Review the source code and
+          your hosting configuration before using it for highly sensitive data.
+        </span>
       </div>
-      
-      <div class="footer-bottom">
-        <p>&copy; 2024 x4 Model. Open-source encryption with memory-safe technology.</p>
-        <div class="footer-badges">
-          <span class="footer-badge">AES-256-GCM</span>
-          <span class="footer-badge">PBKDF2</span>
-          <span class="footer-badge">Zero-Residue</span>
-        </div>
+      <div class="footer-right">
+        <a href="#top">Back to top</a>
       </div>
     </div>
   </footer>
-
-  <!-- Scripts -->
-  <script src="script.js"></script>
 </body>
 </html>
